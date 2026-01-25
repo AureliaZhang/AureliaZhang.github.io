@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Repository | Aurelia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+    <style>
+        /* === 复刻 Index 核心样式 === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(to bottom, #050A14, #0B1021);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh; color: #fff; position: relative;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        
+        /* 布局容器 */
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 2; }
+
+        /* 导航 */
+        .nav-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; }
+        .nav-brand { font-family: 'Parisienne', cursive; font-size: 24px; color: rgba(255,255,255,0.9); text-decoration: none; }
+        .back-link { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .back-link:hover { color: #00F0FF; transform: translateX(-5px); }
+
+        /* 1. 搜索区 */
+        .header-section { text-align: center; margin-bottom: 60px; }
+        .page-title { font-size: clamp(36px, 5vw, 56px); font-weight: 700; margin-bottom: 30px; letter-spacing: -1px; }
+        .search-box {
+            position: relative; max-width: 600px; margin: 0 auto;
+        }
+        .search-input {
+            width: 100%; padding: 18px 50px 18px 24px; font-size: 16px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px; color: #fff; backdrop-filter: blur(10px); outline: none; transition: 0.3s;
+        }
+        .search-input:focus { border-color: #00F0FF; box-shadow: 0 0 20px rgba(0,240,255,0.1); background: rgba(255,255,255,0.05); }
+        .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.5; }
+
+        /* 2. 渐变卡片 (BBC Layout) */
+        .featured-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 80px; }
+        .feature-card {
+            height: 200px; padding: 30px; border-radius: 24px; text-decoration: none; color: #fff;
+            display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
+            transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .feature-card:hover { transform: translateY(-8px); box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        
+        /* 渐变色系 - 保持赛博感 */
+        .card-1 { background: linear-gradient(135deg, rgba(79, 70, 229, 0.4) 0%, rgba(124, 58, 237, 0.4) 100%); }
+        .card-2 { background: linear-gradient(135deg, rgba(5, 150, 105, 0.4) 0%, rgba(16, 185, 129, 0.4) 100%); }
+        .card-3 { background: linear-gradient(135deg, rgba(55, 65, 81, 0.6) 0%, rgba(17, 24, 39, 0.8) 100%); }
+        
+        .card-content h3 { font-size: 22px; margin-bottom: 5px; }
+        .card-content p { font-size: 13px; opacity: 0.7; }
+        .card-icon { align-self: flex-end; font-size: 28px; }
+
+        /* 3. 分类胶囊 (BBC Style) */
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        .section-title { font-size: 18px; font-weight: 600; color: #00F0FF; text-transform: uppercase; letter-spacing: 1px; }
+        .view-all { font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; }
+        
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 80px; }
+        .category-pill {
+            display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px;
+            color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px; transition: 0.3s;
+        }
+        .category-pill:hover { border-color: #00F0FF; color: #fff; background: rgba(0,240,255,0.05); transform: translateX(5px); }
+        .count { font-size: 11px; opacity: 0.5; }
+
+        /* 4. 底部大块 */
+        .resource-blocks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .block-card {
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 30px;
+            border-radius: 20px; color: #fff; text-decoration: none; transition: 0.3s; display: flex; flex-direction: column; gap: 15px;
+        }
+        .block-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+        .block-title { font-size: 18px; font-weight: 700; }
+        .block-desc { font-size: 13px; opacity: 0.5; line-height: 1.5; }
+        .block-arrow { align-self: flex-end; color: #00F0FF; margin-top: auto; }
+
+        @media (max-width: 768px) { .resource-blocks { grid-template-columns: 1fr; } .featured-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="container">
+        <!-- Nav -->
+        <nav class="nav-top">
+            <a href="index.html" class="nav-brand">Aurelia.</a>
+            <a href="index.html" class="back-link">← Back Home</a>
+        </nav>
+
+        <!-- Header -->
+        <header class="header-section">
+            <h1 class="page-title">Research Repository</h1>
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search topics...">
+                <div class="search-icon">🔍</div>
+            </div>
+        </header>
+
+        <!-- Featured Cards -->
+        <div class="featured-grid">
+            <a href="#" class="feature-card card-1">
+                <div class="card-content"><h3>Multimodal</h3><p>Interaction paradigms</p></div>
+                <div class="card-icon">🎙️</div>
+            </a>
+            <a href="#" class="feature-card card-2">
+                <div class="card-content"><h3>Affective</h3><p>Emotion AI & Sensors</p></div>
+                <div class="card-icon">❤️</div>
+            </a>
+            <a href="#" class="feature-card card-3">
+                <div class="card-content"><h3>Generative</h3><p>AI-driven Interfaces</p></div>
+                <div class="card-icon">✨</div>
+            </a>
+        </div>
+
+        <!-- Categories -->
+        <div class="section-header">
+            <div class="section-title">Browse Domains</div>
+            <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="category-grid">
+            <a href="#" class="category-pill"><span>HCI Research</span><span class="count">12</span></a>
+            <a href="#" class="category-pill"><span>AI Ethics</span><span class="count">8</span></a>
+            <a href="#" class="category-pill"><span>VR / AR</span><span class="count">10</span></a>
+            <a href="#" class="category-pill"><span>Neurotech</span><span class="count">5</span></a>
+            <a href="#" class="category-pill"><span>Data Viz</span><span class="count">7</span></a>
+            <a href="#" class="category-pill"><span>Wearables</span><span class="count">6</span></a>
+        </div>
+
+        <!-- Resources -->
+        <div class="resource-blocks">
+            <a href="#" class="block-card">
+                <div class="block-title">Methodologies</div>
+                <div class="block-desc">Quantitative & Qualitative research methods.</div>
+                <div class="block-arrow">→</div>
+            </a>
+            <a href="#" class="block-card">
+                <div class="block-title">Datasets</div>
+                <div class="block-desc">Open-source datasets for experiments.</div>
+                <div class="block-arrow">→</div>
+            </a>
+            <a href="#" class="block-card">
+                <div class="block-title">Reading List</div>
+                <div class="block-desc">Curated papers and books.</div>
+                <div class="block-arrow">→</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Script for Particles (Same as Index) -->
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        class Particle {
+            constructor() { this.x=Math.random()*width; this.y=Math.random()*height; this.vx=(Math.random()-0.5)*0.5; this.vy=(Math.random()-0.5)*0.5; this.size=Math.random()*2+1; }
+            update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>width)this.vx*=-1; if(this.y<0||this.y>height)this.vy*=-1; }
+            draw() { ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fill(); }
+        }
+        function init() { particles=[]; for(let i=0;i<50;i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0,0,width,height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        resize(); init(); animate(); window.addEventListener('resize', () => { resize(); init(); });
+    </script>
+</body>
+</html>
