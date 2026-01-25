@@ -1,464 +1,928 @@
-<!DOCTYPE HTML>
-<!--
-	Strata by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Strata by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="is-preload">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurelia - HCI Researcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-		<!-- Header -->
-			<header id="header">
-				<div class="inner">
-					<a href="#" class="image avatar"><img src="images/avatar.jpg" alt="" /></a>
-					<h1><strong>I am Aurelia Zhang</strong>, an Urban Designer<br />
-					& HCI Researcher based in Chengdu.<br />
-					crafted by <a href="http://html5up.net">HTML5 UP</a>.</h1>
-				</div>
-			</header>
+        body {
+            background: linear-gradient(to bottom, #050A14, #0B1021);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            cursor: none;
+            position: relative;
+        }
 
-		<!-- Main -->
-			<div id="main">
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
 
-				<!-- One -->
-					<section id="one">
-						<header class="major">
-							<h2>Ipsum lorem dolor aliquam ante commodo<br />
-							magna sed accumsan arcu neque.</h2>
-						</header>
-						<p>Accumsan orci faucibus id eu lorem semper. Eu ac iaculis ac nunc nisi lorem vulputate lorem neque cubilia ac in adipiscing in curae lobortis tortor primis integer massa adipiscing id nisi accumsan pellentesque commodo blandit enim arcu non at amet id arcu magna. Accumsan orci faucibus id eu lorem semper nunc nisi lorem vulputate lorem neque cubilia.</p>
-						<ul class="actions">
-							<li><a href="#" class="button">Learn More</a></li>
-						</ul>
-					</section>
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
 
-				<!-- Two -->
-					<section id="two">
-						<h2>Recent Work</h2>
-						<div class="row">
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/01.jpg" class="image fit thumb"><img src="images/thumbs/01.jpg" alt="" /></a>
-								<h3>Magna sed consequat tempus</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/02.jpg" class="image fit thumb"><img src="images/thumbs/02.jpg" alt="" /></a>
-								<h3>Ultricies lacinia interdum</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/03.jpg" class="image fit thumb"><img src="images/thumbs/03.jpg" alt="" /></a>
-								<h3>Tortor metus commodo</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/04.jpg" class="image fit thumb"><img src="images/thumbs/04.jpg" alt="" /></a>
-								<h3>Quam neque phasellus</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/05.jpg" class="image fit thumb"><img src="images/thumbs/05.jpg" alt="" /></a>
-								<h3>Nunc enim commodo aliquet</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/06.jpg" class="image fit thumb"><img src="images/thumbs/06.jpg" alt="" /></a>
-								<h3>Risus ornare lacinia</h3>
-								<p>Lorem ipsum dolor sit amet nisl sed nullam feugiat.</p>
-							</article>
-						</div>
-						<ul class="actions">
-							<li><a href="#" class="button">Full Portfolio</a></li>
-						</ul>
-					</section>
+        .cursor {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            pointer-events: none;
+            mix-blend-mode: exclusion;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
 
-				<!-- Three -->
-					<section id="three">
-						<h2>Get In Touch</h2>
-						<p>Accumsan pellentesque commodo blandit enim arcu non at amet id arcu magna. Accumsan orci faucibus id eu lorem semper nunc nisi lorem vulputate lorem neque lorem ipsum dolor.</p>
-						<div class="row">
-							<div class="col-8 col-12-small">
-								<form method="post" action="#">
-									<div class="row gtr-uniform gtr-50">
-										<div class="col-6 col-12-xsmall"><input type="text" name="name" id="name" placeholder="Name" /></div>
-										<div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Email" /></div>
-										<div class="col-12"><textarea name="message" id="message" placeholder="Message" rows="4"></textarea></div>
-									</div>
-								</form>
-								<ul class="actions">
-									<li><input type="submit" value="Send Message" /></li>
-								</ul>
-							</div>
-							<div class="col-4 col-12-small">
-								<ul class="labeled-icons">
-									<li>
-										<h3 class="icon solid fa-home"><span class="label">Address</span></h3>
-										1234 Somewhere Rd.<br />
-										Nashville, TN 00000<br />
-										United States
-									</li>
-									<li>
-										<h3 class="icon solid fa-mobile-alt"><span class="label">Phone</span></h3>
-										000-000-0000
-									</li>
-									<li>
-										<h3 class="icon solid fa-envelope"><span class="label">Email</span></h3>
-										<a href="#">hello@untitled.tld</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</section>
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 120px 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
 
-				<!-- Four -->
-				<!--
-					<section id="four">
-						<h2>Elements</h2>
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 1s ease forwards;
+        }
 
-						<section>
-							<h4>Text</h4>
-							<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-							This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-							This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
-							<hr />
-							<header>
-								<h4>Heading with a Subtitle</h4>
-								<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
-							</header>
-							<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-							<header>
-								<h5>Heading with a Subtitle</h5>
-								<p>Lorem ipsum dolor sit amet nullam id egestas urna aliquam</p>
-							</header>
-							<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-							<hr />
-							<h2>Heading Level 2</h2>
-							<h3>Heading Level 3</h3>
-							<h4>Heading Level 4</h4>
-							<h5>Heading Level 5</h5>
-							<h6>Heading Level 6</h6>
-							<hr />
-							<h5>Blockquote</h5>
-							<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
-							<h5>Preformatted</h5>
-							<pre><code>i = 0;
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-while (!deck.isInOrder()) {
-print 'Iteration ' + i;
-deck.shuffle();
-i++;
-}
+        @keyframes jelly {
+            0% { transform: scale(1, 1); }
+            30% { transform: scale(1.25, 0.75); }
+            40% { transform: scale(0.75, 1.25); }
+            50% { transform: scale(1.15, 0.85); }
+            65% { transform: scale(0.95, 1.05); }
+            75% { transform: scale(1.05, 0.95); }
+            100% { transform: scale(1, 1); }
+        }
 
-print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
-						</section>
+        @keyframes jellyHover {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.08, 0.92); }
+            35% { transform: scale(0.95, 1.05); }
+            50% { transform: scale(1.03, 0.97); }
+            65% { transform: scale(0.99, 1.01); }
+            80% { transform: scale(1.01, 0.99); }
+            100% { transform: scale(1); }
+        }
 
-						<section>
-							<h4>Lists</h4>
-							<div class="row">
-								<div class="col-6 col-12-xsmall">
-									<h5>Unordered</h5>
-									<ul>
-										<li>Dolor pulvinar etiam magna etiam.</li>
-										<li>Sagittis adipiscing lorem eleifend.</li>
-										<li>Felis enim feugiat dolore viverra.</li>
-									</ul>
-									<h5>Alternate</h5>
-									<ul class="alt">
-										<li>Dolor pulvinar etiam magna etiam.</li>
-										<li>Sagittis adipiscing lorem eleifend.</li>
-										<li>Felis enim feugiat dolore viverra.</li>
-									</ul>
-								</div>
-								<div class="col-6 col-12-xsmall">
-									<h5>Ordered</h5>
-									<ol>
-										<li>Dolor pulvinar etiam magna etiam.</li>
-										<li>Etiam vel felis at lorem sed viverra.</li>
-										<li>Felis enim feugiat dolore viverra.</li>
-										<li>Dolor pulvinar etiam magna etiam.</li>
-										<li>Etiam vel felis at lorem sed viverra.</li>
-										<li>Felis enim feugiat dolore viverra.</li>
-									</ol>
-									<h5>Icons</h5>
-									<ul class="icons">
-										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-										<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-										<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-										<li><a href="#" class="icon brands fa-tumblr"><span class="label">Tumblr</span></a></li>
-									</ul>
-								</div>
-							</div>
-							<h5>Actions</h5>
-							<ul class="actions">
-								<li><a href="#" class="button primary">Default</a></li>
-								<li><a href="#" class="button">Default</a></li>
-							</ul>
-							<ul class="actions small">
-								<li><a href="#" class="button primary small">Small</a></li>
-								<li><a href="#" class="button small">Small</a></li>
-							</ul>
-							<div class="row">
-								<div class="col-6 col-12-small">
-									<ul class="actions stacked">
-										<li><a href="#" class="button primary">Default</a></li>
-										<li><a href="#" class="button">Default</a></li>
-									</ul>
-								</div>
-								<div class="col-6 col-12-small">
-									<ul class="actions stacked">
-										<li><a href="#" class="button primary small">Small</a></li>
-										<li><a href="#" class="button small">Small</a></li>
-									</ul>
-								</div>
-								<div class="col-6 col-12-small">
-									<ul class="actions stacked">
-										<li><a href="#" class="button primary fit">Default</a></li>
-										<li><a href="#" class="button fit">Default</a></li>
-									</ul>
-								</div>
-								<div class="col-6 col-12-small">
-									<ul class="actions stacked">
-										<li><a href="#" class="button primary small fit">Small</a></li>
-										<li><a href="#" class="button small fit">Small</a></li>
-									</ul>
-								</div>
-							</div>
-						</section>
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 32px;
+            padding: 64px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease, border-radius 0.4s ease;
+        }
 
-						<section>
-							<h4>Table</h4>
-							<h5>Default</h5>
-							<div class="table-wrapper">
-								<table>
-									<thead>
-										<tr>
-											<th>Name</th>
-											<th>Description</th>
-											<th>Price</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>Item One</td>
-											<td>Ante turpis integer aliquet porttitor.</td>
-											<td>29.99</td>
-										</tr>
-										<tr>
-											<td>Item Two</td>
-											<td>Vis ac commodo adipiscing arcu aliquet.</td>
-											<td>19.99</td>
-										</tr>
-										<tr>
-											<td>Item Three</td>
-											<td> Morbi faucibus arcu accumsan lorem.</td>
-											<td>29.99</td>
-										</tr>
-										<tr>
-											<td>Item Four</td>
-											<td>Vitae integer tempus condimentum.</td>
-											<td>19.99</td>
-										</tr>
-										<tr>
-											<td>Item Five</td>
-											<td>Ante turpis integer aliquet porttitor.</td>
-											<td>29.99</td>
-										</tr>
-									</tbody>
-									<tfoot>
-										<tr>
-											<td colspan="2"></td>
-											<td>100.00</td>
-										</tr>
-									</tfoot>
-								</table>
-							</div>
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
 
-							<h5>Alternate</h5>
-							<div class="table-wrapper">
-								<table class="alt">
-									<thead>
-										<tr>
-											<th>Name</th>
-											<th>Description</th>
-											<th>Price</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>Item One</td>
-											<td>Ante turpis integer aliquet porttitor.</td>
-											<td>29.99</td>
-										</tr>
-										<tr>
-											<td>Item Two</td>
-											<td>Vis ac commodo adipiscing arcu aliquet.</td>
-											<td>19.99</td>
-										</tr>
-										<tr>
-											<td>Item Three</td>
-											<td> Morbi faucibus arcu accumsan lorem.</td>
-											<td>29.99</td>
-										</tr>
-										<tr>
-											<td>Item Four</td>
-											<td>Vitae integer tempus condimentum.</td>
-											<td>19.99</td>
-										</tr>
-										<tr>
-											<td>Item Five</td>
-											<td>Ante turpis integer aliquet porttitor.</td>
-											<td>29.99</td>
-										</tr>
-									</tbody>
-									<tfoot>
-										<tr>
-											<td colspan="2"></td>
-											<td>100.00</td>
-										</tr>
-									</tfoot>
-								</table>
-							</div>
-						</section>
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 0 60px rgba(0, 240, 255, 0.05), inset 0 0 60px rgba(0, 240, 255, 0.02);
+            border-radius: 36px;
+            animation: jellyHover 0.6s ease;
+        }
 
-						<section>
-							<h4>Buttons</h4>
-							<ul class="actions">
-								<li><a href="#" class="button primary">Primary</a></li>
-								<li><a href="#" class="button">Default</a></li>
-							</ul>
-							<ul class="actions">
-								<li><a href="#" class="button large">Large</a></li>
-								<li><a href="#" class="button">Default</a></li>
-								<li><a href="#" class="button small">Small</a></li>
-							</ul>
-							<ul class="actions fit">
-								<li><a href="#" class="button primary fit">Fit</a></li>
-								<li><a href="#" class="button fit">Fit</a></li>
-							</ul>
-							<ul class="actions fit small">
-								<li><a href="#" class="button primary fit small">Fit + Small</a></li>
-								<li><a href="#" class="button fit small">Fit + Small</a></li>
-							</ul>
-							<ul class="actions">
-								<li><a href="#" class="button primary icon solid fa-download">Icon</a></li>
-								<li><a href="#" class="button icon solid fa-download">Icon</a></li>
-							</ul>
-							<ul class="actions">
-								<li><span class="button primary disabled">Primary</span></li>
-								<li><span class="button disabled">Default</span></li>
-							</ul>
-						</section>
+        .card:hover::before {
+            opacity: 1;
+        }
 
-						<section>
-							<h4>Form</h4>
-							<form method="post" action="#">
-								<div class="row gtr-uniform gtr-50">
-									<div class="col-6 col-12-xsmall">
-										<input type="text" name="demo-name" id="demo-name" value="" placeholder="Name" />
-									</div>
-									<div class="col-6 col-12-xsmall">
-										<input type="email" name="demo-email" id="demo-email" value="" placeholder="Email" />
-									</div>
-									<div class="col-12">
-										<select name="demo-category" id="demo-category">
-											<option value="">- Category -</option>
-											<option value="1">Manufacturing</option>
-											<option value="1">Shipping</option>
-											<option value="1">Administration</option>
-											<option value="1">Human Resources</option>
-										</select>
-									</div>
-									<div class="col-4 col-12-small">
-										<input type="radio" id="demo-priority-low" name="demo-priority" checked>
-										<label for="demo-priority-low">Low Priority</label>
-									</div>
-									<div class="col-4 col-12-small">
-										<input type="radio" id="demo-priority-normal" name="demo-priority">
-										<label for="demo-priority-normal">Normal Priority</label>
-									</div>
-									<div class="col-4 col-12-small">
-										<input type="radio" id="demo-priority-high" name="demo-priority">
-										<label for="demo-priority-high">High Priority</label>
-									</div>
-									<div class="col-6 col-12-small">
-										<input type="checkbox" id="demo-copy" name="demo-copy">
-										<label for="demo-copy">Email me a copy of this message</label>
-									</div>
-									<div class="col-6 col-12-small">
-										<input type="checkbox" id="demo-human" name="demo-human" checked>
-										<label for="demo-human">I am a human and not a robot</label>
-									</div>
-									<div class="col-12">
-										<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
-									</div>
-									<div class="col-12">
-										<ul class="actions">
-											<li><input type="submit" value="Send Message" class="primary" /></li>
-											<li><input type="reset" value="Reset" /></li>
-										</ul>
-									</div>
-								</div>
-							</form>
-						</section>
+        .card:active {
+            animation: jelly 0.5s ease;
+        }
 
-						<section>
-							<h4>Image</h4>
-							<h5>Fit</h5>
-							<div class="box alt">
-								<div class="row gtr-50 gtr-uniform">
-									<div class="col-12"><span class="image fit"><img src="images/fulls/05.jpg" alt="" /></span></div>
-									<div class="col-4"><span class="image fit"><img src="images/thumbs/01.jpg" alt="" /></span></div>
-									<div class="col-4"><span class="image fit"><img src="images/thumbs/02.jpg" alt="" /></span></div>
-									<div class="col-4"><span class="image fit"><img src="images/thumbs/03.jpg" alt="" /></span></div>
-									<div class="col-4"><span class="image fit"><img src="images/thumbs/04.jpg" alt="" /></span></div>
-									<div class="col-4"><span class="image fit"><img src="images/thumbs/05.jpg" alt="" /></span></div>
-									<div class="col-4"><span class="image fit"><img src="images/thumbs/06.jpg" alt="" /></span></div>
-									<div class="col-4"><span class="image fit"><img src="images/thumbs/03.jpg" alt="" /></span></div>
-									<div class="col-4"><span class="image fit"><img src="images/thumbs/02.jpg" alt="" /></span></div>
-									<div class="col-4"><span class="image fit"><img src="images/thumbs/01.jpg" alt="" /></span></div>
-								</div>
-							</div>
-							<h5>Left &amp; Right</h5>
-							<p><span class="image left"><img src="images/avatar.jpg" alt="" /></span>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.</p>
-							<p><span class="image right"><img src="images/avatar.jpg" alt="" /></span>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent tincidunt felis sagittis eget. tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan eu faucibus. Integer ac pellentesque praesent.</p>
-						</section>
+        .hero-card {
+            min-height: 400px;
+            background: rgba(255, 255, 255, 0.015);
+            backdrop-filter: blur(10px);
+        }
 
-					</section>
-				-->
+        .hero-name {
+            font-size: 120px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -4px;
+            line-height: 1;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 60px rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
 
-			</div>
+        .hero-name span {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
 
-		<!-- Footer -->
-			<footer id="footer">
-				<div class="inner">
-					<ul class="icons">
-						<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-						<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-						<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
-					</ul>
-					<ul class="copyright">
-						<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-				</div>
-			</footer>
+        .hero-name span:hover {
+            transform: translateY(-5px) scale(1.05);
+            text-shadow: 0 0 40px rgba(0, 240, 255, 0.5);
+        }
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.poptrox.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+        .hero-title {
+            font-size: 24px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: -0.5px;
+            position: relative;
+        }
 
-	</body>
+        .hero-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            transition: width 0.4s ease;
+        }
 
+        .card:hover .hero-title::before {
+            width: 100%;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .sidebar-card {
+            min-height: 188px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .slogan {
+            font-size: 28px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: -1px;
+            font-style: italic;
+        }
+
+        .works-link {
+            font-size: 20px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 16px 24px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .works-link:hover {
+            color: #00F0FF;
+            transform: translateX(8px);
+            background: rgba(0, 240, 255, 0.03);
+            border-color: rgba(0, 240, 255, 0.15);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.08);
+        }
+
+        .works-link:active {
+            animation: jelly 0.4s ease;
+        }
+
+        .arrow {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .arrow::before,
+        .arrow::after {
+            content: '';
+            position: absolute;
+            background: currentColor;
+            transition: all 0.3s ease;
+        }
+
+        .arrow::before {
+            width: 16px;
+            height: 2px;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .arrow::after {
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%) rotate(-45deg);
+        }
+
+        .works-link:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-name {
+                font-size: 80px;
+                letter-spacing: -3px;
+            }
+            
+            .container {
+                padding: 60px 40px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-name {
+                font-size: 56px;
+                letter-spacing: -2px;
+            }
+            
+            .card {
+                padding: 40px;
+                border-radius: 24px;
+            }
+            
+            .container {
+                padding: 40px 24px;
+            }
+            
+            .cursor {
+                width: 250px;
+                height: 250px;
+            }
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #050A14;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-dot {
+            width: 20px;
+            height: 20px;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: loadingPulse 1.5s ease-in-out infinite;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+                box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
+                box-shadow: 0 0 60px rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .glow-text {
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from {
+                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+            }
+            to {
+                filter: drop-shadow(0 0 40px rgba(0, 240, 255, 0.15));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="loading-dot"></div>
+    </div>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="cursor" id="cursor"></div>
+
+    <div class="container">
+        <div class="bento-grid">
+            <div class="card hero-card" data-card>
+                <h1 class="hero-name glow-text" id="heroName">Aurelia</h1>
+                <p class="hero-title">HCI Researcher</p>
+            </div>
+
+            <div class="sidebar">
+                <div class="card sidebar-card" data-card>
+                    <p class="slogan">Seeking Resonance</p>
+                </div>
+                <div class="card sidebar-card" data-card>
+                    <a href="#works" class="works-link">
+                        <span>Selected Works</span>
+                        <span class="arrow"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let particles = [];
+        const particleCount = 45;
+        const connectionDistance = 180;
+        
+        let mainSignal = null;
+        let signalCooldown = 0;
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        
+        class Particle {
+            constructor(id) {
+                this.id = id;
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.3 * 0.3; // Slowed down to 0.3x
+                this.vy = (Math.random() - 0.5) * 0.3 * 0.3; // Slowed down to 0.3x
+                this.baseRadius = 2;
+                this.radius = this.baseRadius;
+
+                this.phase = Math.random() * Math.PI * 2;
+                this.speed = Math.random() * 0.001 + 0.0005;
+
+                this.activation = 0;
+                this.decayRate = 0.015;
+            }
+            
+            update(mouseX, mouseY) {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+                
+                if (mouseX && mouseY) {
+                    const dx = this.x - mouseX;
+                    const dy = this.y - mouseY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        const force = (150 - distance) / 150;
+                        this.vx += (dx / distance) * force * 0.02;
+                        this.vy += (dy / distance) * force * 0.02;
+                    }
+                }
+                
+                this.vx *= 0.99;
+                this.vy *= 0.99;
+
+                // Enhanced breathing effect with larger amplitude
+                const breath = Math.sin(Date.now() * this.speed + this.phase);
+                this.radius = this.baseRadius + (breath + 1) * 2.5;
+                
+                if (this.activation > 0) {
+                    this.activation -= this.decayRate;
+                    this.activation = Math.max(0, this.activation);
+                }
+            }
+            
+            activate() {
+                this.activation = 1;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                
+                let r = 150, g = 150, b = 150;
+                let alpha = 0.5;
+                let glowSize = this.radius * 3;
+                
+                if (this.activation > 0) {
+                    const mix = this.activation;
+                    r = 150 + (255 - 150) * mix;
+                    g = 150 + (255 - 150) * mix;
+                    b = 150 + (255 - 150) * mix;
+                    alpha = 0.5 + 0.5 * mix;
+                    glowSize = this.radius * (3 + 2 * mix);
+                }
+                
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, glowSize
+                );
+                gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${alpha})`);
+                gradient.addColorStop(0.3, `rgba(${r}, ${g}, ${b}, ${alpha * 0.6})`);
+                gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+                
+                ctx.fillStyle = gradient;
+                ctx.fill();
+            }
+        }
+        
+        class Signal {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                // Start from left edge particles
+                const leftParticles = particles.filter(p => p.x < width * 0.2);
+                if (leftParticles.length > 0) {
+                    this.currentParticle = leftParticles[Math.floor(Math.random() * leftParticles.length)];
+                } else {
+                    this.currentParticle = particles[Math.floor(Math.random() * particles.length)];
+                }
+
+                this.targetParticle = null;
+                this.progress = 0;
+                this.speed = 0.01; // Slowed down by 50% for subtle effect
+                this.isComplete = false;
+
+                // Position history for trail effect (120 points for long trail)
+                this.positionHistory = []; // Array of {x, y}
+
+                // Journey counter
+                this.visitedCount = 0;
+
+                // Visited nodes memory - prevent backtracking
+                this.visitedNodes = [this.currentParticle.id];
+
+                // Find first target
+                this.findNextTarget();
+            }
+
+            findNextTarget() {
+                const centerX = width / 2;
+                const centerY = height / 2;
+
+                // Check if reached center (Black Hole effect)
+                const dxToCenter = this.currentParticle.x - centerX;
+                const dyToCenter = this.currentParticle.y - centerY;
+                const distanceToCenter = Math.sqrt(dxToCenter * dxToCenter + dyToCenter * dyToCenter);
+
+                if (distanceToCenter < 50) {
+                    this.isComplete = true;
+                    return;
+                }
+
+                const connections = getConnectedParticles();
+                const connectionsFromCurrent = connections.filter(c =>
+                    c[0] === this.currentParticle || c[1] === this.currentParticle
+                );
+
+                if (connectionsFromCurrent.length === 0) {
+                    this.isComplete = true;
+                    return;
+                }
+
+                // Get all unvisited neighbors
+                const neighbors = [];
+                for (const conn of connectionsFromCurrent) {
+                    const neighbor = conn[0] === this.currentParticle ? conn[1] : conn[0];
+                    if (!this.visitedNodes.includes(neighbor.id)) {
+                        neighbors.push(neighbor);
+                    }
+                }
+
+                // Two-stage journey logic with anti-backtracking
+                if (neighbors.length > 0) {
+                    // Have unvisited neighbors - choose based on stage
+                    if (this.visitedCount < 40) {
+                        // Stage A: The Search - Random wandering among unvisited
+                        this.targetParticle = neighbors[Math.floor(Math.random() * neighbors.length)];
+                    } else {
+                        // Stage B: The Discovery - Greedy pathfinding to center
+                        let closestDistance = Infinity;
+                        let closestParticle = null;
+
+                        for (const neighbor of neighbors) {
+                            const dx = neighbor.x - centerX;
+                            const dy = neighbor.y - centerY;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+
+                            if (distance < closestDistance) {
+                                closestDistance = distance;
+                                closestParticle = neighbor;
+                            }
+                        }
+
+                        this.targetParticle = closestParticle;
+                    }
+                } else {
+                    // All neighbors visited - dead end, reset immediately
+                    this.isComplete = true;
+                    return;
+                }
+
+                this.progress = 0;
+            }
+
+            update() {
+                if (this.isComplete || !this.targetParticle) return false;
+
+                // Smooth interpolation: increase progress
+                this.progress += this.speed;
+
+                // Calculate current position using linear interpolation (Lerp)
+                const currentPos = {
+                    x: this.currentParticle.x + (this.targetParticle.x - this.currentParticle.x) * this.progress,
+                    y: this.currentParticle.y + (this.targetParticle.y - this.currentParticle.y) * this.progress
+                };
+
+                // Add current position to history (every frame)
+                this.positionHistory.push(currentPos);
+
+                // Keep last 120 positions for long trail effect
+                if (this.positionHistory.length > 120) {
+                    this.positionHistory.shift();
+                }
+
+                // Check if reached target
+                if (this.progress >= 1) {
+                    this.currentParticle = this.targetParticle;
+                    this.visitedCount++; // Increment journey counter
+
+                    // Add to visited nodes to prevent backtracking
+                    if (!this.visitedNodes.includes(this.currentParticle.id)) {
+                        this.visitedNodes.push(this.currentParticle.id);
+                    }
+
+                    // Find next target
+                    this.findNextTarget();
+                }
+
+                return true;
+            }
+
+            draw() {
+                if (this.positionHistory.length < 4) return;
+
+                // Draw smooth spline curve overlaying the neuron network
+                // Apply glow effect for liquid light appearance
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = 'rgba(0, 240, 255, 0.4)';
+
+                // Draw spline curve through the position history points
+                ctx.beginPath();
+
+                // Use Catmull-Rom spline for smooth interpolation
+                const curvePoints = [];
+                const segments = 20; // Points per segment for smoothness
+
+                for (let i = 0; i < this.positionHistory.length - 3; i++) {
+                    const p0 = this.positionHistory[i];
+                    const p1 = this.positionHistory[i + 1];
+                    const p2 = this.positionHistory[i + 2];
+                    const p3 = this.positionHistory[i + 3];
+
+                    for (let t = 0; t < segments; t++) {
+                        const point = this.catmullRom(p0, p1, p2, p3, t / segments);
+                        curvePoints.push(point);
+                    }
+                }
+
+                // Draw the smooth curve
+                if (curvePoints.length > 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(curvePoints[0].x, curvePoints[0].y);
+
+                    for (let i = 1; i < curvePoints.length; i++) {
+                        ctx.lineTo(curvePoints[i].x, curvePoints[i].y);
+                    }
+
+                    // Gradient along the curve - bright cyan to transparent
+                    // Create gradient along the path
+                    if (curvePoints.length > 0) {
+                        const gradient = ctx.createLinearGradient(
+                            curvePoints[0].x, curvePoints[0].y,
+                            curvePoints[curvePoints.length - 1].x, curvePoints[curvePoints.length - 1].y
+                        );
+                        gradient.addColorStop(0, 'rgba(0, 240, 255, 0)');
+                        gradient.addColorStop(1, 'rgba(0, 240, 255, 0.25)');
+
+                        ctx.strokeStyle = gradient;
+                        ctx.lineWidth = 3;
+                        ctx.lineCap = 'round';
+                        ctx.lineJoin = 'round';
+                        ctx.stroke();
+                    }
+                }
+
+                // Reset shadow for other canvas elements
+                ctx.shadowBlur = 0;
+            }
+
+            // Catmull-Rom spline interpolation helper
+            catmullRom(p0, p1, p2, p3, t) {
+                const t2 = t * t;
+                const t3 = t2 * t;
+
+                const x = 0.5 * ((2 * p1.x) +
+                        (-p0.x + p2.x) * t +
+                        (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 +
+                        (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3);
+
+                const y = 0.5 * ((2 * p1.y) +
+                        (-p0.y + p2.y) * t +
+                        (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 +
+                        (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3);
+
+                return { x, y };
+            }
+        }
+        
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle(i));
+            }
+        }
+        
+        function getConnectedParticles() {
+            const connections = [];
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        connections.push([particles[i], particles[j]]);
+                    }
+                }
+            }
+            return connections;
+        }
+        
+        function manageMainSignal() {
+            const now = Date.now();
+
+            // Check cooldown (3 seconds after completion)
+            if (signalCooldown > 0 && now < signalCooldown) {
+                return;
+            }
+
+            // Create new signal if none exists
+            if (!mainSignal) {
+                mainSignal = new Signal();
+                signalCooldown = 0;
+            }
+
+            // Update and check if signal is complete
+            if (!mainSignal.update()) {
+                mainSignal = null;
+                signalCooldown = now + 3000; // 3 second cooldown
+            }
+        }
+        
+        function drawConnections(mouseX, mouseY) {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < connectionDistance) {
+                        const alpha = (1 - distance / connectionDistance) * 0.15;
+
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                        ctx.lineWidth = 1.2;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        let mouseX = null;
+        let mouseY = null;
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Manage the single main signal
+            manageMainSignal();
+
+            // Update and draw particles
+            particles.forEach(particle => {
+                particle.update(mouseX, mouseY);
+                particle.draw();
+            });
+
+            // Draw connections
+            drawConnections(mouseX, mouseY);
+
+            // Draw the main signal
+            if (mainSignal) {
+                mainSignal.draw();
+            }
+
+            requestAnimationFrame(animate);
+        }
+        
+        resize();
+        initParticles();
+        animate();
+        
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+
+        const cursor = document.getElementById('cursor');
+        const cards = document.querySelectorAll('[data-card]');
+        const heroName = document.getElementById('heroName');
+        const loading = document.getElementById('loading');
+        
+        let cursorX = window.innerWidth / 2;
+        let cursorY = window.innerHeight / 2;
+        let targetX = cursorX;
+        let targetY = cursorY;
+        let isMoving = false;
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loading.classList.add('hidden');
+            }, 800);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / card.offsetWidth) * 100;
+                const y = ((e.clientY - rect.top) / card.offsetHeight) * 100;
+                card.style.setProperty('--mouse-x', `${x}%`);
+                card.style.setProperty('--mouse-y', `${y}%`);
+            });
+            
+            if (!isMoving) {
+                isMoving = true;
+                cursor.style.opacity = '1';
+            }
+            
+            clearTimeout(window.cursorTimeout);
+            window.cursorTimeout = setTimeout(() => {
+                isMoving = false;
+                cursor.style.opacity = '0';
+                mouseX = null;
+                mouseY = null;
+            }, 2000);
+        });
+
+        function animateCursor() {
+            cursorX += (targetX - cursorX) * 0.12;
+            cursorY += (targetY - cursorY) * 0.12;
+            
+            cursor.style.left = `${cursorX}px`;
+            cursor.style.top = `${cursorY}px`;
+            
+            requestAnimationFrame(animateCursor);
+        }
+
+        animateCursor();
+
+        const text = heroName.textContent;
+        heroName.innerHTML = '';
+        text.split('').forEach((char, index) => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.style.transitionDelay = `${index * 30}ms`;
+            heroName.appendChild(span);
+        });
+
+        const nameSpans = heroName.querySelectorAll('span');
+        nameSpans.forEach((span, index) => {
+            span.addEventListener('mouseenter', () => {
+                span.style.transform = 'translateY(-8px) scale(1.1)';
+                span.style.textShadow = '0 0 40px rgba(0, 240, 255, 0.8)';
+                
+                nameSpans.forEach((otherSpan, otherIndex) => {
+                    const distance = Math.abs(index - otherIndex);
+                    if (distance <= 2 && distance !== 0) {
+                        setTimeout(() => {
+                            otherSpan.style.transform = `translateY(-${8 - distance * 3}px) scale(${1.1 - distance * 0.05})`;
+                            otherSpan.style.textShadow = `0 0 ${40 - distance * 20}px rgba(0, 240, 255, ${1 - distance * 0.2})`;
+                        }, distance * 30);
+                    }
+                });
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                span.style.transform = '';
+                span.style.textShadow = '';
+                
+                nameSpans.forEach((otherSpan) => {
+                    otherSpan.style.transform = '';
+                    otherSpan.style.textShadow = '';
+                });
+            });
+        });
+
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (isTouchDevice) {
+            cursor.style.display = 'none';
+            document.body.style.cursor = 'auto';
+        }
+    </script>
+</body>
 </html>
