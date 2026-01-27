@@ -319,8 +319,9 @@
             gap: 10px;
         }
 
-        .top-right-card .research-list li {
-            list-style: none;
+        .top-right-card .research-list .research-item {
+            position: relative;
+            z-index: 10;
             display: inline-flex;
             align-items: center;
             padding: 8px 18px;
@@ -333,9 +334,11 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
         }
 
-        .top-right-card .research-list li:hover {
+        .top-right-card .research-list .research-item:hover {
             border-color: #00F0FF;
             box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
             transform: translateY(-2px);
@@ -763,7 +766,7 @@
                 gap: 8px;
             }
 
-            .top-right-card .research-list li {
+            .top-right-card .research-list .research-item {
                 font-size: 10px;
                 padding: 6px 14px;
             }
@@ -1035,11 +1038,11 @@
             <!-- Top Right Card -->
             <div class="bento-card top-right-card">
                 <div class="section-label">Recent Research</div>
-                <ul class="research-list">
-                    <li>Multimodal Interaction</li>
-                    <li>Affective Computing</li>
-                    <li>Generative UI</li>
-                </ul>
+                <div class="research-list">
+                    <a href="research_hub.html" class="research-item">Multimodal Interaction</a>
+                    <span class="research-item">Affective Computing</span>
+                    <span class="research-item">Generative UI</span>
+                </div>
             </div>
 
             <!-- Bottom Right Card -->
