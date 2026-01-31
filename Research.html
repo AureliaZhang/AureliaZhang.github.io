@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurelia - Research Dashboard</title>
+    <!-- 保持一致的字体引入 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. CORE DNA (移植自 Index.html)
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-cyan: #00F0FF;
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: rgba(255, 255, 255, 0.9);
+            --text-muted: rgba(255, 255, 255, 0.6);
+        }
+
+        body {
+            background: linear-gradient(to bottom, #050A14, #0B1021);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            /* 强制锁定视口高度 */
+            overflow: hidden;
+            /* 禁止 Body 滚动，只允许内部容器滚动 */
+            color: var(--text-main);
+            display: flex;
+            /* 开启左右布局 */
+        }
+
+        /* 噪点纹理 - 保持一致 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* 粒子画布 - 保持一致 */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* =========================================
+           2. SIDEBAR (左侧控制台)
+           ========================================= */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.2);
+            /*稍微深一点，区分层级 */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-right: 1px solid var(--glass-border);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .profile-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 60px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .user-info h3 {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .user-info span {
+            font-size: 12px;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            transform: translateX(4px);
+        }
+
+        /* 激活状态 - 炫技点 */
+        .nav-link.active {
+            background: rgba(0, 240, 255, 0.08);
+            border-color: rgba(0, 240, 255, 0.2);
+            color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .back-home {
+            margin-top: auto;
+            padding: 14px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .back-home:hover {
+            opacity: 1;
+            color: var(--neon-cyan);
+        }
+
+        /* =========================================
+           3. SCROLL SNAP CONTENT (右侧滚动区)
+           ========================================= */
+        .dashboard-container {
+            flex-grow: 1;
+            height: 100vh;
+            overflow-y: scroll;
+            /* 允许纵向滚动 */
+            scroll-snap-type: y mandatory;
+            /* 🔥 CSS Scroll Snap 核心 */
+            scroll-behavior: smooth;
+            padding: 0;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* 隐藏滚动条 */
+        .dashboard-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .dashboard-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* 每一页的大容器 */
+        .snap-section {
+            height: 100vh;
+            /* 必须满屏 */
+            width: 100%;
+            scroll-snap-align: start;
+            /* 滚动吸附点 */
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* 内容垂直居中 */
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        /* =========================================
+           4. GRID SYSTEM (复用 Bento Grid 风格)
+           ========================================= */
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .shoutout-title {
+            font-family: 'Parisienne', cursive;
+            font-size: 32px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 220px 1fr;
+            /* 上面一行固定，下面自适应 */
+            gap: 20px;
+            height: 75vh;
+            /* 占据视口大约 75% 的空间 */
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* 卡片风格 - 100% 继承 index.html 的 .bento-card */
+        .cyber-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .cyber-card:hover::before {
+            opacity: 1;
+        }
+
+        .cyber-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-label {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .card-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* 大卡片 */
+        .big-card {
+            grid-column: 1 / -1;
+            /* 跨满3列 */
+            background: rgba(0, 0, 0, 0.3);
+            /* 深一点 */
+            align-items: flex-start;
+            text-align: left;
+            padding: 40px;
+        }
+
+        .big-card-title {
+            font-size: 48px;
+            color: rgba(255, 255, 255, 0.1);
+            font-weight: 800;
+            position: absolute;
+            right: 30px;
+            bottom: 10px;
+            z-index: 0;
+        }
+
+        /* =========================================
+   5. PROJECT 01 SPECIAL LAYOUTS (新增布局)
+   ========================================= */
+
+        /* 通用：图片容器 */
+        .img-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 保证图片填满且不变形 */
+            opacity: 0.8;
+            transition: all 0.5s ease;
+        }
+
+        .img-container:hover img {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        /* 布局 A: 左右分栏 (Intro) */
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            /* 左边文字窄，右边图宽 */
+            gap: 20px;
+            height: 70vh;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        /* 布局 B: 四宫格 (Maps) */
+        .quad-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 15px;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* 布局 C: 全屏大卡片 (Network, Architecture) */
+        .full-card {
+            width: 100%;
+            height: 75vh;
+            max-width: 1300px;
+            padding: 0;
+            /* 图片贴边 */
+        }
+
+        /* 布局 D: 结论页 (Conclusion) */
+        .overlay-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-text-box {
+            position: absolute;
+            z-index: 10;
+            background: rgba(5, 11, 20, 0.85);
+            /* 深色背景遮挡 */
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+            padding: 40px 60px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            max-width: 600px;
+            text-align: left;
+        }
+
+        /* 小组件：GitHub 按钮 */
+        .github-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: #000;
+            border: 1px solid var(--text-muted);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 20;
+            transition: all 0.3s ease;
+        }
+
+        .github-btn:hover {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 240, 255, 0.1);
+        }
+
+        /* =========================================
+   PROJECT 02 SPECIAL STYLES
+   ========================================= */
+
+        /* 工程图专用：保证图片完整显示，不裁切，背景设为白色或深色均可 */
+        .tech-drawing-container {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            /* 因为你的图是白底的，这里设为白色融合 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .tech-drawing-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* 🔥 关键：保持原比例，展示全部细节 */
+            transition: transform 0.5s ease;
+        }
+
+        .tech-drawing-container:hover img {
+            transform: scale(1.05);
+            /* 悬停时稍微放大看细节 */
+        }
+
+        /* 算法流程图专用：深色背景 + 居中 */
+        .algo-container {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .algo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.2));
+            /* 加点发光 */
+        }
+
+        /* =========================================
+   FINAL CHAPTER: TABLE & CONTACT
+   ========================================= */
+
+        /* 布局：左窄右宽 (1:2) */
+        .ui-dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            height: 70vh;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* UI 面板通用样式 */
+        .ui-panel {
+            background: rgba(20, 25, 40, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ui-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* 左侧：警告消息列表 */
+        .alert-list {
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .alert-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--neon-cyan);
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .alert-item.warning {
+            border-color: #ffcc00;
+        }
+
+        .alert-item.error {
+            border-color: #ff0055;
+        }
+
+        /* 右侧：媒体表格列表 */
+        .table-row {
+            display: grid;
+            grid-template-columns: 60px 1.5fr 1fr 1fr;
+            /* 图 | 描述 | 时间 | 按钮 */
+            gap: 15px;
+            padding: 15px 20px;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        .table-row:hover {
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .mini-thumb {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: #333;
+            object-fit: cover;
+        }
+
+        .table-text h4 {
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .table-text p {
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--neon-cyan);
+            border-radius: 4px;
+            border: none;
+            font-size: 11px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            background: var(--neon-cyan);
+            color: #000;
+        }
+
+        /* 最终页：居中感谢卡 */
+        .closing-card {
+            background: rgba(10, 10, 15, 0.9);
+            border-top: 1px solid var(--neon-cyan);
+            border-bottom: 1px solid var(--neon-cyan);
+            width: 100%;
+            max-width: 900px;
+            padding: 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .contact-link {
+            display: inline-block;
+            margin-top: 30px;
+            font-size: 20px;
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px solid var(--neon-cyan);
+            padding-bottom: 5px;
+            transition: all 0.3s;
+        }
+
+        .contact-link:hover {
+            color: var(--neon-cyan);
+            letter-spacing: 1px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .ui-dashboard-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .table-row {
+                grid-template-columns: 50px 1fr;
+                gap: 10px;
+            }
+
+            /* 手机上隐藏时间和按钮列，只留图和字 */
+            .table-row>div:nth-child(3),
+            .table-row>div:nth-child(4) {
+                display: none;
+            }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+        <div class="profile-area">
+            <div class="avatar">A.</div>
+            <div class="user-info">
+                <h3>Aurelia</h3>
+                <span>Smartech OS</span>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <!-- 锚点链接，点击会让右侧滚动到对应 ID -->
+            <a href="#page1" class="nav-link active" id="nav-page1">
+                <span>📁</span> My CV
+            </a>
+            <!-- 在 nav-menu 里修改 -->
+            <a href="#p01-intro" class="nav-link">
+                <span>📂</span> Project 01
+                <!-- 更新 nav-menu -->
+                <a href="#p02-intro" class="nav-link">
+                    <span>🏙️</span> Project 02
+                    <a href="#p03-intro" class="nav-link">
+                        <span>🍶</span> Project 03
+                    </a>
+                    <!-- nav-menu 更新 -->
+                    <a href="#other-works" class="nav-link">
+                        <span>📂</span> Other Works
+                    </a>
+
+        </nav>
+
+        <a href="index.html" class="back-home">
+            ← Back to Portal
+        </a>
+    </aside>
+
+    <!-- RIGHT SCROLL CONTAINER -->
+    <main class="dashboard-container" id="mainContainer">
+
+        <!-- PAGE 1: Basic Info -->
+        <section id="page1" class="snap-section">
+            <div class="page-header">
+                <h2 class="shoutout-title">Digital Identity</h2>
+                <span class="section-desc">01 // Profile Overview</span>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Row 1 -->
+                <div class="cyber-card">
+                    <div class="card-label">Contact</div>
+                    <div class="card-sub">encrypted channel</div>
+                </div>
+                <div class="cyber-card">
+                    <div class="card-label">Education</div>
+                    <div class="card-sub">data upload</div>
+                </div>
+                <div class="cyber-card">
+                    <div class="card-label">Skills</div>
+                    <div class="card-sub">neural upgrades</div>
+                </div>
+
+                <!-- Row 2 (Big Card) -->
+                <div class="cyber-card big-card">
+                    <h3 style="z-index: 1; font-size: 24px; color: var(--neon-cyan);">RP // Research Project</h3>
+                    <p
+                        style="z-index: 1; color: var(--text-muted); max-width: 600px; margin-top: 15px; line-height: 1.6;">
+                        Current research focuses on Human-Computer Symbiosis. Accessing secure database... <br>
+                        Displaying top-tier project featuring multimodal interaction patterns.
+                    </p>
+                    <div class="big-card-title">RESEARCH</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: Achievements -->
+        <!-- ==============================================
+     PROJECT 01: SYNESTHETIC (5个连续页面)
+     ============================================== -->
+
+        <!-- 1. Intro Page (标题 + 概念图) -->
+        <section id="p01-intro" class="snap-section">
+            <div class="page-header">
+                <h2 class="shoutout-title">Synesthetic</h2>
+                <span class="section-desc">Dounan Flower Market // SaaS Product</span>
+            </div>
+
+            <div class="split-grid">
+                <!-- 左侧文字 -->
+                <div class="cyber-card" style="align-items: flex-start; text-align: left; justify-content: flex-start;">
+                    <div style="margin-bottom: auto;">
+                        <h3 style="font-size: 28px; color: #fff; margin-bottom: 20px; line-height: 1.2;">
+                            Product designer<br>
+                            <span style="color: var(--text-muted);">specialized in building SaaS product</span>
+                        </h3>
+                    </div>
+                    <div>
+                        <p style="color: var(--text-muted); line-height: 1.6;">
+                            <span style="color: var(--neon-cyan);">●</span> I'm John (Aurelia for now), a
+                            multidisciplinary Product Designer based in the Bay Area...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 右侧图 -->
+                <div class="cyber-card" style="padding: 10px;">
+                    <div class="img-container">
+                        <!-- 🔴 请替换这里: 放入你的概念图 -->
+                        <img src="https://placehold.co/800x600/141928/00F0FF?text=Concept+Image" alt="Concept">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Maps Page (四宫格) -->
+        <section class="snap-section">
+            <div class="page-header">
+                <span class="section-desc">Data Visualization // Mapping</span>
+            </div>
+            <div class="cyber-card full-card">
+                <div class="quad-grid">
+                    <!-- 🔴 请替换这里: 4张地图 -->
+                    <div class="img-container"><img src="https://placehold.co/600x400/101520/FFF?text=Map+Analysis+1"
+                            alt="Map1"></div>
+                    <div class="img-container"><img src="https://placehold.co/600x400/101520/FFF?text=Map+Analysis+2"
+                            alt="Map2"></div>
+                    <div class="img-container"><img src="https://placehold.co/600x400/101520/FFF?text=Map+Analysis+3"
+                            alt="Map3"></div>
+                    <div class="img-container"><img src="https://placehold.co/600x400/101520/FFF?text=Map+Analysis+4"
+                            alt="Map4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Network Page (超大网络图) -->
+        <section class="snap-section">
+            <div class="page-header">
+                <span class="section-desc">Network Analysis // Detroit-Windsor</span>
+            </div>
+            <div class="cyber-card full-card">
+                <div class="img-container">
+                    <!-- 🔴 请替换这里: 网络图 -->
+                    <img src="https://placehold.co/1200x800/101520/bc13fe?text=Actor-Network+Diagram"
+                        alt="Network Diagram">
+
+                    <!-- GitHub 链接按钮 -->
+                    <a href="https://github.com/your-repo" target="_blank" class="github-btn">
+                        <svg height="16" width="16" viewBox="0 0 16 16" fill="white">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0016 8c0-4.42-3.58-8-8-8z">
+                            </path>
+                        </svg>
+                        View Code on GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Architecture Page (建筑轴测图) -->
+        <section class="snap-section">
+            <div class="page-header">
+                <span class="section-desc">Axonometric View // Infrastructure</span>
+            </div>
+            <div class="cyber-card full-card">
+                <div class="img-container">
+                    <!-- 🔴 请替换这里: 建筑图 -->
+                    <img src="https://placehold.co/1200x800/101520/00F0FF?text=Axonometric+Architecture"
+                        alt="Architecture">
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Conclusion Page (背景图+文字覆盖) -->
+        <section class="snap-section">
+            <div class="overlay-container">
+                <!-- 背景大图 -->
+                <div style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:0; opacity: 0.6;">
+                    <!-- 🔴 请替换这里: 你的那张书本背景图 -->
+                    <img src="https://placehold.co/1920x1080/050b14/55?text=Background+Photo"
+                        style="width:100%; height:100%; object-fit: cover; filter: grayscale(80%);" alt="Conclusion BG">
+                </div>
+
+                <!-- 悬浮文字框 -->
+                <div class="floating-text-box">
+                    <h3
+                        style="color: var(--neon-cyan); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;">
+                        Conclusion</h3>
+                    <p style="color: #fff; font-size: 18px; line-height: 1.8; font-style: italic;">
+                        "Unlike tracings, which propagate redundancies... they inaugurate new grounds upon the hidden
+                        traces of a living context."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================================
+     PROJECT 02: FUBAO ECO-VILLAGE (4个页面)
+     ============================================== -->
+
+        <!-- 1. Intro Page (Slogan + 概念大图) -->
+        <section id="p02-intro" class="snap-section">
+            <div class="page-header">
+                <h2 class="shoutout-title">Fubao Eco-Village</h2>
+                <span class="section-desc">Data Driven Urbanism // Ecological Rights</span>
+            </div>
+
+            <div class="overlay-container">
+                <!-- 背景大图 -->
+                <div style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:0;">
+                    <!-- 🔴 请替换这里: 你的第一张复杂的生态图 -->
+                    <img src="https://placehold.co/1920x1080/2a2a2a/FFF?text=Eco-Village+Concept+Art"
+                        style="width:100%; height:100%; object-fit: cover;" alt="Eco Intro">
+                </div>
+
+                <!-- 悬浮半透明黑框 (HUD) -->
+                <div class="floating-text-box"
+                    style="background: rgba(0,0,0,0.7); max-width: 800px; text-align: center;">
+                    <h3 style="color: #fff; font-size: 32px; margin-bottom: 10px; font-weight: 300;">
+                        Ecological Rights as <span style="color: var(--neon-cyan); font-weight: 700;">VIP?</span>
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 16px; letter-spacing: 1px;">
+                        Product designer specialized in building SaaS product.<br>
+                        Redefining urban hierarchy through biological algorithms.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. The Algorithm (算法流程图) -->
+        <section class="snap-section">
+            <div class="page-header">
+                <span class="section-desc">The Logic // Algorithm Flow</span>
+            </div>
+            <div class="cyber-card full-card">
+                <div class="algo-container">
+                    <!-- 🔴 请替换这里: 你的那张“算法流程图” -->
+                    <img src="https://placehold.co/1200x600/101520/00F0FF?text=The+Algorithm+Flowchart" alt="Algorithm">
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Technical Section (剖面图) -->
+        <section class="snap-section">
+            <div class="page-header">
+                <span class="section-desc">Infrastructure // Conduit Components</span>
+            </div>
+            <div class="cyber-card full-card" style="padding: 0; background: #fff;">
+                <!-- 使用我们刚写的 tech-drawing-container -->
+                <div class="tech-drawing-container">
+                    <!-- 🔴 请替换这里: 你的那张长长的白色剖面图 -->
+                    <img src="https://placehold.co/1600x600/FFF/000?text=Technical+Cross+Section+Drawing"
+                        alt="Cross Section">
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Urban Analysis (四宫格：城市/郊区/数据/工业) -->
+        <section class="snap-section">
+            <div class="page-header">
+                <span class="section-desc">Context Analysis // Population Flow</span>
+            </div>
+            <div class="cyber-card full-card">
+                <div class="quad-grid">
+                    <!-- 🔴 请替换这里: 4张分析图 -->
+                    <div class="img-container">
+                        <img src="https://placehold.co/600x400/333/FFF?text=Dense+City" alt="City">
+                    </div>
+                    <div class="img-container">
+                        <img src="https://placehold.co/600x400/444/FFF?text=Sprawl+Suburb" alt="Suburb">
+                    </div>
+                    <!-- 左下角是那个气泡数据图 -->
+                    <div class="img-container" style="background: #fff;"> <!-- 如果气泡图是白底，加个白背景 -->
+                        <img src="https://placehold.co/600x400/EEE/333?text=Population+Bubble+Chart" alt="Bubble Chart"
+                            style="object-fit: contain;">
+                    </div>
+                    <div class="img-container">
+                        <img src="https://placehold.co/600x400/555/FFF?text=Industrial+Zone" alt="Industrial">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==============================================
+     PROJECT 03: SOCIAL (LUZHOU LIQUOR TOWN)
+     ============================================== -->
+
+        <!-- 1. Intro Page (黑白大图 + 矛盾冲突点) -->
+        <section id="p03-intro" class="snap-section">
+            <div class="page-header">
+                <h2 class="shoutout-title">Social Focus</h2>
+                <span class="section-desc">Luzhou Liquor Town // Cultural Conflict</span>
+            </div>
+
+            <div class="overlay-container">
+                <!-- 背景大图：建议用黑白滤镜增强纪实感 -->
+                <div style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:0;">
+                    <!-- 🔴 请替换这里: 那张雪地卡车的黑白照片 -->
+                    <img src="https://placehold.co/1920x1080/1a1a1a/888?text=Trucks+in+Snow+BW"
+                        style="width:100%; height:100%; object-fit: cover; filter: grayscale(100%) contrast(1.2);"
+                        alt="Luzhou Intro">
+                </div>
+
+                <!-- 悬浮文字框 -->
+                <div class="floating-text-box" style="background: rgba(20, 20, 20, 0.9); border-color: #fff;">
+                    <h3 style="color: #fff; font-size: 28px; margin-bottom: 15px;">
+                        Fireworks of Life & <br>
+                        <span style="color: var(--neon-cyan);">Urban Conflicts</span>
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 16px; line-height: 1.6;">
+                        "充满烟火气的酒镇照片 + 矛盾冲突点"<br>
+                        Documenting the tension between traditional brewing culture and modern industrial logistics.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Architecture (爆炸轴测图) -->
+        <section class="snap-section">
+            <div class="page-header">
+                <span class="section-desc">Spatial Strategy // Exploded Axonometric</span>
+            </div>
+            <div class="cyber-card full-card">
+                <div class="img-container" style="background: #2a2a2a;"> <!-- 深灰色背景适配那张深色图 -->
+                    <!-- 🔴 请替换这里: 那个很复杂的深灰色建筑分解图 -->
+                    <img src="https://placehold.co/1600x900/333/777?text=Exploded+Axonometric+View" alt="Exploded View">
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Maps Analysis (四宫格) -->
+        <section class="snap-section">
+            <div class="page-header">
+                <span class="section-desc">Territorial Analysis // Mapping</span>
+            </div>
+            <div class="cyber-card full-card">
+                <div class="quad-grid">
+                    <!-- 🔴 请替换这里: 4张分析地图 -->
+                    <div class="img-container" style="background: #fff;"><img
+                            src="https://placehold.co/600x400/FFF/000?text=Map+Analysis+A" alt="Map A"></div>
+                    <div class="img-container" style="background: #fff;"><img
+                            src="https://placehold.co/600x400/FFF/000?text=Map+Analysis+B" alt="Map B"></div>
+                    <div class="img-container" style="background: #fff;"><img
+                            src="https://placehold.co/600x400/FFF/000?text=Map+Analysis+C" alt="Map C"></div>
+                    <div class="img-container" style="background: #fff;"><img
+                            src="https://placehold.co/600x400/FFF/000?text=Map+Analysis+D" alt="Map D"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Process (工作坊/模型制作) -->
+        <section class="snap-section">
+            <div class="page-header">
+                <span class="section-desc">Design Process // Workshop & Models</span>
+            </div>
+            <div class="cyber-card full-card">
+                <div class="img-container">
+                    <!-- 🔴 请替换这里: 众人围坐讨论的照片 -->
+                    <img src="https://placehold.co/1600x900/444/AAA?text=Workshop+Process+Photo" alt="Process">
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================================
+     PART 4: OTHER WORKS (PROJECT TABLE)
+     ============================================== -->
+        <section id="other-works" class="snap-section">
+            <div class="page-header">
+                <h2 class="shoutout-title">Extensions</h2>
+                <span class="section-desc">Archive // Miscellaneous Works</span>
+            </div>
+
+            <!-- 模拟 Dashboard UI -->
+            <div class="ui-dashboard-grid">
+
+                <!-- 左侧面板：Alert Messages (模拟系统消息) -->
+                <div class="ui-panel">
+                    <div class="ui-header">
+                        <span>System Log</span>
+                        <span>↺</span>
+                    </div>
+                    <div class="alert-list">
+                        <div class="alert-item">
+                            <strong>Success!</strong><br> Portfolio update complete. All modules loaded efficiently.
+                        </div>
+                        <div class="alert-item warning">
+                            <strong>WIP Alert</strong><br> "Generative AI" module is currently under training.
+                        </div>
+                        <div class="alert-item">
+                            <strong>Info</strong><br> You have 3 unread messages from collaborators.
+                        </div>
+                        <div class="alert-item error">
+                            <strong>404 Error</strong><br> Limits of creativity not found.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧面板：Media Table (其他作品列表) -->
+                <div class="ui-panel">
+                    <div class="ui-header">
+                        <span>Project Directory</span>
+                        <span>+</span>
+                    </div>
+                    <div style="overflow-y: auto;">
+                        <!-- Item 1 -->
+                        <div class="table-row">
+                            <img src="https://placehold.co/100x100/333/FFF?text=UI" class="mini-thumb" alt="thumb">
+                            <div class="table-text">
+                                <h4>Gravity UI Kit</h4>
+                                <p>A classic approach to business cards</p>
+                            </div>
+                            <div style="font-size: 11px; color: #888;">26 Feb, 2024</div>
+                            <a href="#" class="action-btn">View</a>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="table-row">
+                            <img src="https://placehold.co/100x100/444/FFF?text=Icon" class="mini-thumb" alt="thumb">
+                            <div class="table-text">
+                                <h4>3D Foil Sticker</h4>
+                                <p>Shiny PSD foil stickers set</p>
+                            </div>
+                            <div style="font-size: 11px; color: #888;">20 Feb, 2024</div>
+                            <a href="#" class="action-btn">View</a>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="table-row">
+                            <img src="https://placehold.co/100x100/555/FFF?text=Logo" class="mini-thumb" alt="thumb">
+                            <div class="table-text">
+                                <h4>Wood Burning Logo</h4>
+                                <p>Pyrogravure art style mockup</p>
+                            </div>
+                            <div style="font-size: 11px; color: #888;">19 Jan, 2024</div>
+                            <a href="#" class="action-btn">View</a>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div class="table-row">
+                            <img src="https://placehold.co/100x100/222/FFF?text=Art" class="mini-thumb" alt="thumb">
+                            <div class="table-text">
+                                <h4>Experimental Art</h4>
+                                <p>Generative processing sketches</p>
+                            </div>
+                            <div style="font-size: 11px; color: #888;">10 Jan, 2024</div>
+                            <a href="#" class="action-btn">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================================
+     FINAL: CONTACT (CLOSING)
+     ============================================== -->
+        <section class="snap-section" style="justify-content: center; align-items: center;">
+
+            <div class="closing-card">
+                <!-- 装饰线条 -->
+                <div
+                    style="position: absolute; top: 10px; width: 100%; height: 1px; background: rgba(0,240,255,0.2); left:0;">
+                </div>
+                <div
+                    style="position: absolute; bottom: 10px; width: 100%; height: 1px; background: rgba(0,240,255,0.2); left:0;">
+                </div>
+
+                <h2 style="font-size: 48px; font-weight: 300; margin-bottom: 10px; color: #fff;">
+                    Thank you for <span style="font-family: 'Parisienne', cursive; color: var(--neon-cyan);">your
+                        time</span>.
+                </h2>
+
+                <p style="color: var(--text-muted); margin-top: 20px;">
+                    Open to collaborations and research opportunities.
+                </p>
+
+                <!-- 这里的 href 换成你的邮箱和链接 -->
+                <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                    <a href="mailto:aurelia@example.com" class="contact-link">
+                        hello@aurelia.com
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" class="contact-link"
+                        style="font-size: 16px; border:none; opacity: 0.7;">
+                        Connect on LinkedIn ↗
+                    </a>
+                </div>
+
+                <div style="margin-top: 60px; font-size: 12px; color: #555;">
+                    SYSTEM STATUS: OFFLINE // SESSION ENDED
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Javascript Area -->
+    <script>
+        // ==========================================
+        // PART 1: DNA REPLICATION - PARTICLE CANVAS
+        // (Copying this exact script from your index.html)
+        // ==========================================
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        const particleCount = 45; // Same count
+        const connectionDistance = 180;
+        let mainSignal = null;
+        let signalCooldown = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor(id) {
+                this.id = id; this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.3 * 0.3; this.vy = (Math.random() - 0.5) * 0.3 * 0.3;
+                this.baseRadius = 2; this.radius = this.baseRadius;
+                this.phase = Math.random() * Math.PI * 2; this.speed = Math.random() * 0.001 + 0.0005;
+                this.activation = 0; this.decayRate = 0.015;
+            }
+            update(mouseX, mouseY) {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+                this.vx *= 0.99; this.vy *= 0.99;
+                const breath = Math.sin(Date.now() * this.speed + this.phase);
+                this.radius = this.baseRadius + (breath + 1) * 2.5;
+                if (this.activation > 0) { this.activation -= this.decayRate; this.activation = Math.max(0, this.activation); }
+            }
+            activate() { this.activation = 1; }
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                let r = 150, g = 150, b = 150; let alpha = 0.5; let glowSize = this.radius * 3;
+                if (this.activation > 0) {
+                    const mix = this.activation;
+                    r = 150 + (255 - 150) * mix; g = 150 + (255 - 150) * mix; b = 150 + (255 - 150) * mix;
+                    alpha = 0.5 + 0.5 * mix; glowSize = this.radius * (3 + 2 * mix);
+                }
+                const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, glowSize);
+                gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${alpha})`);
+                gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+                ctx.fillStyle = gradient; ctx.fill();
+            }
+        }
+
+        // ... (Skipping full signal Logic for brevity, but it's essential. 
+        // I will keep the visual logic simple here to ensure it works first try)
+        // Since you have the full logic in Index, we can simplify for Dashboard 
+        // OR paste the whole Signal class if you want the moving lines.
+        // Let's assume standard particle float for now to save space, 
+        // BUT I will add the connections drawing.
+
+        function initParticles() { particles = []; for (let i = 0; i < particleCount; i++) { particles.push(new Particle(i)); } }
+
+        function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < connectionDistance) {
+                        const alpha = (1 - distance / connectionDistance) * 0.15;
+                        ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                        ctx.lineWidth = 1.2; ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            drawConnections();
+            requestAnimationFrame(animate);
+        }
+        resize(); initParticles(); animate();
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+
+
+        // ==========================================
+        // PART 2: SCROLL SPY (Dashboard Special)
+        // ==========================================
+        const mainContainer = document.getElementById('mainContainer');
+        const sections = document.querySelectorAll('.snap-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // 监听滚动，判断当前是哪一页
+        mainContainer.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                // 当 section 距离顶部距离 < 视口高度的 1/3 时，认为进入了该 section
+                if (mainContainer.scrollTop >= (sectionTop - section.clientHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach((link) => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
