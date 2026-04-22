@@ -2589,8 +2589,10 @@
                 resultsContainer.innerHTML = ''; // 清空加载提示
 
                 // 开启终极透视眼：如果 SerpBase 返回了任何错误（比如密钥失效、额度用完），直接在页面上显示出来！
-                if (!data.organic_results || data.organic_results.length === 0) {
+                // 开启终极透视眼：如果 SerpBase 返回了任何错误，直接在页面上显示出来！
+                if (!data.organic || data.organic.length === 0) {
                     console.log("Server response:", data);
+                    // ...后面的不用动...
                     resultsContainer.innerHTML = `<div style="color: #ffcc00; font-size: 12px; text-align: left; padding: 15px; background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.3); border-radius: 8px; word-break: break-all; font-family: 'Space Mono', monospace;">
                         <strong>📡 截获异常信号，请排查:</strong><br><br>
                         ${JSON.stringify(data)}
@@ -2599,7 +2601,8 @@
                 }
 
                 // 提取前 5 条结果
-                const results = data.organic_results.slice(0, 5);
+                // 提取前 5 条结果
+                const results = data.organic.slice(0, 5);
 
                 // 渲染极简发光卡片
                 results.forEach(item => {
