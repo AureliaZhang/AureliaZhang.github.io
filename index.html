@@ -2554,7 +2554,7 @@
         })();
     </script>
     ```html
-    <script>
+   <script>
         const searchInput = document.getElementById('academicSearchInput');
         const searchBtn = document.getElementById('searchBtn');
         const resultsContainer = document.getElementById('searchResults');
@@ -2566,46 +2566,40 @@
             // 显示科技感的 Loading 提示
             resultsContainer.innerHTML = '<div style="color: rgba(0, 240, 255, 0.6); font-size: 14px; text-align: center; padding: 20px; font-family: \'Space Mono\', monospace;">Initiating Neural Search Protocol... ⏳</div>';
 
-            // ⚠️ 填入你的 SerpBase 密钥
-            const API_KEY = 'sk-hidden-for-security'; 
+            // 走咱们的 Nginx 专属通道
+            const url = '/api/google/search';
             
-            // 官方正确的门牌号
-            const url = '/api/google/search'; // 修改后的代码
-            
-            // 按照官方文档打包你的请求
             const requestOptions = {
-                method: 'POST',
+                method: 'POST', // 必须是 POST
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-API-Key': API_KEY
+                    'Content-Type': 'application/json'
+                    // 你的 API 密钥已经被 Nginx 保护起来了，这里不需要写！
                 },
                 body: JSON.stringify({
                     q: query,
-                    hl: "en", // 英文结果
-                    gl: "us", // 美国地区（适合申博文献）
+                    hl: "en", 
+                    gl: "us", 
                     page: 1
                 })
             };
 
             try {
-                // 直接与 SerpBase 官方主服务器建立连接
                 const response = await fetch(url, requestOptions);
                 const data = await response.json();
                 resultsContainer.innerHTML = ''; // 清空加载提示
 
-                // 开启透视眼：排错逻辑
-                if (data.detail) {
-                    resultsContainer.innerHTML = `<div style="color: #ffcc00; font-size: 12px; padding: 15px; background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.3); border-radius: 8px;">服务器报错: ${data.detail}</div>`;
+                // 开启终极透视眼：如果 SerpBase 返回了任何错误（比如密钥失效、额度用完），直接在页面上显示出来！
+                if (!data.organic_results || data.organic_results.length === 0) {
+                    console.log("Server response:", data);
+                    resultsContainer.innerHTML = `<div style="color: #ffcc00; font-size: 12px; text-align: left; padding: 15px; background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.3); border-radius: 8px; word-break: break-all; font-family: 'Space Mono', monospace;">
+                        <strong>📡 截获异常信号，请排查:</strong><br><br>
+                        ${JSON.stringify(data)}
+                    </div>`;
                     return;
                 }
 
-                // 提取自然搜索结果
-                const results = data.organic_results ? data.organic_results.slice(0, 5) : [];
-
-                if (results.length === 0) {
-                    resultsContainer.innerHTML = '<div style="color: rgba(255, 255, 255, 0.5); font-size: 14px; text-align: center;">No signals found in the database.</div>';
-                    return;
-                }
+                // 提取前 5 条结果
+                const results = data.organic_results.slice(0, 5);
 
                 // 渲染极简发光卡片
                 results.forEach(item => {
@@ -2614,7 +2608,7 @@
                     card.innerHTML = `
                         <h4 style="color: #fff; font-size: 15px; margin-bottom: 8px; font-weight: 600;">${item.title || 'Unknown Citation'}</h4>
                         <p style="color: rgba(255, 255, 255, 0.55); font-size: 12px; line-height: 1.6; margin-bottom: 12px;">${item.snippet || 'No abstract available.'}</p>
-                        <a href="${item.link}" target="_blank" style="color: #00F0FF; font-size: 11px; text-decoration: none; text-transform: uppercase; font-family: \'Space Mono\', monospace; letter-spacing: 1px;">Access Database ↗</a>
+                        <a href="${item.link}" target="_blank" style="color: #00F0FF; font-size: 11px; text-decoration: none; text-transform: uppercase; font-family: 'Space Mono', monospace; letter-spacing: 1px;">Access Database ↗</a>
                     `;
                     
                     card.onmouseover = () => { 
@@ -2635,7 +2629,8 @@
                 resultsContainer.innerHTML = `<div style="color: #ff0055; font-size: 14px; text-align: center;">Connection Error: ${error.message}</div>`;
             }
         }
-        // 监听回车键与点击动作
+
+        // 绑定搜索动作
         searchBtn.addEventListener('click', performSearch);
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') performSearch();
