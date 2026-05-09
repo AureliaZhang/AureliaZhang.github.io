@@ -1642,6 +1642,309 @@
             gap: 40px;
             width: 100%;
         }
+
+        .games-showcase {
+            width: min(1120px, 100%);
+            min-height: 68vh;
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+            grid-template-rows: 1fr auto;
+            gap: 18px;
+        }
+
+        .game-feature-card,
+        .game-mini-card,
+        .games-note-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(0, 240, 255, 0.025));
+            border-radius: 28px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+        }
+
+        .game-feature-card {
+            grid-row: 1 / 3;
+            padding: clamp(28px, 4vw, 54px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100%;
+        }
+
+        .game-feature-card::before {
+            content: '';
+            position: absolute;
+            inset: -20% -10% auto auto;
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.22), transparent 64%);
+            filter: blur(6px);
+        }
+
+        .game-feature-card::after {
+            content: 'PLAY';
+            position: absolute;
+            right: clamp(18px, 3vw, 42px);
+            bottom: clamp(12px, 2vw, 24px);
+            color: rgba(255, 255, 255, 0.035);
+            font-size: clamp(88px, 14vw, 180px);
+            font-weight: 900;
+            letter-spacing: -0.08em;
+            line-height: 0.8;
+        }
+
+        .game-eyebrow {
+            position: relative;
+            z-index: 1;
+            color: rgba(0, 240, 255, 0.92);
+            font-size: 12px;
+            letter-spacing: 2.6px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .game-feature-title {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            color: #fff;
+            font-size: clamp(34px, 5vw, 68px);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            margin-bottom: 22px;
+        }
+
+        .game-feature-copy {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            color: rgba(255, 255, 255, 0.64);
+            font-size: 15px;
+            line-height: 1.75;
+        }
+
+        .game-tags {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 32px;
+        }
+
+        .game-tag {
+            padding: 8px 14px;
+            border: 1px solid rgba(0, 240, 255, 0.18);
+            border-radius: 999px;
+            color: rgba(255, 255, 255, 0.72);
+            background: rgba(0, 240, 255, 0.06);
+            font-size: 12px;
+            letter-spacing: 0.6px;
+        }
+
+        .game-actions {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-top: 34px;
+        }
+
+        .game-mini-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .game-mini-card {
+            padding: 22px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-mini-card strong {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .game-mini-card p {
+            color: rgba(255, 255, 255, 0.56);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .game-mini-status {
+            width: fit-content;
+            margin-top: 16px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(0, 240, 255, 0.75);
+            font-size: 10px;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .games-note-card {
+            padding: 18px 20px;
+        }
+
+        .email-agent-grid {
+            width: min(1120px, 100%);
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+            gap: 18px;
+        }
+
+        .email-agent-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(0, 240, 255, 0.025));
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+            padding: clamp(24px, 3vw, 40px);
+        }
+
+        .email-agent-card::before {
+            content: '';
+            position: absolute;
+            inset: auto -90px -120px auto;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.18), transparent 68%);
+        }
+
+        .email-agent-kicker {
+            position: relative;
+            z-index: 1;
+            color: rgba(0, 240, 255, 0.92);
+            font-size: 12px;
+            letter-spacing: 2.4px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .email-agent-title {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            font-size: clamp(32px, 5vw, 60px);
+            line-height: 0.98;
+            letter-spacing: -0.04em;
+            margin-bottom: 20px;
+        }
+
+        .email-agent-copy,
+        .email-agent-list {
+            position: relative;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 15px;
+            line-height: 1.72;
+        }
+
+        .email-agent-list {
+            display: grid;
+            gap: 12px;
+            margin: 24px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .email-agent-list li {
+            padding: 12px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        .email-agent-control {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            gap: 14px;
+        }
+
+        .email-agent-control label {
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 12px;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .email-agent-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(0, 240, 255, 0.24);
+            border-radius: 14px;
+            outline: none;
+            background: rgba(5, 10, 20, 0.55);
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .email-agent-output {
+            min-height: 96px;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(5, 10, 20, 0.5);
+            color: rgba(255, 255, 255, 0.7);
+            font: 12px/1.7 'Space Mono', monospace;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 1024px) {
+            .email-agent-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .games-showcase {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                min-height: auto;
+            }
+
+            .game-feature-card {
+                grid-row: auto;
+            }
+        }
+
+        .local-server-note {
+            display: none;
+            border: 1px solid rgba(255, 200, 120, 0.28);
+            background: rgba(255, 200, 120, 0.08);
+            color: rgba(255, 244, 220, 0.78);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .local-server-note code {
+            color: rgba(0, 240, 255, 0.95);
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+        }
+
+        body.file-protocol .local-server-note {
+            display: block;
+        }
     </style>
 </head>
 
@@ -1675,8 +1978,11 @@
                 <a href="#hci-dashboard" class="nav-link" id="nav-hci-dashboard">
                     <span>🛰️</span> HCI Observatory
                 </a>
-                <a href="#ai-game" class="nav-link" id="nav-ai-game">
-                    <span>AI</span> Text Adventure
+                <a href="#email-agent" class="nav-link" id="nav-email-agent">
+                    <span>@</span> Email Agent
+                </a>
+                <a href="#games" class="nav-link" id="nav-games">
+                    <span>🎮</span> Casual Games
                 </a>
                 <a href="#research" class="nav-link" id="nav-research">
                     <span>🔬</span> My Research
@@ -1850,49 +2156,104 @@
                 </div>
             </section>
 
-            <!-- SECTION 4: AI TEXT ADVENTURE -->
-            <section id="ai-game" class="snap-section">
+            <!-- SECTION 4: EMAIL AGENT -->
+            <section id="email-agent" class="snap-section">
                 <div class="page-header">
-                    <h2 class="shoutout-title">破道·逆仙缘</h2>
-                    <span class="section-desc">AI Text Adventure // Interactive Story Engine</span>
+                    <h2 class="shoutout-title">Email Agent</h2>
+                    <span class="section-desc">ClawEmail Webhook // Personal Server Relay</span>
                 </div>
 
-                <div class="split-grid">
-                    <div class="cyber-card" style="align-items: flex-start; text-align: left; justify-content: space-between;">
+                <div class="email-agent-grid">
+                    <article class="email-agent-card">
+                        <div class="email-agent-kicker">Private Automation</div>
+                        <h3 class="email-agent-title">A small inbox bridge for Aurelia.</h3>
+                        <p class="email-agent-copy">
+                            The website can live on GitHub Pages, while the webhook backend runs on your own server behind Nginx.
+                            ClawEmail should send new-email events to the webhook URL below.
+                        </p>
+                        <ul class="email-agent-list">
+                            <li><strong>Static site:</strong> GitHub Pages only shows this entry and status controls.</li>
+                            <li><strong>Server:</strong> Node backend receives webhooks and drafts replies.</li>
+                            <li><strong>Nginx:</strong> Forwards public HTTPS traffic to <code>127.0.0.1:8787</code>.</li>
+                        </ul>
+                    </article>
+
+                    <article class="email-agent-card">
+                        <div class="email-agent-control">
+                            <label for="emailAgentBaseInput">Server API Base</label>
+                            <input id="emailAgentBaseInput" class="email-agent-input" type="url" value="http://aureliazhsy.com" spellcheck="false">
+                            <div class="email-agent-output" id="emailAgentOutput">
+                                Replace the API base with your domain, then click health check. Webhook endpoint: /api/webhook/clawemail
+                            </div>
+                            <div class="game-actions" style="margin-top: 4px;">
+                                <button type="button" id="emailAgentHealthBtn" class="github-btn" style="position: static; display: inline-flex;">Check Backend</button>
+                                <button type="button" id="emailAgentCopyBtn" class="action-btn" style="padding: 10px 16px; border-radius: 999px;">Copy Webhook URL</button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- SECTION 5: CASUAL GAMES -->
+            <section id="games" class="snap-section">
+                <div class="page-header">
+                    <h2 class="shoutout-title">Casual Games</h2>
+                    <span class="section-desc">Playful Experiments // Tiny Interactive Worlds</span>
+                </div>
+
+                <div class="games-showcase">
+                    <article class="game-feature-card">
                         <div>
-                            <div style="color: rgba(0, 240, 255, 0.95); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 18px;">Narrative Playground</div>
-                            <h3 style="font-size: 34px; color: #fff; margin-bottom: 20px; line-height: 1.15;">
-                                A web-based xianxia text adventure powered by configurable AI services.
-                            </h3>
-                            <p style="color: rgba(255, 255, 255, 0.62); line-height: 1.7; font-size: 15px; max-width: 620px;">
-                                This interactive fiction workspace runs as a static Vue build inside the personal site.
-                                It keeps the game UI isolated from the portfolio shell while preserving direct access from
-                                Aurelia's project navigation.
+                            <div class="game-eyebrow">Featured Game</div>
+                            <h3 class="game-feature-title">Immortal Heart</h3>
+                            <p class="game-feature-copy">
+                                A xianxia text adventure powered by configurable AI services. It opens as an isolated
+                                standalone game so the story interface can breathe outside the portfolio scroll system.
                             </p>
+                            <div class="game-tags">
+                                <span class="game-tag">AI Story</span>
+                                <span class="game-tag">Vue Build</span>
+                                <span class="game-tag">Text RPG</span>
+                                <span class="game-tag">Playable Now</span>
+                            </div>
                         </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;">
-                            <span class="action-btn" style="pointer-events: none;">Vue</span>
-                            <span class="action-btn" style="pointer-events: none;">Static Build</span>
-                            <span class="action-btn" style="pointer-events: none;">AI Config</span>
-                            <span class="action-btn" style="pointer-events: none;">Text RPG</span>
+                        <div>
+                            <div class="local-server-note games-note-card" role="status">
+                                Immortal Heart is a Vite/Vue module build and should be opened over local HTTP, not <code>file://</code>.
+                                From <code>Lia-Website</code>, run <code>python3 -m http.server 4173</code>, then open
+                                <code>http://127.0.0.1:4173/index.html#games</code>.
+                            </div>
+                            <div class="game-actions">
+                                <a href="./AI_Workspace/index.html" id="openGameLink" class="github-btn" style="position: static; display: inline-flex;" target="_blank" rel="noreferrer noopener">Play Immortal Heart</a>
+                                <a href="#projects" class="action-btn" style="padding: 10px 16px; border-radius: 999px;">Back to Projects</a>
+                            </div>
                         </div>
+                    </article>
+
+                    <div class="game-mini-list">
+                        <article class="game-mini-card">
+                            <div>
+                                <strong>Dream Garden</strong>
+                                <p>A future cozy idle garden for collecting moods, plants, and tiny daily rituals.</p>
+                            </div>
+                            <span class="game-mini-status">Concept Slot</span>
+                        </article>
+                        <article class="game-mini-card">
+                            <div>
+                                <strong>Signal Catcher</strong>
+                                <p>A quick reflex concept about catching glowing signals before they fade into the noise.</p>
+                            </div>
+                            <span class="game-mini-status">Coming Soon</span>
+                        </article>
                     </div>
 
-                    <div class="cyber-card" style="align-items: stretch; text-align: left; justify-content: flex-start; gap: 16px;">
-                        <div class="ui-header" style="border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
-                            <span>Game Workspace</span>
-                            <span>STATIC / LOCAL</span>
+                    <article class="game-mini-card">
+                        <div>
+                            <strong>More Playgrounds</strong>
+                            <p>Reserved space for future casual games, micro-interactions, and relaxing browser toys.</p>
                         </div>
-                        <div class="alert-list" style="padding: 0; display: grid; gap: 12px;">
-                            <div class="alert-item"><strong>Immortal Heart</strong><br>Open the standalone game interface in a separate page to avoid scroll and layout conflicts.</div>
-                            <div class="alert-item"><strong>Configurable AI</strong><br>The production build reads provider settings from the game UI instead of depending on the Vite dev proxy.</div>
-                            <div class="alert-item warning"><strong>Deployment Note</strong><br>If using remote AI endpoints, configure the game's model/API settings after opening the workspace.</div>
-                        </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto;">
-                            <a href="./AI_Workspace/index.html" class="github-btn" style="position: static; display: inline-flex;" target="_blank" rel="noreferrer noopener">Open Game</a>
-                            <a href="#projects" class="action-btn" style="padding: 10px 16px; border-radius: 999px;">Back to Projects</a>
-                        </div>
-                    </div>
+                        <span class="game-mini-status">Open Shelf</span>
+                    </article>
                 </div>
             </section>
 
@@ -2330,6 +2691,70 @@
 
     <!-- QUOTES INTEGRATION -->
     <script src="quotes.js"></script>
+
+    <script>
+        const EMAIL_AGENT_API_BASE = 'http://aureliazhsy.com';
+
+        function getEmailAgentBase() {
+            const input = document.getElementById('emailAgentBaseInput');
+            return (input?.value || EMAIL_AGENT_API_BASE).trim().replace(/\/$/, '');
+        }
+
+        function setEmailAgentOutput(message) {
+            const output = document.getElementById('emailAgentOutput');
+            if (output) output.textContent = message;
+        }
+
+        const emailAgentBaseInput = document.getElementById('emailAgentBaseInput');
+        if (emailAgentBaseInput) {
+            emailAgentBaseInput.value = EMAIL_AGENT_API_BASE;
+        }
+
+        const emailAgentHealthBtn = document.getElementById('emailAgentHealthBtn');
+        if (emailAgentHealthBtn) {
+            emailAgentHealthBtn.addEventListener('click', async () => {
+                const base = getEmailAgentBase();
+                if (!base) {
+                    setEmailAgentOutput('Please enter your server domain first.');
+                    return;
+                }
+
+                setEmailAgentOutput(`Checking ${base}/health ...`);
+                try {
+                    const response = await fetch(`${base}/health`, { method: 'GET' });
+                    const text = await response.text();
+                    setEmailAgentOutput(`Health check: ${response.status}\n${text}`);
+                } catch (error) {
+                    setEmailAgentOutput(`Health check failed. Confirm HTTPS, Nginx forwarding, and CORS.\n${error.message}`);
+                }
+            });
+        }
+
+        const emailAgentCopyBtn = document.getElementById('emailAgentCopyBtn');
+        if (emailAgentCopyBtn) {
+            emailAgentCopyBtn.addEventListener('click', async () => {
+                const webhookUrl = `${getEmailAgentBase()}/api/webhook/clawemail`;
+                try {
+                    await navigator.clipboard.writeText(webhookUrl);
+                    setEmailAgentOutput(`Copied webhook URL:\n${webhookUrl}`);
+                } catch (_error) {
+                    setEmailAgentOutput(`Webhook URL:\n${webhookUrl}`);
+                }
+            });
+        }
+
+        document.body.classList.toggle('file-protocol', window.location.protocol === 'file:');
+
+        const openGameLink = document.getElementById('openGameLink');
+        if (openGameLink) {
+            openGameLink.addEventListener('click', (event) => {
+                if (window.location.protocol !== 'file:') return;
+
+                event.preventDefault();
+                alert('Immortal Heart is a Vite/Vue module build and needs local HTTP. Run this from Lia-Website:\n\npython3 -m http.server 4173\n\nThen open http://127.0.0.1:4173/index.html#games');
+            });
+        }
+    </script>
 
     <script>
         // Daily Quote Integration - Updated for Letter Format

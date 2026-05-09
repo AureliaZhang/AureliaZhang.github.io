@@ -4,13 +4,74 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="theme-color" content="#1a1020" />
+    <meta name="theme-color" content="#050a14" />
     <title>破道·逆仙缘</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
-    <script type="module" crossorigin src="./assets/index-CmEH7FvZ.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-C7o64ed7.css">
+    <style>
+      .file-protocol-warning {
+        display: none;
+        min-height: 100vh;
+        box-sizing: border-box;
+        padding: 32px;
+        place-items: center;
+        background: radial-gradient(circle at top, rgba(0, 240, 255, 0.15), transparent 34%), #050a14;
+        color: rgba(255, 255, 255, 0.86);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .file-protocol-warning.is-visible {
+        display: grid;
+      }
+
+      .file-protocol-warning__card {
+        max-width: 680px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 24px;
+        padding: 28px;
+        background: rgba(10, 15, 30, 0.86);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35), 0 0 36px rgba(0, 240, 255, 0.08);
+      }
+
+      .file-protocol-warning h1 {
+        margin: 0 0 12px;
+        color: #fff;
+        font-size: clamp(24px, 5vw, 36px);
+      }
+
+      .file-protocol-warning p {
+        margin: 0 0 16px;
+        line-height: 1.7;
+      }
+
+      .file-protocol-warning code {
+        display: inline-block;
+        margin: 4px 0;
+        padding: 4px 8px;
+        border-radius: 8px;
+        background: rgba(0, 240, 255, 0.1);
+        color: #72f7ff;
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/index-C3iZuCaP.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CvIy284p.css">
   </head>
   <body>
     <div id="app"></div>
+    <div id="fileProtocolWarning" class="file-protocol-warning" role="status" aria-live="polite">
+      <div class="file-protocol-warning__card">
+        <h1>Open this game over local HTTP</h1>
+        <p>This Vite/Vue build uses JavaScript modules, which are not reliable when launched directly with <code>file://</code>.</p>
+        <p>From the <code>Lia-Website</code> folder, run:</p>
+        <p><code>python3 -m http.server 4173</code></p>
+        <p>Then open:</p>
+        <p><code>http://127.0.0.1:4173/AI_Workspace/index.html</code></p>
+      </div>
+    </div>
+    <script>
+      if (window.location.protocol === 'file:') {
+        document.getElementById('app').hidden = true;
+        document.getElementById('fileProtocolWarning').classList.add('is-visible');
+      }
+    </script>
   </body>
 </html>
