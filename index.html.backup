@@ -4,13 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>Aurelia - HCI Researcher</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Parisienne&family=Space+Mono:wght@400;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
@@ -31,7 +28,7 @@
 
         body {
             background: linear-gradient(to bottom, #050A14, #0B1021);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             min-height: 100vh;
             overflow: hidden;
             position: relative;
@@ -1645,6 +1642,309 @@
             gap: 40px;
             width: 100%;
         }
+
+        .games-showcase {
+            width: min(1120px, 100%);
+            min-height: 68vh;
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+            grid-template-rows: 1fr auto;
+            gap: 18px;
+        }
+
+        .game-feature-card,
+        .game-mini-card,
+        .games-note-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(0, 240, 255, 0.025));
+            border-radius: 28px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+        }
+
+        .game-feature-card {
+            grid-row: 1 / 3;
+            padding: clamp(28px, 4vw, 54px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100%;
+        }
+
+        .game-feature-card::before {
+            content: '';
+            position: absolute;
+            inset: -20% -10% auto auto;
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.22), transparent 64%);
+            filter: blur(6px);
+        }
+
+        .game-feature-card::after {
+            content: 'PLAY';
+            position: absolute;
+            right: clamp(18px, 3vw, 42px);
+            bottom: clamp(12px, 2vw, 24px);
+            color: rgba(255, 255, 255, 0.035);
+            font-size: clamp(88px, 14vw, 180px);
+            font-weight: 900;
+            letter-spacing: -0.08em;
+            line-height: 0.8;
+        }
+
+        .game-eyebrow {
+            position: relative;
+            z-index: 1;
+            color: rgba(0, 240, 255, 0.92);
+            font-size: 12px;
+            letter-spacing: 2.6px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .game-feature-title {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            color: #fff;
+            font-size: clamp(34px, 5vw, 68px);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            margin-bottom: 22px;
+        }
+
+        .game-feature-copy {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            color: rgba(255, 255, 255, 0.64);
+            font-size: 15px;
+            line-height: 1.75;
+        }
+
+        .game-tags {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 32px;
+        }
+
+        .game-tag {
+            padding: 8px 14px;
+            border: 1px solid rgba(0, 240, 255, 0.18);
+            border-radius: 999px;
+            color: rgba(255, 255, 255, 0.72);
+            background: rgba(0, 240, 255, 0.06);
+            font-size: 12px;
+            letter-spacing: 0.6px;
+        }
+
+        .game-actions {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-top: 34px;
+        }
+
+        .game-mini-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .game-mini-card {
+            padding: 22px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-mini-card strong {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .game-mini-card p {
+            color: rgba(255, 255, 255, 0.56);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .game-mini-status {
+            width: fit-content;
+            margin-top: 16px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(0, 240, 255, 0.75);
+            font-size: 10px;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .games-note-card {
+            padding: 18px 20px;
+        }
+
+        .email-agent-grid {
+            width: min(1120px, 100%);
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+            gap: 18px;
+        }
+
+        .email-agent-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(0, 240, 255, 0.025));
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+            padding: clamp(24px, 3vw, 40px);
+        }
+
+        .email-agent-card::before {
+            content: '';
+            position: absolute;
+            inset: auto -90px -120px auto;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.18), transparent 68%);
+        }
+
+        .email-agent-kicker {
+            position: relative;
+            z-index: 1;
+            color: rgba(0, 240, 255, 0.92);
+            font-size: 12px;
+            letter-spacing: 2.4px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .email-agent-title {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            font-size: clamp(32px, 5vw, 60px);
+            line-height: 0.98;
+            letter-spacing: -0.04em;
+            margin-bottom: 20px;
+        }
+
+        .email-agent-copy,
+        .email-agent-list {
+            position: relative;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 15px;
+            line-height: 1.72;
+        }
+
+        .email-agent-list {
+            display: grid;
+            gap: 12px;
+            margin: 24px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .email-agent-list li {
+            padding: 12px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        .email-agent-control {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            gap: 14px;
+        }
+
+        .email-agent-control label {
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 12px;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .email-agent-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(0, 240, 255, 0.24);
+            border-radius: 14px;
+            outline: none;
+            background: rgba(5, 10, 20, 0.55);
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .email-agent-output {
+            min-height: 96px;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(5, 10, 20, 0.5);
+            color: rgba(255, 255, 255, 0.7);
+            font: 12px/1.7 'Space Mono', monospace;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 1024px) {
+            .email-agent-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .games-showcase {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                min-height: auto;
+            }
+
+            .game-feature-card {
+                grid-row: auto;
+            }
+        }
+
+        .local-server-note {
+            display: none;
+            border: 1px solid rgba(255, 200, 120, 0.28);
+            background: rgba(255, 200, 120, 0.08);
+            color: rgba(255, 244, 220, 0.78);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .local-server-note code {
+            color: rgba(0, 240, 255, 0.95);
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+        }
+
+        body.file-protocol .local-server-note {
+            display: block;
+        }
     </style>
 </head>
 
@@ -1670,16 +1970,28 @@
 
             <nav class="nav-menu">
                 <a href="#home" class="nav-link active" id="nav-home">
-                    <span>🏠</span> Home
+                    <span>🏠</span> My Profile
                 </a>
                 <a href="#projects" class="nav-link" id="nav-projects">
-                    <span>📂</span> Projects
+                    <span>📂</span> My Projects
+                </a>
+                <a href="#hci-dashboard" class="nav-link" id="nav-hci-dashboard">
+                    <span>🛰️</span> HCI Observatory
+                </a>
+                <a href="#email-agent" class="nav-link" id="nav-email-agent">
+                    <span>@</span> Email Agent
+                </a>
+                <a href="#games" class="nav-link" id="nav-games">
+                    <span>🎮</span> Casual Games
                 </a>
                 <a href="#research" class="nav-link" id="nav-research">
-                    <span>🔬</span> Research
+                    <span>🔬</span> My Research
                 </a>
                 <a href="#about" class="nav-link" id="nav-about">
                     <span>📖</span> About
+                </a>
+                <a href="#footer" class="nav-link" id="nav-contact">
+                    <span>💬</span> Contact Me
                 </a>
             </nav>
         </aside>
@@ -1714,92 +2026,51 @@
 
                 <div class="bento-grid">
                     <!-- Main Card -->
-                    <!-- Main Card - Image Carousel -->
-                    <div class="bento-card main-card" style="position: relative; overflow: hidden; padding: 0;">
-                        <div class="carousel-container" style="width: 100%; height: 100%; position: relative;">
-                            <!-- Carousel Images -->
-                            <div class="carousel-slide active" style="position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(50, 50, 60, 0.4), rgba(30, 30, 40, 0.6)); transition: opacity 0.5s ease;">
-                                <span style="font-size: 24px; color: rgba(255, 255, 255, 0.3); font-weight: 600;">IMAGE 01</span>
-                            </div>
-                            <div class="carousel-slide" style="position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(40, 50, 70, 0.4), rgba(20, 30, 50, 0.6)); opacity: 0; transition: opacity 0.5s ease;">
-                                <span style="font-size: 24px; color: rgba(255, 255, 255, 0.3); font-weight: 600;">IMAGE 02</span>
-                            </div>
-                            <div class="carousel-slide" style="position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(50, 40, 60, 0.4), rgba(30, 20, 40, 0.6)); opacity: 0; transition: opacity 0.5s ease;">
-                                <span style="font-size: 24px; color: rgba(255, 255, 255, 0.3); font-weight: 600;">IMAGE 03</span>
-                            </div>
-                            <div class="carousel-slide" style="position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(40, 60, 50, 0.4), rgba(20, 40, 30, 0.6)); opacity: 0; transition: opacity 0.5s ease;">
-                                <span style="font-size: 24px; color: rgba(255, 255, 255, 0.3); font-weight: 600;">IMAGE 04</span>
-                            </div>
-                            <div class="carousel-slide" style="position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(60, 50, 40, 0.4), rgba(40, 30, 20, 0.6)); opacity: 0; transition: opacity 0.5s ease;">
-                                <span style="font-size: 24px; color: rgba(255, 255, 255, 0.3); font-weight: 600;">IMAGE 05</span>
-                            </div>
-
-                            <!-- Carousel Dots -->
-                            <div class="carousel-dots" style="position: absolute; bottom: 20px; right: 20px; display: flex; gap: 8px; z-index: 10;">
-                                <span class="carousel-dot active" data-index="0" style="width: 10px; height: 10px; border-radius: 50%; background: rgba(0, 240, 255, 0.8); cursor: pointer; transition: all 0.3s;"></span>
-                                <span class="carousel-dot" data-index="1" style="width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.3s;"></span>
-                                <span class="carousel-dot" data-index="2" style="width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.3s;"></span>
-                                <span class="carousel-dot" data-index="3" style="width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.3s;"></span>
-                                <span class="carousel-dot" data-index="4" style="width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.3s;"></span>
-                            </div>
-                        </div>
+                    <div class="bento-card main-card">
+                        <h2 class="title">Aurelia</h2>
+                        <p class="subtitle">HCI Researcher</p>
                     </div>
 
-                    <!-- Top Right Card - Recent Projects -->
+                    <!-- Top Right Card -->
                     <div class="bento-card top-right-card">
-                        <div class="section-label">Recent Projects</div>
-                        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
-                            <a href="#research" class="recent-project-item" style="text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 10px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s;">
-                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">HCI Research Observatory</div>
-                                <div style="font-size: 11px; opacity: 0.6;">Local-first knowledge workspace</div>
-                            </a>
-                            <a href="#research" class="recent-project-item" style="text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 10px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s;">
-                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">Immortal Heart Game</div>
-                                <div style="font-size: 11px; opacity: 0.6;">AI-powered interactive story</div>
-                            </a>
-                            <a href="#research" class="recent-project-item" style="text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 10px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s;">
-                                <div style="font-size: 13px; font-weight: 600; margin-bottom: 4px;">Email Agent Backend</div>
-                                <div style="font-size: 11px; opacity: 0.6;">Webhook automation system</div>
-                            </a>
-                        </div>
-                        <a href="#research" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; color: rgba(0, 240, 255, 0.9); font-size: 12px; font-weight: 600; text-decoration: none; transition: all 0.3s;">
-                            View All Projects <span style="transition: transform 0.3s;">→</span>
-                        </a>
-                    </div>
-
-                    <!-- Bottom Right Card - Token Usage -->
-                    <div class="bento-card bottom-right-card" style="display: flex; flex-direction: column; justify-content: center; padding: 30px;">
-                        <div style="display: flex; flex-direction: column; gap: 16px;">
-                            <!-- Claude Tokens -->
-                            <div>
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                    <span style="font-size: 12px; color: rgba(0, 240, 255, 0.9); font-weight: 600;">Claude Tokens</span>
-                                    <div style="display: flex; align-items: baseline; gap: 4px;">
-                                        <span style="font-size: 14px; color: rgba(255, 255, 255, 0.9); font-weight: 600;">33,682,792</span>
-                                        <span style="font-size: 10px; color: rgba(255, 255, 255, 0.4);">tokens</span>
-                                    </div>
-                                </div>
-                                <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden;">
-                                    <div style="width: 65%; height: 100%; background: rgba(0, 240, 255, 0.8);"></div>
-                                </div>
-                            </div>
-
-                            <!-- GPT Tokens -->
-                            <div>
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                    <span style="font-size: 12px; color: rgba(16, 163, 127, 0.9); font-weight: 600;">GPT Tokens</span>
-                                    <div style="display: flex; align-items: baseline; gap: 4px;">
-                                        <span style="font-size: 14px; color: rgba(255, 255, 255, 0.9); font-weight: 600;">19,348,732</span>
-                                        <span style="font-size: 10px; color: rgba(255, 255, 255, 0.4);">tokens</span>
-                                    </div>
-                                </div>
-                                <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden;">
-                                    <div style="width: 35%; height: 100%; background: rgba(16, 163, 127, 0.8);"></div>
-                                </div>
-                            </div>
+                        <div class="section-label">Recent Research</div>
+                        <div class="research-list">
+                            <span class="research-item">Multimodal Interaction</span>
+                            <span class="research-item">Affective Computing</span>
+                            <span class="research-item">Generative UI</span>
                         </div>
                     </div>
+
+                    <!-- Bottom Right Card -->
+                    <a href="#projects" class="bento-card bottom-right-card">
+                        <span class="cta-button">
+                            Selected Works
+                            <span class="arrow">→</span>
+                        </span>
+                    </a>
                 </div>
+                <div class="search-module" style="width: 100%; max-width: 1000px; margin-top: 30px; z-index: 10; position: relative;">
+                <div style="position: relative; width: 100%;">
+                    <input type="text" id="academicSearchInput" placeholder="输入学术关键词，例如: 15-minute city, ecosystem services..."
+                           style="width: 100%; padding: 18px 24px; background: rgba(10, 15, 30, 0.5); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 14px; color: #fff; font-size: 15px; outline: none; backdrop-filter: blur(10px); transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0,0,0,0.2);">
+                    <button id="searchBtn" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: rgba(0, 240, 255, 0.8); cursor: pointer; padding: 10px; font-size: 18px; transition: transform 0.2s;">
+                        🔍
+                    </button>
+                </div>
+                <div id="searchResults" style="margin-top: 15px; display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto; padding-right: 5px;">
+                    </div>
+                
+                <style>
+                    /* 搜索框悬停发光动画 */
+                    #academicSearchInput:focus { border-color: rgba(0, 240, 255, 0.8); box-shadow: 0 0 20px rgba(0, 240, 255, 0.15); }
+                    #searchBtn:hover { transform: translateY(-50%) scale(1.1); color: #fff; }
+                    /* 隐藏滚动条让视觉更极简 */
+                    #searchResults::-webkit-scrollbar { width: 4px; }
+                    #searchResults::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.3); border-radius: 4px; }
+                </style>
+            </div>
+            ```
+
             </section>
 
             <!-- SECTION 2: PROJECTS -->
@@ -1839,6 +2110,152 @@
             </section>
 
             <!-- SECTION 3: HCI RESEARCH OBSERVATORY -->
+            <section id="hci-dashboard" class="snap-section">
+                <div class="page-header">
+                    <h2 class="shoutout-title">HCI Research Observatory</h2>
+                    <span class="section-desc">Local-first Knowledge Workspace // Papers, News, Notes</span>
+                </div>
+
+                <div class="split-grid">
+                    <div class="cyber-card" style="align-items: flex-start; text-align: left; justify-content: space-between;">
+                        <div>
+                            <div style="color: rgba(0, 240, 255, 0.95); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 18px;">Private Research Tool</div>
+                            <h3 style="font-size: 34px; color: #fff; margin-bottom: 20px; line-height: 1.15;">
+                                A grounded HCI lab for reading, annotating, and asking questions.
+                            </h3>
+                            <p style="color: rgba(255, 255, 255, 0.62); line-height: 1.7; font-size: 15px; max-width: 620px;">
+                                This dashboard collects arXiv HCI papers, curated industry news, local analysis artifacts,
+                                and a citation-first knowledge base. It is designed as a personal research cockpit rather
+                                than a public SaaS product.
+                            </p>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;">
+                            <span class="action-btn" style="pointer-events: none;">SQLite + FTS5</span>
+                            <span class="action-btn" style="pointer-events: none;">Grounded Chat</span>
+                            <span class="action-btn" style="pointer-events: none;">PDF Highlights</span>
+                            <span class="action-btn" style="pointer-events: none;">Oracle-ready</span>
+                        </div>
+                    </div>
+
+                    <div class="cyber-card" style="align-items: stretch; text-align: left; justify-content: flex-start; gap: 16px;">
+                        <div class="ui-header" style="border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);">
+                            <span>Observatory Modules</span>
+                            <span>LIVE / LOCAL</span>
+                        </div>
+                        <div class="alert-list" style="padding: 0; display: grid; gap: 12px;">
+                            <div class="alert-item"><strong>Paper Radar</strong><br>Scan recent arXiv HCI papers with bilingual summaries and research directions.</div>
+                            <div class="alert-item"><strong>Knowledge Base</strong><br>Ask questions only against local papers, notes, news, and runtime artifacts with citations.</div>
+                            <div class="alert-item"><strong>Reader Workspace</strong><br>Open PDFs, save local notes, highlight text, and route annotations back into the KB.</div>
+                            <div class="alert-item warning"><strong>Private Deployment</strong><br>Designed for single-owner use on a local machine or personal Oracle server, without multi-user login.</div>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto;">
+                            <a href="../index.html" class="github-btn" style="position: static; display: inline-flex;">Open Local Dashboard</a>
+                            <a href="#research" class="action-btn" style="padding: 10px 16px; border-radius: 999px;">View Research Hub</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: EMAIL AGENT -->
+            <section id="email-agent" class="snap-section">
+                <div class="page-header">
+                    <h2 class="shoutout-title">Email Agent</h2>
+                    <span class="section-desc">ClawEmail Webhook // Personal Server Relay</span>
+                </div>
+
+                <div class="email-agent-grid">
+                    <article class="email-agent-card">
+                        <div class="email-agent-kicker">Private Automation</div>
+                        <h3 class="email-agent-title">A small inbox bridge for Aurelia.</h3>
+                        <p class="email-agent-copy">
+                            The website can live on GitHub Pages, while the webhook backend runs on your own server behind Nginx.
+                            ClawEmail should send new-email events to the webhook URL below.
+                        </p>
+                        <ul class="email-agent-list">
+                            <li><strong>Static site:</strong> GitHub Pages only shows this entry and status controls.</li>
+                            <li><strong>Server:</strong> Node backend receives webhooks and drafts replies.</li>
+                            <li><strong>Nginx:</strong> Forwards public HTTPS traffic to <code>127.0.0.1:8787</code>.</li>
+                        </ul>
+                    </article>
+
+                    <article class="email-agent-card">
+                        <div class="email-agent-control">
+                            <label for="emailAgentBaseInput">Server API Base</label>
+                            <input id="emailAgentBaseInput" class="email-agent-input" type="url" value="http://aureliazhsy.com" spellcheck="false">
+                            <div class="email-agent-output" id="emailAgentOutput">
+                                Replace the API base with your domain, then click health check. Webhook endpoint: /api/webhook/clawemail
+                            </div>
+                            <div class="game-actions" style="margin-top: 4px;">
+                                <button type="button" id="emailAgentHealthBtn" class="github-btn" style="position: static; display: inline-flex;">Check Backend</button>
+                                <button type="button" id="emailAgentCopyBtn" class="action-btn" style="padding: 10px 16px; border-radius: 999px;">Copy Webhook URL</button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- SECTION 5: CASUAL GAMES -->
+            <section id="games" class="snap-section">
+                <div class="page-header">
+                    <h2 class="shoutout-title">Casual Games</h2>
+                    <span class="section-desc">Playful Experiments // Tiny Interactive Worlds</span>
+                </div>
+
+                <div class="games-showcase">
+                    <article class="game-feature-card">
+                        <div>
+                            <div class="game-eyebrow">Featured Game</div>
+                            <h3 class="game-feature-title">Immortal Heart</h3>
+                            <p class="game-feature-copy">
+                                A xianxia text adventure powered by configurable AI services. It opens as an isolated
+                                standalone game so the story interface can breathe outside the portfolio scroll system.
+                            </p>
+                            <div class="game-tags">
+                                <span class="game-tag">AI Story</span>
+                                <span class="game-tag">Vue Build</span>
+                                <span class="game-tag">Text RPG</span>
+                                <span class="game-tag">Playable Now</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="local-server-note games-note-card" role="status">
+                                Immortal Heart is a Vite/Vue module build and should be opened over local HTTP, not <code>file://</code>.
+                                From <code>Lia-Website</code>, run <code>python3 -m http.server 4173</code>, then open
+                                <code>http://127.0.0.1:4173/index.html#games</code>.
+                            </div>
+                            <div class="game-actions">
+                                <a href="./AI_Workspace/index.html" id="openGameLink" class="github-btn" style="position: static; display: inline-flex;" target="_blank" rel="noreferrer noopener">Play Immortal Heart</a>
+                                <a href="#projects" class="action-btn" style="padding: 10px 16px; border-radius: 999px;">Back to Projects</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="game-mini-list">
+                        <article class="game-mini-card">
+                            <div>
+                                <strong>Dream Garden</strong>
+                                <p>A future cozy idle garden for collecting moods, plants, and tiny daily rituals.</p>
+                            </div>
+                            <span class="game-mini-status">Concept Slot</span>
+                        </article>
+                        <article class="game-mini-card">
+                            <div>
+                                <strong>Signal Catcher</strong>
+                                <p>A quick reflex concept about catching glowing signals before they fade into the noise.</p>
+                            </div>
+                            <span class="game-mini-status">Coming Soon</span>
+                        </article>
+                    </div>
+
+                    <article class="game-mini-card">
+                        <div>
+                            <strong>More Playgrounds</strong>
+                            <p>Reserved space for future casual games, micro-interactions, and relaxing browser toys.</p>
+                        </div>
+                        <span class="game-mini-status">Open Shelf</span>
+                    </article>
+                </div>
+            </section>
 
 
 
@@ -2180,73 +2597,43 @@
             </section>
 
             <!-- SECTION 16: RESEARCH (Now positioned AFTER projects) -->
-            <section id="research" class="snap-section" style="overflow-y: auto; justify-content: flex-start;">
-                <div class="page-header" style="max-width: 1200px; margin: 0 auto;">
-                    <h2 class="shoutout-title">Research & Projects</h2>
-                    <span class="section-desc">Learning • Building • Exploring</span>
-                </div>
-
-                <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding: 20px 0;">
-                    <!-- Left Column: Learning Projects -->
-                    <div class="cyber-card" style="padding: 30px; display: flex; flex-direction: column; gap: 20px;">
-                        <h3 style="font-size: 20px; color: rgba(0, 240, 255, 0.95); margin-bottom: 10px;">Learning Projects</h3>
-
-                        <div style="display: flex; flex-direction: column; gap: 16px;">
-                            <a href="../index.html" target="_blank" style="text-decoration: none; color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s;">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: rgba(0, 240, 255, 0.95);">HCI Research Observatory</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5;">Local-first knowledge workspace for reading arXiv papers, curating industry news, and building a grounded knowledge base with citations.</div>
-                            </a>
-
-                            <div style="text-decoration: none; color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: rgba(255, 255, 255, 0.8);">Email Agent Backend</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5;">Webhook automation system for processing emails with AI-powered reply drafts.</div>
-                            </div>
-
-                            <div style="color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 10px; color: rgba(255, 255, 255, 0.8);">Academic Search Engine</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5; margin-bottom: 12px;">Integrated search interface for exploring academic papers and research topics.</div>
-
-                                <!-- Search Module -->
-                                <div style="position: relative; width: 100%; margin-top: 12px;">
-                                    <input type="text" id="academicSearchInput" placeholder="输入学术关键词，例如: 15-minute city..."
-                                           style="width: 100%; padding: 12px 40px 12px 16px; background: rgba(10, 15, 30, 0.5); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 10px; color: #fff; font-size: 13px; outline: none; backdrop-filter: blur(10px); transition: all 0.3s ease;">
-                                    <button id="searchBtn" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: rgba(0, 240, 255, 0.8); cursor: pointer; padding: 8px; font-size: 16px; transition: transform 0.2s;">
-                                        🔍
-                                    </button>
-                                </div>
-                                <div id="searchResults" style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;">
-                                </div>
-                            </div>
-
-                            <style>
-                                /* 搜索框悬停发光动画 */
-                                #academicSearchInput:focus { border-color: rgba(0, 240, 255, 0.8); box-shadow: 0 0 20px rgba(0, 240, 255, 0.15); }
-                                #searchBtn:hover { transform: translateY(-50%) scale(1.1); color: #fff; }
-                                /* 隐藏滚动条让视觉更极简 */
-                                #searchResults::-webkit-scrollbar { width: 4px; }
-                                #searchResults::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.3); border-radius: 4px; }
-                            </style>
+            <section id="research" class="snap-section">
+                <div class="research-section-layout">
+                    <!-- Original Research Content Below -->
+                    <div style="width: 100%;">
+                        <div class="page-header">
+                            <h2 class="shoutout-title">Research Repository</h2>
+                            <span class="section-desc">Hub // Archive</span>
                         </div>
-                    </div>
 
-                    <!-- Right Column: Game Projects -->
-                    <div class="cyber-card" style="padding: 30px; display: flex; flex-direction: column; gap: 20px;">
-                        <h3 style="font-size: 20px; color: rgba(0, 240, 255, 0.95); margin-bottom: 10px;">Game Projects</h3>
-
-                        <div style="display: flex; flex-direction: column; gap: 16px;">
-                            <a href="./AI_Workspace/index.html" target="_blank" style="text-decoration: none; color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s; cursor: pointer;">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: rgba(0, 240, 255, 0.95);">Immortal Heart</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5;">AI-powered interactive text adventure game with dynamic storytelling and character interactions.</div>
-                            </a>
-
-                            <div style="text-decoration: none; color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); opacity: 0.5;">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: rgba(255, 255, 255, 0.6);">Dream Garden</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5;">Coming soon...</div>
+                        <div class="dashboard-grid">
+                            <!-- Row 1: topic cards (match Projects styling) -->
+                            <div class="cyber-card">
+                                <div class="card-label">Multimodal</div>
+                                <div class="card-sub">Try PaperPal AI Demo</div>
+                            </div>
+                            <div class="cyber-card">
+                                <div class="card-label">Affective</div>
+                                <div class="card-sub">Emotion AI & Sensors</div>
+                            </div>
+                            <div class="cyber-card">
+                                <div class="card-label">Generative</div>
+                                <div class="card-sub">AI-driven Interfaces</div>
                             </div>
 
-                            <div style="text-decoration: none; color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); opacity: 0.5;">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: rgba(255, 255, 255, 0.6);">Signal Catcher</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5;">Coming soon...</div>
+                            <!-- Row 2: Overview big-card to match Projects layout -->
+                            <div class="cyber-card big-card">
+                                <h3 style="z-index:1; font-size:24px; color: rgba(0,240,255,0.95);">Portal Overview</h3>
+                                <p
+                                    style="z-index:1; color: rgba(255,255,255,0.6); max-width:600px; margin-top:15px; line-height:1.6;">
+                                    Curated repository of projects, datasets, and methodologies spanning multimodal
+                                    interaction,
+                                    affective
+                                    computing, and generative UI systems. Explore demo links, reading lists, and
+                                    datasets from
+                                    ongoing work.
+                                </p>
+                                <div class="big-card-title">RESEARCH</div>
                             </div>
                         </div>
                     </div>
@@ -2254,162 +2641,120 @@
             </section>
 
             <!-- SECTION 18: ABOUT (refactored to single glass card) -->
-            <section id="about" class="snap-section" style="overflow-y: auto; justify-content: flex-start; padding-bottom: 40px;">
-                <div class="page-header" style="max-width: 1200px; margin: 0 auto 20px;">
+            <section id="about" class="snap-section">
+                <div class="page-header">
                     <h2 class="shoutout-title">About Me</h2>
                     <span class="section-desc">Human-Computer Interaction • Product Design</span>
                 </div>
 
-                <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                    <!-- Left Column -->
-                    <div style="display: flex; flex-direction: column; gap: 16px;">
-                        <!-- Profile Card -->
-                        <div class="cyber-card" style="padding: 24px;">
-                            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 12px;">
-                                <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, rgba(0, 240, 255, 0.3), rgba(0, 150, 255, 0.3)); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: rgba(0, 240, 255, 0.95);">A</div>
-                                <div>
-                                    <h3 style="font-size: 24px; color: #fff; margin-bottom: 4px;">Aurelia Zhang</h3>
-                                    <p style="font-size: 14px; color: rgba(255, 255, 255, 0.6);">HCI Researcher & Product Designer</p>
-                                </div>
-                            </div>
-                            <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.7; font-size: 14px;">
-                                I'm a Human-Computer Interaction researcher and product designer exploring interfaces that feel like extensions of the human mind. My work bridges biological cognition and digital systems.
-                            </p>
-                        </div>
-
-                        <!-- Contact Card -->
-                        <div class="cyber-card" style="padding: 20px;">
-                            <h4 style="font-size: 16px; color: rgba(0, 240, 255, 0.95); margin-bottom: 12px; font-weight: 600;">Contact</h4>
-                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <span style="font-size: 18px;">📧</span>
-                                    <span style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">XXX@example.com</span>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <span style="font-size: 18px;">📍</span>
-                                    <span style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">XXX, Finland</span>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <span style="font-size: 18px;">🌐</span>
-                                    <span style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">XXX.com</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Skills Card -->
-                        <div class="cyber-card" style="padding: 20px;">
-                            <h4 style="font-size: 16px; color: rgba(0, 240, 255, 0.95); margin-bottom: 12px; font-weight: 600;">Skills</h4>
-                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                <span style="padding: 6px 12px; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; font-size: 12px; color: rgba(0, 240, 255, 0.95);">Python</span>
-                                <span style="padding: 6px 12px; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; font-size: 12px; color: rgba(0, 240, 255, 0.95);">JavaScript</span>
-                                <span style="padding: 6px 12px; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; font-size: 12px; color: rgba(0, 240, 255, 0.95);">Vue.js</span>
-                                <span style="padding: 6px 12px; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; font-size: 12px; color: rgba(0, 240, 255, 0.95);">UI/UX Design</span>
-                                <span style="padding: 6px 12px; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; font-size: 12px; color: rgba(0, 240, 255, 0.95);">Figma</span>
-                                <span style="padding: 6px 12px; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; font-size: 12px; color: rgba(0, 240, 255, 0.95);">Machine Learning</span>
-                            </div>
-                        </div>
+                <div class="dashboard-grid">
+                    <!-- Single full-width glass card matching Projects/Research visual style -->
+                    <div class="cyber-card big-card">
+                        <h3 style="z-index:1; font-size:24px; color: rgba(0,240,255,0.95); margin-bottom:12px;">Aurelia
+                            Zhang</h3>
+                        <p class="project-description"
+                            style="z-index:1; color: var(--text-main); max-width:900px; line-height:1.8;">
+                            I'm a <strong>Human-Computer Interaction researcher</strong> and product designer exploring
+                            interfaces
+                            that feel like extensions of the human mind. My work bridges biological cognition and
+                            digital systems,
+                            focusing on multimodal interaction, affective computing, and generative UI. I design and
+                            prototype
+                            systems that are humane, expressive, and research-driven.
+                        </p>
                     </div>
-
-                    <!-- Right Column -->
-                    <div style="display: flex; flex-direction: column; gap: 16px;">
-                        <!-- Education Card -->
-                        <div class="cyber-card" style="padding: 20px;">
-                            <h4 style="font-size: 16px; color: rgba(0, 240, 255, 0.95); margin-bottom: 16px; font-weight: 600;">Education</h4>
-                            <div style="position: relative; padding-left: 20px; border-left: 2px solid rgba(0, 240, 255, 0.3);">
-                                <div style="position: absolute; left: -6px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: rgba(0, 240, 255, 0.8);"></div>
-                                <div style="margin-bottom: 16px;">
-                                    <div style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px;">XXX University</div>
-                                    <div style="font-size: 13px; color: rgba(255, 255, 255, 0.6); margin-bottom: 4px;">Ph.D. in Human-Computer Interaction</div>
-                                    <div style="font-size: 12px; color: rgba(255, 255, 255, 0.5);">20XX - Present</div>
-                                </div>
-                                <div style="position: absolute; left: -6px; top: 90px; width: 10px; height: 10px; border-radius: 50%; background: rgba(0, 240, 255, 0.5);"></div>
-                                <div>
-                                    <div style="font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px;">XXX University</div>
-                                    <div style="font-size: 13px; color: rgba(255, 255, 255, 0.6); margin-bottom: 4px;">M.Sc. in Computer Science</div>
-                                    <div style="font-size: 12px; color: rgba(255, 255, 255, 0.5);">20XX - 20XX</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Research Interests Card -->
-                        <div class="cyber-card" style="padding: 20px;">
-                            <h4 style="font-size: 16px; color: rgba(0, 240, 255, 0.95); margin-bottom: 12px; font-weight: 600;">Research Interests</h4>
-                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                <div style="padding-left: 16px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: rgba(0, 240, 255, 0.8);">•</span>
-                                    <span style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">Multimodal Interaction Design</span>
-                                </div>
-                                <div style="padding-left: 16px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: rgba(0, 240, 255, 0.8);">•</span>
-                                    <span style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">Affective Computing</span>
-                                </div>
-                                <div style="padding-left: 16px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: rgba(0, 240, 255, 0.8);">•</span>
-                                    <span style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">Generative UI Systems</span>
-                                </div>
-                                <div style="padding-left: 16px; position: relative;">
-                                    <span style="position: absolute; left: 0; color: rgba(0, 240, 255, 0.8);">•</span>
-                                    <span style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">AI-Human Collaboration</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Languages Card -->
-                        <div class="cyber-card" style="padding: 20px;">
-                            <h4 style="font-size: 16px; color: rgba(0, 240, 255, 0.95); margin-bottom: 10px; font-weight: 600;">Languages</h4>
-                            <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <div style="margin-bottom: 4px;">
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                                        <span style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">English</span>
-                                        <span style="font-size: 12px; color: rgba(255, 255, 255, 0.5);">Fluent</span>
-                                    </div>
-                                    <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden;">
-                                        <div style="width: 95%; height: 100%; background: rgba(0, 240, 255, 0.8);"></div>
-                                    </div>
-                                </div>
-                                <div style="margin-bottom: 4px;">
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                                        <span style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">Chinese</span>
-                                        <span style="font-size: 12px; color: rgba(255, 255, 255, 0.5);">Native</span>
-                                    </div>
-                                    <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden;">
-                                        <div style="width: 100%; height: 100%; background: rgba(0, 240, 255, 0.8);"></div>
-                                    </div>
-                                </div>
-                                <div style="margin-bottom: 4px;">
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                                        <span style="font-size: 14px; color: rgba(255, 255, 255, 0.8);">Finnish</span>
-                                        <span style="font-size: 12px; color: rgba(255, 255, 255, 0.5);">Learning</span>
-                                    </div>
-                                    <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden;">
-                                        <div style="width: 30%; height: 100%; background: rgba(0, 240, 255, 0.8);"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Get in Touch Section (merged from footer) -->
-                <div class="cyber-card" style="max-width: 1200px; margin: 16px auto 0; padding: 20px; text-align: center;">
-                    <h4 style="font-size: 16px; color: #fff; margin-bottom: 10px;">Get In Touch</h4>
-                    <p style="color: rgba(255, 255, 255, 0.6); margin-bottom: 16px; font-size: 13px;">Open to collaborations and research opportunities</p>
-                    <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 16px;">
-                        <a href="https://github.com" class="social-link" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; color: rgba(0, 240, 255, 0.9); text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.3s;" title="GitHub">GH</a>
-                        <a href="https://linkedin.com" class="social-link" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; color: rgba(0, 240, 255, 0.9); text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.3s;" title="LinkedIn">LI</a>
-                        <a href="https://twitter.com" class="social-link" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; color: rgba(0, 240, 255, 0.9); text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.3s;" title="Twitter">TW</a>
-                        <a href="mailto:hello@aurelia.com" class="social-link" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; color: rgba(0, 240, 255, 0.9); text-decoration: none; font-size: 16px; transition: all 0.3s;" title="Email">✉️</a>
-                    </div>
-                    <p style="font-size: 11px; color: rgba(255, 255, 255, 0.4);">© 2024 Aurelia. All rights reserved. Crafted with 💙</p>
                 </div>
             </section>
 
             <!-- SECTION 19: FOOTER / CONTACT -->
+            <section id="footer" class="snap-section footer-section">
+                <div class="footer-content">
+                    <div>
+                        <h3 style="color: #fff; margin-bottom: 12px; font-size: 24px;">Get In Touch</h3>
+                        <p style="color: rgba(255, 255, 255, 0.6); margin-bottom: 20px;">Open to collaborations and
+                            research opportunities</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://github.com" class="social-link" title="GitHub">GH</a>
+                        <a href="https://linkedin.com" class="social-link" title="LinkedIn">LI</a>
+                        <a href="https://twitter.com" class="social-link" title="Twitter">TW</a>
+                        <a href="mailto:hello@aurelia.com" class="social-link" title="Email">✉️</a>
+                    </div>
+                </div>
+                <p class="footer-text"
+                    style="position: absolute; bottom: 20px; left: 60px; right: 60px; text-align: center;">
+                    © 2024 Aurelia. All rights reserved. Crafted with 💙
+                </p>
+            </section>
         </main>
     </div>
 
     <!-- QUOTES INTEGRATION -->
     <script src="quotes.js"></script>
+
+    <script>
+        const EMAIL_AGENT_API_BASE = 'http://aureliazhsy.com';
+
+        function getEmailAgentBase() {
+            const input = document.getElementById('emailAgentBaseInput');
+            return (input?.value || EMAIL_AGENT_API_BASE).trim().replace(/\/$/, '');
+        }
+
+        function setEmailAgentOutput(message) {
+            const output = document.getElementById('emailAgentOutput');
+            if (output) output.textContent = message;
+        }
+
+        const emailAgentBaseInput = document.getElementById('emailAgentBaseInput');
+        if (emailAgentBaseInput) {
+            emailAgentBaseInput.value = EMAIL_AGENT_API_BASE;
+        }
+
+        const emailAgentHealthBtn = document.getElementById('emailAgentHealthBtn');
+        if (emailAgentHealthBtn) {
+            emailAgentHealthBtn.addEventListener('click', async () => {
+                const base = getEmailAgentBase();
+                if (!base) {
+                    setEmailAgentOutput('Please enter your server domain first.');
+                    return;
+                }
+
+                setEmailAgentOutput(`Checking ${base}/health ...`);
+                try {
+                    const response = await fetch(`${base}/health`, { method: 'GET' });
+                    const text = await response.text();
+                    setEmailAgentOutput(`Health check: ${response.status}\n${text}`);
+                } catch (error) {
+                    setEmailAgentOutput(`Health check failed. Confirm HTTPS, Nginx forwarding, and CORS.\n${error.message}`);
+                }
+            });
+        }
+
+        const emailAgentCopyBtn = document.getElementById('emailAgentCopyBtn');
+        if (emailAgentCopyBtn) {
+            emailAgentCopyBtn.addEventListener('click', async () => {
+                const webhookUrl = `${getEmailAgentBase()}/api/webhook/clawemail`;
+                try {
+                    await navigator.clipboard.writeText(webhookUrl);
+                    setEmailAgentOutput(`Copied webhook URL:\n${webhookUrl}`);
+                } catch (_error) {
+                    setEmailAgentOutput(`Webhook URL:\n${webhookUrl}`);
+                }
+            });
+        }
+
+        document.body.classList.toggle('file-protocol', window.location.protocol === 'file:');
+
+        const openGameLink = document.getElementById('openGameLink');
+        if (openGameLink) {
+            openGameLink.addEventListener('click', (event) => {
+                if (window.location.protocol !== 'file:') return;
+
+                event.preventDefault();
+                alert('Immortal Heart is a Vite/Vue module build and needs local HTTP. Run this from Lia-Website:\n\npython3 -m http.server 4173\n\nThen open http://127.0.0.1:4173/index.html#games');
+            });
+        }
+    </script>
 
     <script>
         // Daily Quote Integration - Updated for Letter Format
@@ -2816,85 +3161,6 @@
         searchBtn.addEventListener('click', performSearch);
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') performSearch();
-        });
-
-        // ========== IMAGE CAROUSEL ==========
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-slide');
-        const dots = document.querySelectorAll('.carousel-dot');
-        const totalSlides = slides.length;
-        let carouselInterval;
-
-        function showSlide(index) {
-            // Hide all slides
-            slides.forEach(slide => {
-                slide.style.opacity = '0';
-                slide.classList.remove('active');
-            });
-
-            // Remove active from all dots
-            dots.forEach(dot => {
-                dot.style.background = 'rgba(255, 255, 255, 0.3)';
-                dot.classList.remove('active');
-            });
-
-            // Show current slide
-            slides[index].style.opacity = '1';
-            slides[index].classList.add('active');
-            dots[index].style.background = 'rgba(0, 240, 255, 0.8)';
-            dots[index].classList.add('active');
-        }
-
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            showSlide(currentSlide);
-        }
-
-        function startCarousel() {
-            carouselInterval = setInterval(nextSlide, 5000); // Auto-play every 5 seconds
-        }
-
-        function stopCarousel() {
-            clearInterval(carouselInterval);
-        }
-
-        // Dot click handlers
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                stopCarousel();
-                currentSlide = index;
-                showSlide(currentSlide);
-                startCarousel();
-            });
-        });
-
-        // Hover effects for recent projects
-        const projectItems = document.querySelectorAll('.recent-project-item');
-        projectItems.forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                item.style.background = 'rgba(0, 240, 255, 0.08)';
-                item.style.borderColor = 'rgba(0, 240, 255, 0.3)';
-                item.style.transform = 'translateX(4px)';
-            });
-            item.addEventListener('mouseleave', () => {
-                item.style.background = 'rgba(255, 255, 255, 0.03)';
-                item.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                item.style.transform = 'translateX(0)';
-            });
-        });
-
-        // Start carousel on page load
-        startCarousel();
-
-        // Fix "View All Projects" button navigation
-        document.querySelectorAll('a[href="#research"]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const researchSection = document.getElementById('research');
-                if (researchSection) {
-                    researchSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
         });
     </script>
     ```
