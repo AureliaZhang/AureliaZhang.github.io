@@ -29,11 +29,18 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100vw;
+            width: 100%;
+        }
+
         body {
             background: linear-gradient(to bottom, #070A0F, #0D1219);
             font-family: "Songti SC", "SimSun", Georgia, serif;
             min-height: 100vh;
             overflow: hidden;
+            overflow-x: hidden !important;
             position: relative;
             -webkit-font-smoothing: antialiased;
         }
@@ -75,6 +82,8 @@
             display: flex;
             z-index: 5;
             pointer-events: none;
+            overflow-x: hidden;
+            max-width: 100vw;
         }
 
         .main-container>* {
@@ -216,6 +225,7 @@
             flex-grow: 1;
             height: 100vh;
             overflow-y: scroll;
+            overflow-x: hidden;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
             padding: 0;
@@ -224,6 +234,7 @@
             background: rgba(10, 15, 30, 0.08);
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
+            max-width: 100%;
         }
 
         .dashboard-container::-webkit-scrollbar {
@@ -247,6 +258,8 @@
         .snap-section {
             min-height: 100vh;
             width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
             scroll-snap-align: start;
             scroll-snap-stop: always;
             padding: 40px 60px;
@@ -649,9 +662,9 @@
 
         /* ========== ABOUT — CELESTIAL REDESIGN (ref: aboutmeref.png) ========== */
         .about-section-v2 {
-            justify-content: center;
-            padding-top: 46px;
-            padding-bottom: 38px;
+            justify-content: flex-start;
+            padding-top: 34px;
+            padding-bottom: 24px;
         }
 
         .about-ref {
@@ -660,7 +673,7 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 26px;
+            gap: 20px;
         }
 
         /* --- Top row: eyebrow + headline / poetic quote --- */
@@ -721,7 +734,7 @@
         /* --- Two-card grid --- */
         .about-grid {
             display: grid;
-            grid-template-columns: 0.9fr 1.1fr;
+            grid-template-columns: 0.72fr 1.28fr;
             gap: 24px;
             align-items: stretch;
         }
@@ -729,11 +742,14 @@
         /* --- Left: celestial portrait card --- */
         .about-portrait {
             position: relative;
-            min-height: 452px;
+            aspect-ratio: 3 / 4;
+            width: 100%;
+            height: auto;
+            align-self: start;
             border-radius: 22px;
             overflow: hidden;
             margin: 0;
-            border: 1px solid rgba(218, 174, 88, 0.18);
+            border: 1px solid rgba(218, 174, 88, 0.35);
             background:
                 radial-gradient(120% 85% at 72% 16%, rgba(70, 104, 165, 0.40), transparent 58%),
                 radial-gradient(150% 120% at 28% 115%, rgba(22, 44, 78, 0.65), transparent 60%),
@@ -777,6 +793,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center center;
+            transform: scale(1.15);
             z-index: 2;
         }
 
@@ -924,7 +942,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 14px;
+            gap: 8px;
         }
 
         .about-tools {
@@ -1014,14 +1032,14 @@
             }
             .about-top-quote::after { text-align: left; }
             .about-grid { grid-template-columns: 1fr; }
-            .about-portrait { min-height: 400px; }
+            .about-portrait { max-width: 360px; margin-left: auto; margin-right: auto; }
         }
 
         @media (max-width: 768px) {
             .about-section-v2 { padding: 30px 18px; }
             .about-facts { grid-template-columns: 1fr; gap: 14px; }
             .about-bio { padding: 26px 22px; }
-            .about-portrait { min-height: 340px; }
+            .about-portrait { max-width: 300px; }
             .about-seal { display: none; }
         }
 
@@ -1834,67 +1852,53 @@
             display: block !important;
         }
 
-        /* Floating Pet Styles */
+        /* Twinora Companion Styles */
         #floating-pet {
             position: fixed;
-            /* FIX POSITION: Move to bottom left */
-            bottom: 20px !important;
-            left: 20px !important;
-            top: auto !important;
-            /* Override any default top positioning */
-
-            /* FIX INTERACTION */
+            bottom: 20px;
+            left: 20px;
             z-index: 999999;
-            /* Ensure it is on top of everything */
             pointer-events: auto;
-            /* Critical: Enable clicking */
-            cursor: pointer;
+            cursor: grab;
 
-            /* Keep existing size/animation */
-            width: 80px;
-            height: 80px;
-            animation: pet-float 4s ease-in-out infinite;
-            transition: transform 0.3s ease;
+            /* Twinora size */
+            height: 130px;
+            width: auto;
+
+            /* Floating animation */
+            animation: twinora-float 5s ease-in-out infinite;
+
+            /* Glow effect */
+            filter: drop-shadow(0 0 12px rgba(0, 217, 255, 0.25))
+                    drop-shadow(0 0 8px rgba(218, 174, 88, 0.15));
+
+            transition: filter 0.3s ease, transform 0.3s ease;
         }
 
-        .pet-body {
+        #floating-pet:hover {
+            filter: drop-shadow(0 0 18px rgba(0, 217, 255, 0.4))
+                    drop-shadow(0 0 12px rgba(218, 174, 88, 0.25));
+            transform: scale(1.03);
+        }
+
+        #floating-pet.is-dragging {
+            cursor: grabbing;
+            animation: none;
+            transition: none;
+            user-select: none;
+        }
+
+        .twinora-image {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(147, 197, 253, 0.6), rgba(196, 181, 253, 0.5), rgba(249, 168, 212, 0.6));
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(165, 180, 252, 0.5);
-            position: relative;
-            animation: pet-float 4s ease-in-out infinite, pet-jelly 3s ease-in-out infinite;
-        }
-
-        .pet-eye {
-            position: absolute;
-            top: 35%;
-            width: 10px;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(96, 165, 250, 0.5);
-            border-radius: 50%;
-        }
-
-        .pet-eye.left {
-            left: 25%;
-        }
-
-        .pet-eye.right {
-            right: 25%;
-        }
-
-        .pet-mouth {
-            position: absolute;
-            top: 55%;
-            left: 35%;
-            width: 24px;
-            height: 8px;
-            border-bottom: 2px solid rgba(244, 114, 182, 0.7);
-            border-radius: 0 0 50% 50%;
+            object-fit: contain;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .pet-tooltip {
@@ -1918,27 +1922,71 @@
             opacity: 1;
         }
 
-        @keyframes pet-float {
+        /* Twinora star particle */
+        .twinora-star-particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999998;
+            box-shadow: 0 0 8px currentColor, 0 0 12px currentColor;
+            animation: star-fade-out 1.2s ease-out forwards;
+        }
 
-            0%,
+        @keyframes star-fade-out {
+            0% {
+                opacity: 0.6;
+                transform: scale(1) translateY(0) rotate(0deg);
+            }
             100% {
+                opacity: 0;
+                transform: scale(0.1) translateY(30px) rotate(180deg);
+            }
+        }
+
+        @keyframes twinora-float {
+            0%, 100% {
                 transform: translateY(0) rotate(0deg);
             }
+            50% {
+                transform: translateY(-5px) rotate(1deg);
+            }
+        }
 
+        @keyframes pet-float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
             50% {
                 transform: translateY(-10px) rotate(2deg);
             }
         }
 
         @keyframes pet-jelly {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: scale(1);
             }
-
             50% {
                 transform: scale(1.05, 0.95);
+            }
+        }
+
+        /* Reduce motion support */
+        @media (prefers-reduced-motion: reduce) {
+            #floating-pet {
+                animation: twinora-float 8s ease-in-out infinite;
+            }
+            .twinora-star-particle {
+                animation: none;
+                opacity: 0;
+            }
+        }
+
+        /* Mobile: no grab cursor */
+        @media (max-width: 768px) {
+            #floating-pet {
+                cursor: pointer;
             }
         }
 
@@ -3373,9 +3421,9 @@
                     <header class="about-top">
                         <div class="about-top-left">
                             <span class="about-eyebrow">About Me</span>
-                            <h2 class="about-headline">A mind that wanders,<br>and designs <em>what it finds.</em></h2>
+                            <h2 class="about-headline">Technology and design,<br><em>open to everyone.</em></h2>
                         </div>
-                        <p class="about-top-quote">I look for the seams between<br>people, screens, and streets—<br>and design for what happens in&nbsp;between.</p>
+                        <p class="about-top-quote">Technology should not be a privilege,<br>and design should not be a closed door—<br>both belong in everyone's&nbsp;hands.</p>
                     </header>
 
                     <!-- Two-card composition -->
@@ -3386,7 +3434,7 @@
                             <img class="about-portrait-img" src="images/about-portrait.jpg" alt="Portrait of Aurelia"
                                  onerror="this.classList.add('is-missing');">
                             <span class="about-portrait-scrim" aria-hidden="true"></span>
-                            <span class="about-portrait-side">Student of Minds&nbsp;·&nbsp;Designer of Cities</span>
+                            <span class="about-portrait-side">Technology for All&nbsp;·&nbsp;Design with All</span>
                             <figcaption class="about-portrait-cap">
                                 <span class="about-sign">Aurelia</span>
                                 <span class="about-sign-sub">In Pursuit of Wonder</span>
@@ -3401,9 +3449,9 @@
                             <h3 class="about-name">Aurelia</h3>
 
                             <div class="about-bio-body">
-                                <p>I'm an HCI researcher and urban designer, drawn to the places where human attention meets digital systems — and to the cities we move through while half-looking at a screen.</p>
-                                <p>This space is where I gather experiments like constellations — prototypes, field notes, and half-finished ideas about agents, interfaces, and the spaces we live in — and try to keep them honest.</p>
-                                <p class="about-bio-thanks"><em>Thanks for being here. You're part of the experiment now.</em></p>
+                                <p>I'm an HCI researcher and urban designer with one conviction: that technology and the design of our cities should be open to everyone — not just those who can afford them, or already know how to use them.</p>
+                                <p>This space is where I gather experiments like constellations — prototypes, field notes, and tools for agents and interfaces — each one trying to lower the barrier between people and the systems that shape their lives.</p>
+                                <p class="about-bio-thanks"><em>Thanks for being here. This is something we get to build together.</em></p>
                             </div>
 
                             <div class="about-facts">
@@ -3412,12 +3460,12 @@
                                     <span>HCI Researcher<br>&amp; Urban Designer</span>
                                 </div>
                                 <div class="about-fact">
-                                    <span class="about-fact-ico">◎</span>
-                                    <span>Based in<br>Helsinki, Finland</span>
+                                    <span class="about-fact-ico">◇</span>
+                                    <span>Technology<br>for everyone</span>
                                 </div>
                                 <div class="about-fact">
                                     <span class="about-fact-ico">✧</span>
-                                    <span>Drawn to interfaces,<br>cities &amp; quiet systems</span>
+                                    <span>Design<br>with everyone</span>
                                 </div>
                             </div>
                         </article>
@@ -3434,7 +3482,7 @@
                             <span class="about-tag">GIS</span>
                             <span class="about-tag">Urban Planning</span>
                         </div>
-                        <p class="about-craft-quote"><em>“We are all apprentices in a craft where no one ever becomes a master.”</em><span>— Ernest Hemingway</span></p>
+                        <p class="about-craft-quote"><em>"We are all apprentices in a craft where no one ever becomes a master."</em><span>— Ernest Hemingway</span></p>
                         <div class="about-rule"><span></span><i>✦</i><span></span></div>
                         <p class="about-copyright">© 2026 Aurelia · Aurelia Lab</p>
                     </footer>
@@ -3744,33 +3792,34 @@
     </script>
 
     <div id="floating-pet">
-        <div class="pet-tooltip" id="pet-tooltip">你好呀！我是小梦！</div>
-        <div class="pet-body">
-            <div class="pet-eye left"></div>
-            <div class="pet-eye right"></div>
-            <div class="pet-mouth"></div>
-            <div class="pet-blush left"
-                style="position: absolute; top: 45%; left: 15%; width: 6px; height: 4px; background: rgba(255, 100, 100, 0.3); border-radius: 50%;">
-            </div>
-            <div class="pet-blush right"
-                style="position: absolute; top: 45%; right: 15%; width: 6px; height: 4px; background: rgba(255, 100, 100, 0.3); border-radius: 50%;">
-            </div>
-        </div>
+        <div class="pet-tooltip" id="pet-tooltip">你好呀！我是 Twinora！</div>
+        <img
+            src="images/twinora-companion.png"
+            alt="Twinora - Aurelia Lab's twin-star fairy companion"
+            class="twinora-image"
+        />
     </div>
 
     <script>
-        // 小梦的“大脑”逻辑
+        // Twinora's companion logic
         (function () {
             const pet = document.getElementById('floating-pet');
             const tooltip = document.getElementById('pet-tooltip');
 
-            // 随机说话内容
+            if (!pet) {
+                console.error('Twinora: floating-pet element not found!');
+                return;
+            }
+
+            console.log('Twinora: initialized successfully');
+
+            // Random messages
             const messages = [
-                "加班辛苦啦！☕️",
-                "我是果冻做的哦~",
-                "戳我一下？👈",
-                "Aurelia 最棒！✨",
-                "陪你写代码~ 💻"
+                "我是 Twinora，星光小仙灵~ ✨",
+                "陪你探索 AI 的世界 🌙",
+                "拖动我到任何地方吧！",
+                "Aurelia Lab 永远在实验中 🔬",
+                "今天又学到了什么？💫"
             ];
 
             function showMessage(text) {
@@ -3779,22 +3828,117 @@
                 setTimeout(() => tooltip.classList.remove('show'), 2000);
             }
 
-            // 交互效果
+            // Hover effect
             pet.addEventListener('mouseenter', () => showMessage());
 
-            pet.addEventListener('click', () => {
-                showMessage("哎呀！好痒！>_<");
-                // 点击时的Q弹特效
-                pet.style.transform = "scale(1.2) rotate(10deg)";
-                setTimeout(() => pet.style.transform = "scale(1) rotate(0deg)", 300);
+            // Dragging logic
+            let isDragging = false;
+            let startX, startY, initialLeft, initialTop;
+
+            pet.addEventListener('mousedown', (e) => {
+                console.log('Twinora: mousedown triggered', e.button);
+                if (e.button !== 0) return; // Only left click
+
+                isDragging = true;
+                pet.classList.add('is-dragging');
+                pet._wasDragging = false;
+
+                const rect = pet.getBoundingClientRect();
+                startX = e.clientX;
+                startY = e.clientY;
+                initialLeft = rect.left;
+                initialTop = rect.top;
+
+                e.preventDefault(); // Prevent text selection
+                e.stopPropagation();
+
+                console.log('Twinora: drag started');
             });
 
-            // 出生打招呼
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+
+                pet._wasDragging = true;
+
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+
+                let newLeft = initialLeft + deltaX;
+                let newTop = initialTop + deltaY;
+
+                // Constrain to viewport
+                const rect = pet.getBoundingClientRect();
+                newLeft = Math.max(0, Math.min(window.innerWidth - rect.width, newLeft));
+                newTop = Math.max(0, Math.min(window.innerHeight - rect.height, newTop));
+
+                pet.style.left = newLeft + 'px';
+                pet.style.top = newTop + 'px';
+                pet.style.bottom = 'auto'; // Override bottom positioning
+
+                // Generate star particles (throttled) - more frequent for fairy dust effect
+                if (!pet._lastParticleTime || Date.now() - pet._lastParticleTime > 30) {
+                    // Generate 2-3 particles at once for denser effect
+                    const particleCount = Math.random() > 0.5 ? 2 : 3;
+                    for (let i = 0; i < particleCount; i++) {
+                        createStarParticle(newLeft + rect.width / 2, newTop + rect.height / 2);
+                    }
+                    pet._lastParticleTime = Date.now();
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    pet.classList.remove('is-dragging');
+                    console.log('Twinora: drag ended');
+                }
+            });
+
+            // Click effect
+            pet.addEventListener('click', (e) => {
+                // Only trigger if not dragging
+                if (!pet._wasDragging) {
+                    showMessage("嘿！轻一点~ ✨");
+                    pet.style.transform = "scale(1.2) rotate(10deg)";
+                    setTimeout(() => pet.style.transform = "", 300);
+                }
+                pet._wasDragging = false;
+            });
+
+            // Star particle generator
+            function createStarParticle(x, y) {
+                // Check prefers-reduced-motion
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+                const particle = document.createElement('div');
+                particle.className = 'twinora-star-particle';
+
+                // Soft golden color - lighter than theme gold (218, 174, 88)
+                const colors = [
+                    'rgba(235, 200, 130, 0.6)',  // Lighter gold
+                    'rgba(245, 215, 150, 0.6)',  // Very light gold
+                    'rgba(230, 195, 120, 0.6)'   // Soft gold
+                ];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+                // Random offset - spread around Twinora like falling dust
+                const offsetX = (Math.random() - 0.5) * 60;
+                const offsetY = (Math.random() - 0.5) * 60;
+                particle.style.left = (x + offsetX) + 'px';
+                particle.style.top = (y + offsetY) + 'px';
+
+                document.body.appendChild(particle);
+
+                // Auto remove after animation
+                setTimeout(() => particle.remove(), 1200);
+            }
+
+            // Welcome message
             setTimeout(() => showMessage("主人我来啦！"), 1000);
         })();
     </script>
-    ```html
-   <script>
+
+    <script>
         const searchInput = document.getElementById('academicSearchInput');
         const searchBtn = document.getElementById('searchBtn');
         const resultsContainer = document.getElementById('searchResults');
