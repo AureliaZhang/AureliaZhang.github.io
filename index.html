@@ -8,6 +8,8 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Aurelia - HCI Researcher</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 2 L19 13 L30 16 L19 19 L16 30 L13 19 L2 16 L13 13 Z' fill='%23DAAE58'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&family=Parisienne&family=Space+Mono:wght@400;700&display=swap"
@@ -262,7 +264,7 @@
             overflow-x: hidden;
             scroll-snap-align: start;
             scroll-snap-stop: always;
-            padding: 40px 60px;
+            padding: 40px 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -303,7 +305,7 @@
             grid-template-columns: 1.6fr 1fr;
             grid-template-rows: 3fr 1fr;
             gap: 20px;
-            max-width: 1000px;
+            max-width: 1400px;
             width: 100%;
             height: calc(min(100vw, 900px) * 9 / 16 - 10px);
         }
@@ -372,7 +374,7 @@
         .top-right-card {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: flex-start;
             padding: 28px 32px;
             font-size: 16px;
@@ -380,7 +382,21 @@
             font-weight: 400;
             text-align: left;
             line-height: 1.8;
-            gap: 16px;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        .top-right-card::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .top-right-card::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .top-right-card::-webkit-scrollbar-thumb {
+            background: rgba(218, 174, 88, 0.3);
+            border-radius: 3px;
         }
 
         .top-right-card .section-label {
@@ -662,18 +678,33 @@
 
         /* ========== ABOUT — CELESTIAL REDESIGN (ref: aboutmeref.png) ========== */
         .about-section-v2 {
-            justify-content: flex-start;
-            padding-top: 34px;
-            padding-bottom: 24px;
+            justify-content: center;
+            padding-top: 30px;
+            padding-bottom: 30px;
         }
 
         .about-ref {
             width: 100%;
-            max-width: 1180px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 0 40px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 10px;
+        }
+
+        @media (max-width: 1500px) {
+            .about-ref {
+                max-width: 90%;
+                padding: 0 30px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .about-ref {
+                max-width: 95%;
+                padding: 0 20px;
+            }
         }
 
         /* --- Top row: eyebrow + headline / poetic quote --- */
@@ -734,15 +765,59 @@
         /* --- Two-card grid --- */
         .about-grid {
             display: grid;
-            grid-template-columns: 0.72fr 1.28fr;
-            gap: 24px;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
             align-items: stretch;
+        }
+
+        @media (max-width: 1400px) {
+            .about-grid {
+                gap: 16px;
+            }
+            .about-portrait {
+                max-width: 360px;
+            }
+            .about-bio {
+                padding: 24px 28px;
+            }
+        }
+
+        @media (max-width: 1300px) {
+            .about-ref {
+                transform: scale(0.85);
+                transform-origin: top center;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+                margin: 0 auto;
+                gap: 16px;
+            }
+            .about-portrait {
+                max-width: 360px;
+                margin: 0 auto;
+            }
+            .about-bio {
+                padding: 20px 24px;
+            }
+            .about-top {
+                gap: 16px;
+                margin-bottom: 8px;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+                margin: 0 auto;
+            }
         }
 
         /* --- Left: celestial portrait card --- */
         .about-portrait {
             position: relative;
-            aspect-ratio: 3 / 4;
+            aspect-ratio: 4 / 5;
             width: 100%;
             height: auto;
             align-self: start;
@@ -853,7 +928,7 @@
         .about-bio {
             position: relative;
             border-radius: 22px;
-            padding: 32px 36px;
+            padding: 28px 32px;
             background: rgba(10, 14, 22, 0.55);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -891,7 +966,7 @@
             font-size: 15px;
             line-height: 1.74;
             color: rgba(226, 223, 215, 0.82);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             max-width: 56ch;
         }
 
@@ -907,9 +982,9 @@
         .about-facts {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
+            gap: 16px;
             margin-top: auto;
-            padding-top: 22px;
+            padding-top: 18px;
             border-top: 1px solid rgba(218, 174, 88, 0.14);
         }
 
@@ -1060,7 +1135,7 @@
         }
 
         .footer-content {
-            max-width: 1000px;
+            max-width: 1400px;
             width: 100%;
             display: flex;
             justify-content: space-between;
@@ -1112,11 +1187,11 @@
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: 220px 1fr;
-            gap: 20px;
-            height: 75vh;
+            grid-template-rows: 160px 1fr;
+            gap: 16px;
+            height: 68vh;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
         }
 
         .cyber-card {
@@ -1124,8 +1199,8 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 16px;
+            padding: 20px;
             position: relative;
             overflow: hidden;
             transition: all 0.4s ease;
@@ -1283,7 +1358,7 @@
         .tech-drawing-container {
             width: 100%;
             height: 100%;
-            background: #fff;
+            background: #101520;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1325,7 +1400,7 @@
             gap: 20px;
             height: 70vh;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1500px;
         }
 
         .ui-panel {
@@ -1621,7 +1696,7 @@
 
         /* ========== RESEARCH HUB STYLES ========== */
         .research-hub-container {
-            max-width: 1200px;
+            max-width: 1500px;
             margin: 0 auto;
             width: 100%;
         }
@@ -1860,6 +1935,7 @@
             z-index: 999999;
             pointer-events: auto;
             cursor: grab;
+            touch-action: none; /* Don't let the page scroll/zoom while dragging on touch */
 
             /* Twinora size */
             height: 130px;
@@ -2147,9 +2223,9 @@
         /* ========== PROJECT CARDS GRID (Phase 2) ========== */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
             gap: 24px;
-            max-width: 1200px;
+            max-width: 1500px;
             margin: 0 auto;
             padding: 40px 20px;
         }
@@ -2272,22 +2348,22 @@
         /* Workspace Tabs */
         .workspace-tabs {
             display: flex;
-            gap: 8px;
-            margin-bottom: 30px;
-            padding: 8px;
+            gap: 6px;
+            margin-bottom: 20px;
+            padding: 6px;
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid rgba(218, 174, 88, 0.14);
             flex-wrap: wrap;
         }
 
         .workspace-tab {
-            padding: 10px 20px;
+            padding: 8px 16px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
             color: rgba(255, 255, 255, 0.7);
-            font-size: 13px;
+            font-size: 12px;
             font-family: 'Courier New', monospace;
             cursor: pointer;
             transition: all 0.3s;
@@ -2618,7 +2694,7 @@
                 <div class="page-header" style="margin-bottom: 10px;">
 
                     <div id="quote-container"
-                        style="max-width: 1000px; margin: 0 auto 15px auto; color: rgba(255, 255, 255, 0.9); font-family: 'Parisienne', 'MyLoveFont', cursive;">
+                        style="max-width: 1400px; margin: 0 auto 15px auto; color: rgba(255, 255, 255, 0.9); font-family: 'Parisienne', 'MyLoveFont', cursive;">
 
                         <div class="quote-header"
                             style="text-align: left; font-size: 18px; margin-bottom: 5px; font-weight: 400; padding-left: 0; opacity: 0.8;">
@@ -2672,22 +2748,22 @@
                     <!-- Top Right Card - Recent Projects -->
                     <div class="bento-card top-right-card">
                         <div class="section-label">Recent Projects</div>
-                        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
-                            <a href="#research" class="recent-project-item" style="text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 10px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s;">
+                        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 2px;">
+                            <a href="#research" class="recent-project-item" style="text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s;">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
                                     <div style="font-size: 13px; font-weight: 600;">HCI Research Observatory</div>
                                     <span class="status-badge active" style="font-size: 12px; padding: 2px 6px;">Active</span>
                                 </div>
                                 <div style="font-size: 12px; opacity: 0.6;">Local-first knowledge workspace</div>
                             </a>
-                            <a href="#research" class="recent-project-item" style="text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 10px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s;">
+                            <a href="#research" class="recent-project-item" style="text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s;">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
                                     <div style="font-size: 13px; font-weight: 600;">Immortal Heart Game</div>
                                     <span class="status-badge prototype" style="font-size: 12px; padding: 2px 6px;">Prototype</span>
                                 </div>
                                 <div style="font-size: 12px; opacity: 0.6;">AI-powered interactive story</div>
                             </a>
-                            <a href="#research" class="recent-project-item" style="text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 10px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s;">
+                            <a href="#research" class="recent-project-item" style="text-decoration: none; color: rgba(255, 255, 255, 0.8); padding: 8px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s;">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
                                     <div style="font-size: 13px; font-weight: 600;">Email Agent Backend</div>
                                     <span class="status-badge active" style="font-size: 12px; padding: 2px 6px;">Active</span>
@@ -2695,14 +2771,14 @@
                                 <div style="font-size: 12px; opacity: 0.6;">Webhook automation system</div>
                             </a>
                         </div>
-                        <a href="#research" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; color: rgba(218, 174, 88, 0.9); font-size: 12px; font-weight: 600; text-decoration: none; transition: all 0.3s;">
+                        <a href="#research" style="display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; color: rgba(218, 174, 88, 0.9); font-size: 12px; font-weight: 600; text-decoration: none; transition: all 0.3s;">
                             View All Projects <span style="transition: transform 0.3s;">→</span>
                         </a>
                     </div>
 
                     <!-- Bottom Right Card - Token Usage -->
-                    <div class="bento-card bottom-right-card" style="display: flex; flex-direction: column; justify-content: center; padding: 30px;">
-                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="bento-card bottom-right-card" style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 28px 32px;">
+                        <div style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
                             <!-- Claude Tokens -->
                             <div>
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -2918,10 +2994,11 @@
                     <div class="img-container">
                         <img src="https://placehold.co/1200x800/101520/bc13fe?text=Actor-Network+Diagram"
                             alt="Network Diagram">
-                        <a href="https://github.com/your-repo" target="_blank" class="github-btn">
+                        <!-- TODO 待更新：暂指向 Aurelia 的 GitHub 个人主页；将来此项目有独立代码仓库后，替换为具体仓库地址（github.com/AureliaZhang/项目名）。 -->
+                        <a href="https://github.com/AureliaZhang" target="_blank" class="github-btn">
                             <svg height="16" width="16" viewBox="0 0 16 16" fill="white">
                                 <path
-                                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0016 8c0-4.42-3.58-8-8-8z">
+                                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
                                 </path>
                             </svg>
                             View Code on GitHub
@@ -2981,6 +3058,7 @@
                             Ecological Rights as <span
                                 style="color: rgba(218, 174, 88, 0.95); font-weight: 700;">VIP?</span>
                         </h3>
+                        <!-- TODO 待更新：此处文案为占位，首句系从 Synesthetic 项目复制残留（与 Fubao 生态村主题无关），整理好后替换为真实项目简介。 -->
                         <p style="color: rgba(255, 255, 255, 0.6); font-size: 16px; letter-spacing: 1px;">
                             Product designer specialized in building SaaS product.<br>
                             Redefining urban hierarchy through biological algorithms.
@@ -3007,9 +3085,9 @@
                 <div class="page-header">
                     <span class="section-desc">Infrastructure // Conduit Components</span>
                 </div>
-                <div class="cyber-card full-card" style="padding: 0; background: #fff;">
+                <div class="cyber-card full-card" style="padding: 0;">
                     <div class="tech-drawing-container">
-                        <img src="https://placehold.co/1600x600/FFF/000?text=Technical+Cross+Section+Drawing"
+                        <img src="https://placehold.co/1600x600/101520/00F0FF?text=Technical+Cross+Section+Drawing"
                             alt="Cross Section">
                     </div>
                 </div>
@@ -3028,9 +3106,9 @@
                         <div class="img-container">
                             <img src="https://placehold.co/600x400/444/FFF?text=Sprawl+Suburb" alt="Suburb">
                         </div>
-                        <div class="img-container" style="background: #fff;">
-                            <img src="https://placehold.co/600x400/EEE/333?text=Population+Bubble+Chart"
-                                alt="Bubble Chart" style="object-fit: contain;">
+                        <div class="img-container">
+                            <img src="https://placehold.co/600x400/4a4a4a/FFF?text=Population+Bubble+Chart"
+                                alt="Bubble Chart">
                         </div>
                         <div class="img-container">
                             <img src="https://placehold.co/600x400/555/FFF?text=Industrial+Zone" alt="Industrial">
@@ -3085,14 +3163,14 @@
                 </div>
                 <div class="cyber-card full-card">
                     <div class="quad-grid">
-                        <div class="img-container" style="background: #fff;"><img
-                                src="https://placehold.co/600x400/FFF/000?text=Map+Analysis+A" alt="Map A"></div>
-                        <div class="img-container" style="background: #fff;"><img
-                                src="https://placehold.co/600x400/FFF/000?text=Map+Analysis+B" alt="Map B"></div>
-                        <div class="img-container" style="background: #fff;"><img
-                                src="https://placehold.co/600x400/FFF/000?text=Map+Analysis+C" alt="Map C"></div>
-                        <div class="img-container" style="background: #fff;"><img
-                                src="https://placehold.co/600x400/FFF/000?text=Map+Analysis+D" alt="Map D"></div>
+                        <div class="img-container"><img
+                                src="https://placehold.co/600x400/101520/FFF?text=Map+Analysis+A" alt="Map A"></div>
+                        <div class="img-container"><img
+                                src="https://placehold.co/600x400/101520/FFF?text=Map+Analysis+B" alt="Map B"></div>
+                        <div class="img-container"><img
+                                src="https://placehold.co/600x400/101520/FFF?text=Map+Analysis+C" alt="Map C"></div>
+                        <div class="img-container"><img
+                                src="https://placehold.co/600x400/101520/FFF?text=Map+Analysis+D" alt="Map D"></div>
                     </div>
                 </div>
             </section>
@@ -3247,6 +3325,15 @@
                                 <div class="workspace-card-title">Statistics</div>
                                 <div class="workspace-card-content" id="dashboard-stats">Loading...</div>
                             </div>
+                            <div class="workspace-card">
+                                <div class="workspace-card-title">✦ AI Lab Projects</div>
+                                <div class="workspace-card-content" style="display: flex; flex-direction: column; gap: 8px;">
+                                    <a href="../../projects/Aalto_HCI_Agent/index.html" style="color: rgba(218, 174, 88, 0.95); text-decoration: none; padding: 8px; background: rgba(218, 174, 88, 0.08); border-radius: 6px; transition: all 0.3s;" onmouseover="this.style.background='rgba(218, 174, 88, 0.15)'" onmouseout="this.style.background='rgba(218, 174, 88, 0.08)'">→ HCI Observatory</a>
+                                    <a href="../../projects/Aalto_HCI_Agent/AI_Workspace/immortal-heart/index.html" style="color: rgba(218, 174, 88, 0.95); text-decoration: none; padding: 8px; background: rgba(218, 174, 88, 0.08); border-radius: 6px; transition: all 0.3s;" onmouseover="this.style.background='rgba(218, 174, 88, 0.15)'" onmouseout="this.style.background='rgba(218, 174, 88, 0.08)'">→ Immortal Heart</a>
+                                    <span style="color: rgba(255, 255, 255, 0.4); font-size: 12px; padding: 4px 8px;">→ Email Agent (开发中)</span>
+                                    <span style="color: rgba(255, 255, 255, 0.4); font-size: 12px; padding: 4px 8px;">→ Image Upload (开发中)</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -3339,77 +3426,134 @@
             </section>
 
             <!-- SECTION 17: RESEARCH (Now positioned AFTER projects) -->
-            <section id="research" class="snap-section" style="overflow-y: auto; justify-content: flex-start;">
-                <div class="page-header">
-                    <h2 class="shoutout-title">Research & Projects</h2>
-                    <span class="section-desc">Learning • Building • Exploring</span>
+            <section id="research" class="snap-section" style="overflow-y: auto; justify-content: flex-start; padding: 40px 60px;">
+                <div class="page-header" style="margin-bottom: 50px;">
+                    <h2 class="shoutout-title">Research</h2>
+                    <span class="section-desc">Human-Computer Interaction • AI Agents • Data-Driven Design</span>
                 </div>
 
-                <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; height: 500px;">
-                    <!-- Left Column: Learning Projects -->
-                    <div class="cyber-card" style="padding: 30px; display: flex; flex-direction: column; gap: 20px; height: 100%;">
-                        <h3 style="font-size: 20px; color: rgba(218, 174, 88, 0.95); margin-bottom: 10px;">Learning Projects</h3>
+                <div style="max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 50px;">
 
-                        <div style="display: flex; flex-direction: column; gap: 16px;">
-                            <div style="text-decoration: none; color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); position: relative;">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: rgba(218, 174, 88, 0.95);">HCI Research Observatory</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5; margin-bottom: 10px;">Local-first knowledge workspace for reading arXiv papers, curating industry news, and building a grounded knowledge base with citations.</div>
-                                <a href="/index.html" style="position: relative; z-index: 100; display: inline-block; padding: 6px 12px; background: rgba(218, 174, 88, 0.1); border: 1px solid rgba(218, 174, 88, 0.3); border-radius: 6px; color: rgba(218, 174, 88, 0.95); text-decoration: none; font-size: 12px; transition: all 0.3s; cursor: pointer;">Open Dashboard</a>
-                            </div>
-
-                            <div style="text-decoration: none; color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: rgba(255, 255, 255, 0.8);">Email Agent Backend</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5;">Webhook automation system for processing emails with AI-powered reply drafts.</div>
-                            </div>
-
-                            <div style="color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 10px; color: rgba(255, 255, 255, 0.8);">Academic Search Engine</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5; margin-bottom: 12px;">Integrated search interface for exploring academic papers and research topics.</div>
-
-                                <!-- Search Module -->
-                                <div style="position: relative; width: 100%; margin-top: 12px;">
-                                    <input type="text" id="academicSearchInput" placeholder="输入学术关键词，例如: 15-minute city..."
-                                           style="width: 100%; padding: 12px 40px 12px 16px; background: rgba(10, 15, 30, 0.5); border: 1px solid rgba(218, 174, 88, 0.3); border-radius: 10px; color: #fff; font-size: 13px; outline: none; backdrop-filter: blur(10px); transition: all 0.3s ease;">
-                                    <button id="searchBtn" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: rgba(218, 174, 88, 0.8); cursor: pointer; padding: 8px; font-size: 16px; transition: transform 0.2s;">
-                                        🔍
-                                    </button>
-                                </div>
-                                <div id="searchResults" style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;">
+                    <!-- Research Interests -->
+                    <div class="cyber-card" style="padding: 40px;">
+                        <h3 style="font-size: 22px; color: rgba(218, 174, 88, 0.95); margin-bottom: 24px; font-weight: 600;">Research Interests</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                            <div style="padding: 20px; background: rgba(255, 255, 255, 0.02); border-radius: 12px; border-left: 3px solid rgba(218, 174, 88, 0.6);">
+                                <div style="font-size: 16px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 10px;">Human-AI Collaboration</div>
+                                <div style="font-size: 14px; color: rgba(255, 255, 255, 0.65); line-height: 1.6;">
+                                    Exploring interaction paradigms for AI agents, focusing on transparency, controllability, and trust in human-AI collaborative workflows.
                                 </div>
                             </div>
-
-                            <style>
-                                /* 搜索框悬停发光动画 */
-                                #academicSearchInput:focus { border-color: rgba(218, 174, 88, 0.8); box-shadow: 0 0 20px rgba(218, 174, 88, 0.15); }
-                                #searchBtn:hover { transform: translateY(-50%) scale(1.1); color: #fff; }
-                                /* 隐藏滚动条让视觉更极简 */
-                                #searchResults::-webkit-scrollbar { width: 4px; }
-                                #searchResults::-webkit-scrollbar-thumb { background: rgba(218, 174, 88, 0.3); border-radius: 4px; }
-                            </style>
+                            <div style="padding: 20px; background: rgba(255, 255, 255, 0.02); border-radius: 12px; border-left: 3px solid rgba(218, 174, 88, 0.6);">
+                                <div style="font-size: 16px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 10px;">Data-Driven Urban Design</div>
+                                <div style="font-size: 14px; color: rgba(255, 255, 255, 0.65); line-height: 1.6;">
+                                    Leveraging data visualization and computational methods to inform sustainable urban planning and ecological decision-making.
+                                </div>
+                            </div>
+                            <div style="padding: 20px; background: rgba(255, 255, 255, 0.02); border-radius: 12px; border-left: 3px solid rgba(218, 174, 88, 0.6);">
+                                <div style="font-size: 16px; font-weight: 600; color: rgba(255, 255, 255, 0.95); margin-bottom: 10px;">Knowledge Management Systems</div>
+                                <div style="font-size: 14px; color: rgba(255, 255, 255, 0.65); line-height: 1.6;">
+                                    Designing local-first, citation-grounded tools for researchers to manage, annotate, and synthesize academic literature.
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Right Column: Game Projects -->
-                    <div class="cyber-card" style="padding: 30px; display: flex; flex-direction: column; gap: 20px; height: 100%;">
-                        <h3 style="font-size: 20px; color: rgba(218, 174, 88, 0.95); margin-bottom: 10px;">Game Projects</h3>
+                    <!-- Research Projects -->
+                    <div class="cyber-card" style="padding: 40px;">
+                        <h3 style="font-size: 22px; color: rgba(218, 174, 88, 0.95); margin-bottom: 24px; font-weight: 600;">Current Research Projects</h3>
+                        <div style="display: flex; flex-direction: column; gap: 24px;">
 
-                        <div style="display: flex; flex-direction: column; gap: 16px;">
-                            <a href="./AI_Workspace/index.html" target="_blank" style="text-decoration: none; color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s; cursor: pointer;">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: rgba(218, 174, 88, 0.95);">Immortal Heart</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5;">AI-powered interactive text adventure game with dynamic storytelling and character interactions.</div>
-                            </a>
-
-                            <div style="text-decoration: none; color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); opacity: 0.5;">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: rgba(255, 255, 255, 0.6);">Dream Garden</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5;">Coming soon...</div>
+                            <!-- Project 1 -->
+                            <div style="padding: 24px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                    <div style="font-size: 18px; font-weight: 600; color: rgba(255, 255, 255, 0.95);">HCI Research Observatory</div>
+                                    <span style="padding: 4px 12px; background: rgba(218, 174, 88, 0.15); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.95); font-weight: 600;">In Progress</span>
+                                </div>
+                                <div style="font-size: 14px; color: rgba(255, 255, 255, 0.65); line-height: 1.7; margin-bottom: 16px;">
+                                    A local-first knowledge workspace designed for HCI researchers to track arXiv publications, manage literature reviews, and build citation-grounded knowledge bases.
+                                    The system emphasizes <strong style="color: rgba(218, 174, 88, 0.9);">provenance tracking</strong> and <strong style="color: rgba(218, 174, 88, 0.9);">transparent AI-assisted synthesis</strong>,
+                                    ensuring all generated summaries maintain links to source documents.
+                                </div>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+                                    <span style="padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(218, 174, 88, 0.2); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.8);">Python</span>
+                                    <span style="padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(218, 174, 88, 0.2); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.8);">Knowledge Management</span>
+                                    <span style="padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(218, 174, 88, 0.2); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.8);">Local-First</span>
+                                    <span style="padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(218, 174, 88, 0.2); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.8);">AI-Assisted</span>
+                                </div>
+                                <a href="../../projects/Aalto_HCI_Agent/index.html" style="display: inline-block; padding: 8px 16px; background: rgba(218, 174, 88, 0.1); border: 1px solid rgba(218, 174, 88, 0.3); border-radius: 6px; color: rgba(218, 174, 88, 0.95); text-decoration: none; font-size: 13px; transition: all 0.3s;">View Dashboard →</a>
                             </div>
 
-                            <div style="text-decoration: none; color: rgba(255, 255, 255, 0.9); padding: 16px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); opacity: 0.5;">
-                                <div style="font-size: 15px; font-weight: 600; margin-bottom: 6px; color: rgba(255, 255, 255, 0.6);">Signal Catcher</div>
-                                <div style="font-size: 13px; opacity: 0.7; line-height: 1.5;">Coming soon...</div>
+                            <!-- Project 2 -->
+                            <div style="padding: 24px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                    <div style="font-size: 18px; font-weight: 600; color: rgba(255, 255, 255, 0.95);">Synesthetic: Supply Chain Visualization Platform</div>
+                                    <span style="padding: 4px 12px; background: rgba(100, 100, 255, 0.15); border-radius: 6px; font-size: 12px; color: rgba(150, 150, 255, 0.95); font-weight: 600;">Prototype</span>
+                                </div>
+                                <div style="font-size: 14px; color: rgba(255, 255, 255, 0.65); line-height: 1.7; margin-bottom: 16px;">
+                                    Data visualization and network analysis tool for the Dounan Flower Market supply chain.
+                                    Explores how <strong style="color: rgba(218, 174, 88, 0.9);">interactive visualization</strong> can reveal hidden patterns in complex agricultural logistics networks and support stakeholder decision-making.
+                                </div>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+                                    <span style="padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(218, 174, 88, 0.2); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.8);">Data Visualization</span>
+                                    <span style="padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(218, 174, 88, 0.2); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.8);">Network Analysis</span>
+                                    <span style="padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(218, 174, 88, 0.2); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.8);">Supply Chain</span>
+                                </div>
+                                <a href="#project-01-intro" style="display: inline-block; padding: 8px 16px; background: rgba(218, 174, 88, 0.1); border: 1px solid rgba(218, 174, 88, 0.3); border-radius: 6px; color: rgba(218, 174, 88, 0.95); text-decoration: none; font-size: 13px; transition: all 0.3s;">View Project →</a>
+                            </div>
+
+                            <!-- Project 3 -->
+                            <div style="padding: 24px; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                    <div style="font-size: 18px; font-weight: 600; color: rgba(255, 255, 255, 0.95);">Fubao Eco-Village: Algorithmic Urbanism</div>
+                                    <span style="padding: 4px 12px; background: rgba(100, 200, 100, 0.15); border-radius: 6px; font-size: 12px; color: rgba(150, 255, 150, 0.95); font-weight: 600;">Active</span>
+                                </div>
+                                <div style="font-size: 14px; color: rgba(255, 255, 255, 0.65); line-height: 1.7; margin-bottom: 16px;">
+                                    Computational urban design experiment that redefines spatial hierarchy through biological algorithms.
+                                    Investigates how <strong style="color: rgba(218, 174, 88, 0.9);">data-driven methods</strong> can prioritize ecological rights and inform sustainable, equity-focused urban planning.
+                                </div>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+                                    <span style="padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(218, 174, 88, 0.2); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.8);">Urban Design</span>
+                                    <span style="padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(218, 174, 88, 0.2); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.8);">Algorithms</span>
+                                    <span style="padding: 6px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(218, 174, 88, 0.2); border-radius: 6px; font-size: 12px; color: rgba(218, 174, 88, 0.8);">Ecology</span>
+                                </div>
+                                <a href="#project-02-intro" style="display: inline-block; padding: 8px 16px; background: rgba(218, 174, 88, 0.1); border: 1px solid rgba(218, 174, 88, 0.3); border-radius: 6px; color: rgba(218, 174, 88, 0.95); text-decoration: none; font-size: 13px; transition: all 0.3s;">View Project →</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Technical Skills & Tools -->
+                    <div class="cyber-card" style="padding: 40px;">
+                        <h3 style="font-size: 22px; color: rgba(218, 174, 88, 0.95); margin-bottom: 24px; font-weight: 600;">Technical Skills</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;">
+                            <div>
+                                <div style="font-size: 15px; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin-bottom: 12px;">Programming</div>
+                                <div style="font-size: 14px; color: rgba(255, 255, 255, 0.6); line-height: 1.8;">
+                                    Python, JavaScript, SQL<br>
+                                    Vue.js, Node.js, Flask<br>
+                                    Git, Docker
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size: 15px; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin-bottom: 12px;">Data & Visualization</div>
+                                <div style="font-size: 14px; color: rgba(255, 255, 255, 0.6); line-height: 1.8;">
+                                    D3.js, Plotly, Matplotlib<br>
+                                    Pandas, NumPy<br>
+                                    Network Analysis
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size: 15px; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin-bottom: 12px;">Design & Research</div>
+                                <div style="font-size: 14px; color: rgba(255, 255, 255, 0.6); line-height: 1.8;">
+                                    User Research, Prototyping<br>
+                                    Interaction Design<br>
+                                    Qualitative Methods
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </section>
 
@@ -3811,8 +3955,6 @@
                 return;
             }
 
-            console.log('Twinora: initialized successfully');
-
             // Random messages
             const messages = [
                 "我是 Twinora，星光小仙灵~ ✨",
@@ -3835,13 +3977,18 @@
             let isDragging = false;
             let startX, startY, initialLeft, initialTop;
 
-            pet.addEventListener('mousedown', (e) => {
-                console.log('Twinora: mousedown triggered', e.button);
-                if (e.button !== 0) return; // Only left click
+            pet.addEventListener('pointerdown', (e) => {
+                if (e.button !== 0) return; // Only primary button / touch contact
 
                 isDragging = true;
                 pet.classList.add('is-dragging');
                 pet._wasDragging = false;
+
+                // Capture the pointer so move/up keep firing even if it leaves the
+                // element — unifies mouse, touch and pen through one code path.
+                if (pet.setPointerCapture) {
+                    try { pet.setPointerCapture(e.pointerId); } catch (_) {}
+                }
 
                 const rect = pet.getBoundingClientRect();
                 startX = e.clientX;
@@ -3849,13 +3996,11 @@
                 initialLeft = rect.left;
                 initialTop = rect.top;
 
-                e.preventDefault(); // Prevent text selection
+                e.preventDefault(); // Prevent text/image selection & touch scrolling
                 e.stopPropagation();
-
-                console.log('Twinora: drag started');
             });
 
-            document.addEventListener('mousemove', (e) => {
+            document.addEventListener('pointermove', (e) => {
                 if (!isDragging) return;
 
                 pet._wasDragging = true;
@@ -3886,11 +4031,10 @@
                 }
             });
 
-            document.addEventListener('mouseup', () => {
+            document.addEventListener('pointerup', () => {
                 if (isDragging) {
                     isDragging = false;
                     pet.classList.remove('is-dragging');
-                    console.log('Twinora: drag ended');
                 }
             });
 
@@ -3975,7 +4119,6 @@
                 // 开启终极透视眼：如果 SerpBase 返回了任何错误（比如密钥失效、额度用完），直接在页面上显示出来！
                 // 开启终极透视眼：如果 SerpBase 返回了任何错误，直接在页面上显示出来！
                 if (!data.organic || data.organic.length === 0) {
-                    console.log("Server response:", data);
                     // ...后面的不用动...
                     resultsContainer.innerHTML = `<div style="color: #ffcc00; font-size: 12px; text-align: left; padding: 15px; background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.3); border-radius: 8px; word-break: break-all; font-family: 'Space Mono', monospace;">
                         <strong>📡 截获异常信号，请排查:</strong><br><br>
@@ -4031,6 +4174,9 @@
         let carouselInterval;
 
         function showSlide(index) {
+            // No carousel elements on the page (or index out of range) — nothing to do.
+            if (!slides.length || !slides[index]) return;
+
             // Hide all slides
             slides.forEach(slide => {
                 slide.style.opacity = '0';
@@ -4056,6 +4202,7 @@
         }
 
         function startCarousel() {
+            if (totalSlides === 0) return; // No slides present — don't start the timer (avoids NaN index errors).
             carouselInterval = setInterval(nextSlide, 5000); // Auto-play every 5 seconds
         }
 
