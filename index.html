@@ -4794,17 +4794,22 @@
 
                 <div class="form-group">
                     <label>模型</label>
-                    <select id="settings-model">
-                        <option value="">使用后端配置的模型</option>
-                        <option value="gpt-4o-mini">GPT-4o-mini</option>
-                        <option value="gpt-4o">GPT-4o</option>
-                        <option value="gpt-4-turbo">GPT-4 Turbo</option>
-                        <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-                        <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
-                        <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku</option>
-                    </select>
+                    <div style="display: flex; gap: 8px; align-items: flex-start;">
+                        <select id="settings-model" style="flex: 1;">
+                            <option value="">使用后端配置的模型</option>
+                            <option value="gpt-4o-mini">GPT-4o-mini</option>
+                            <option value="gpt-4o">GPT-4o</option>
+                            <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                            <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                            <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
+                            <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku</option>
+                        </select>
+                        <button type="button" onclick="fetchModels()" style="padding: 10px 12px; background: rgba(218, 174, 88, 0.15); border: 1px solid rgba(218, 174, 88, 0.3); border-radius: 8px; color: rgba(218, 174, 88, 1); font-size: 12px; cursor: pointer; white-space: nowrap;">
+                            🔄 拉取
+                        </button>
+                    </div>
                     <small style="color: rgba(255,255,255,0.5); font-size: 11px; display: block; margin-top: 4px;">
-                        留空则使用后端管理员配置的模型
+                        点"拉取"从 API 获取可用模型列表
                     </small>
                 </div>
 
@@ -5214,6 +5219,63 @@
 
             statusEl.textContent = message;
             statusEl.style.color = colors[type] || colors.info;
+        }
+
+        // 从 API 拉取可用模型
+        async function fetchModels() {
+            const apiUrl = document.getElementById('settings-api-url').value;
+            const apiKey = document.getElementById('settings-api-key').value;
+
+            if (!apiUrl) {
+                showSettingsStatus('❌ 请先填写 API 地址', 'error');
+                return;
+            }
+
+            showSettingsStatus('🔄 拉取模型列表中...', 'info');
+
+            try {
+                // 构建 models 接口地址
+                // 从 /v1/chat/completions 提取 base URL
+                let baseUrl = apiUrl.replace(/\/v1\/chat\/completions$/, '');
+                if (!baseUrl.endsWith('/v1')) {
+                    baseUrl = apiUrl.split('/v1')[0] + '/v1';
+                }
+                const modelsUrl = `${baseUrl}/models`;
+
+                const headers = {};
+                if (apiKey) {
+                    headers['Authorization'] = `Bearer ${apiKey}`;
+                }
+
+                const response = await fetch(modelsUrl, { headers });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                const modelSelect = document.getElementById('settings-model');
+
+                // 清空现有选项
+                modelSelect.innerHTML = '<option value="">使用后端配置的模型</option>';
+
+                // 添加获取到的模型
+                if (data.data && Array.isArray(data.data)) {
+                    data.data.forEach(model => {
+                        const option = document.createElement('option');
+                        option.value = model.id;
+                        option.textContent = model.id;
+                        modelSelect.appendChild(option);
+                    });
+
+                    showSettingsStatus(`✅ 成功获取 ${data.data.length} 个模型`, 'success');
+                } else {
+                    showSettingsStatus('⚠️ API 返回格式异常', 'error');
+                }
+
+            } catch (error) {
+                showSettingsStatus(`❌ 拉取失败: ${error.message}`, 'error');
+            }
         }
 
         function appendMessage(role, content, scroll = true) {
