@@ -2317,18 +2317,113 @@
             transform: translateX(4px);
         }
 
-        /* Coming Soon placeholder cards */
+        /* Coming Soon placeholder cards - 档案袋美学 */
         .project-card.coming-soon {
-            border-style: dashed;
-            border-color: rgba(255, 255, 255, 0.1);
-            opacity: 0.5;
-            cursor: not-allowed;
+            position: relative;
+            border-style: solid;
+            border-color: rgba(218, 174, 88, 0.25);
+            background: linear-gradient(135deg, rgba(218, 174, 88, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            opacity: 0.85;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-card.coming-soon::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: 20px;
+            width: 40px;
+            height: 8px;
+            background: linear-gradient(90deg, rgba(218, 174, 88, 0.4), rgba(218, 174, 88, 0.6));
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .project-card.coming-soon:hover {
-            transform: none;
-            box-shadow: none;
-            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(218, 174, 88, 0.15);
+            border-color: rgba(218, 174, 88, 0.4);
+            opacity: 1;
+        }
+
+        .project-card.coming-soon .project-title {
+            opacity: 0.7;
+        }
+
+        .project-card.coming-soon:hover .project-title {
+            opacity: 1;
+        }
+
+        /* 进度环 */
+        .coming-soon .progress-ring {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 48px;
+            height: 48px;
+        }
+
+        .coming-soon .progress-ring circle {
+            fill: none;
+            stroke-width: 3;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.6s ease;
+        }
+
+        .coming-soon .progress-ring .progress-bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .coming-soon .progress-ring .progress-bar {
+            stroke: rgba(218, 174, 88, 0.7);
+        }
+
+        .coming-soon:hover .progress-ring .progress-bar {
+            stroke: rgba(218, 174, 88, 1);
+        }
+
+        /* 工作碎片（悬停展开）*/
+        .coming-soon .work-glimpse {
+            position: absolute;
+            bottom: -120px;
+            left: 0;
+            right: 0;
+            padding: 16px 20px;
+            background: linear-gradient(180deg, rgba(20, 25, 40, 0.5) 0%, rgba(20, 25, 40, 0.95) 100%);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(218, 174, 88, 0.3);
+            transition: bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .coming-soon:hover .work-glimpse {
+            bottom: 0;
+        }
+
+        .work-glimpse-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(218, 174, 88, 0.8);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .work-glimpse-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .progress-label {
+            position: absolute;
+            top: 28px;
+            right: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(218, 174, 88, 0.9);
         }
 
         /* Responsive adjustments for project cards */
@@ -2888,39 +2983,87 @@
 
                     <!-- Placeholder cards for future projects -->
                     <div class="cyber-card project-card coming-soon">
+                        <!-- 进度环 -->
+                        <svg class="progress-ring" viewBox="0 0 48 48">
+                            <circle class="progress-bg" cx="24" cy="24" r="20" stroke-dasharray="125.6" stroke-dashoffset="0"></circle>
+                            <circle class="progress-bar" cx="24" cy="24" r="20" stroke-dasharray="125.6" stroke-dashoffset="106.8"></circle>
+                        </svg>
+                        <span class="progress-label">15%</span>
+
                         <div class="project-meta">
                             <span class="archive-id">PRJ_004</span>
-                            <span class="status-badge prototype">Coming Soon</span>
+                            <span class="status-badge prototype">In Progress</span>
                         </div>
-                        <h3 class="project-title">More Projects</h3>
-                        <p class="project-subtitle">AI Experiments // HCI Research</p>
+                        <h3 class="project-title">AI Experiments</h3>
+                        <p class="project-subtitle">Multimodal Interaction // HCI Research</p>
                         <p class="project-description">
-                            更多实验项目正在整理中...
+                            探索 AI 辅助的多模态交互设计方法，正在进行田野调查与原型迭代...
                         </p>
+
+                        <!-- 悬停展开的工作碎片 -->
+                        <div class="work-glimpse">
+                            <div class="work-glimpse-title">📸 Work in Progress</div>
+                            <div class="work-glimpse-content">
+                                Field photos · Interview transcripts<br>
+                                <span style="opacity: 0.5; font-size: 11px;">Est. completion: Aug 2026</span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="cyber-card project-card coming-soon">
+                        <!-- 进度环 -->
+                        <svg class="progress-ring" viewBox="0 0 48 48">
+                            <circle class="progress-bg" cx="24" cy="24" r="20" stroke-dasharray="125.6" stroke-dashoffset="0"></circle>
+                            <circle class="progress-bar" cx="24" cy="24" r="20" stroke-dasharray="125.6" stroke-dashoffset="69.1"></circle>
+                        </svg>
+                        <span class="progress-label">45%</span>
+
                         <div class="project-meta">
                             <span class="archive-id">PRJ_005</span>
-                            <span class="status-badge prototype">Coming Soon</span>
+                            <span class="status-badge prototype">In Progress</span>
                         </div>
-                        <h3 class="project-title">More Projects</h3>
-                        <p class="project-subtitle">Narrative Systems // Prototypes</p>
+                        <h3 class="project-title">Narrative Systems</h3>
+                        <p class="project-subtitle">Interactive Storytelling // Digital Humanities</p>
                         <p class="project-description">
-                            更多实验项目正在整理中...
+                            基于叙事引擎的交互系统原型，探索非线性叙事的设计模式...
                         </p>
+
+                        <!-- 悬停展开的工作碎片 -->
+                        <div class="work-glimpse">
+                            <div class="work-glimpse-title">⚙️ Prototyping</div>
+                            <div class="work-glimpse-content">
+                                v0.3 iteration · Testing with users<br>
+                                <span style="opacity: 0.5; font-size: 11px;">Est. completion: Sep 2026</span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="cyber-card project-card coming-soon">
+                        <!-- 进度环 -->
+                        <svg class="progress-ring" viewBox="0 0 48 48">
+                            <circle class="progress-bg" cx="24" cy="24" r="20" stroke-dasharray="125.6" stroke-dashoffset="0"></circle>
+                            <circle class="progress-bar" cx="24" cy="24" r="20" stroke-dasharray="125.6" stroke-dashoffset="37.7"></circle>
+                        </svg>
+                        <span class="progress-label">70%</span>
+
                         <div class="project-meta">
                             <span class="archive-id">PRJ_006</span>
-                            <span class="status-badge prototype">Coming Soon</span>
+                            <span class="status-badge active">Polishing</span>
                         </div>
-                        <h3 class="project-title">More Projects</h3>
-                        <p class="project-subtitle">Prompt Engineering // Tools</p>
+                        <h3 class="project-title">Prompt Engineering Tools</h3>
+                        <p class="project-subtitle">LLM Workflow // Generative AI</p>
                         <p class="project-description">
-                            更多实验项目正在整理中...
+                            面向设计师的 Prompt 工程工具集，优化 AI 辅助创作流程...
                         </p>
+
+                        <!-- 悬停展开的工作碎片 -->
+                        <div class="work-glimpse">
+                            <div class="work-glimpse-title">✨ Final touches</div>
+                            <div class="work-glimpse-content">
+                                Documentation · Case studies<br>
+                                <span style="opacity: 0.5; font-size: 11px;">Est. completion: Jul 2026</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
