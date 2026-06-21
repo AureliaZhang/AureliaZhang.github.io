@@ -4974,17 +4974,27 @@
 
         // 会话管理
         let currentSessionId = localStorage.getItem('twinora_current_session') || 'default';
-        let sessions = JSON.parse(localStorage.getItem('twinora_sessions') || '{}');
+        let sessions = {};
 
-        // 初始化默认会话
-        if (!sessions['default']) {
+        try {
+            sessions = JSON.parse(localStorage.getItem('twinora_sessions') || '{}');
+        } catch (e) {
+            console.warn('会话数据格式异常，重新初始化', e);
+            sessions = {};
+        }
+
+        // 初始化默认会话（确保始终存在）
+        if (!sessions['default'] || typeof sessions['default'] !== 'object') {
             sessions['default'] = {
                 id: 'default',
                 name: '💬 普通对话',
+                type: 'default',
                 history: [],
                 createdAt: Date.now(),
                 updatedAt: Date.now()
             };
+            // 立即保存，确保不会丢失
+            localStorage.setItem('twinora_sessions', JSON.stringify(sessions));
         }
 
         // 对话历史（从当前会话加载）
@@ -5135,6 +5145,16 @@
             if (!listEl) return;
 
             const sessionArray = Object.values(sessions).sort((a, b) => b.updatedAt - a.updatedAt);
+
+            console.log('📋 渲染会话列表:', {
+                总数: sessionArray.length,
+                会话: sessionArray.map(s => ({ id: s.id, name: s.name }))
+            });
+
+            if (sessionArray.length === 0) {
+                listEl.innerHTML = '<div style="color: rgba(255,255,255,0.4); font-size: 12px; text-align: center; padding: 20px;">暂无对话历史</div>';
+                return;
+            }
 
             listEl.innerHTML = sessionArray.map(session => {
                 const isActive = session.id === currentSessionId;
