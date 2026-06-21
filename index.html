@@ -2329,6 +2329,10 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        .project-card.coming-soon .project-meta {
+            padding-right: 70px;
+        }
+
         .project-card.coming-soon::before {
             content: '';
             position: absolute;
@@ -2359,10 +2363,11 @@
         /* 进度环 */
         .coming-soon .progress-ring {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 48px;
-            height: 48px;
+            top: 20px;
+            right: 20px;
+            width: 52px;
+            height: 52px;
+            z-index: 10;
         }
 
         .coming-soon .progress-ring circle {
@@ -2419,11 +2424,14 @@
 
         .progress-label {
             position: absolute;
-            top: 28px;
-            right: 20px;
-            font-size: 10px;
-            font-weight: 600;
-            color: rgba(218, 174, 88, 0.9);
+            top: 36px;
+            right: 24px;
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(218, 174, 88, 1);
+            z-index: 11;
+            pointer-events: none;
+            letter-spacing: 0.5px;
         }
 
         /* Responsive adjustments for project cards */
