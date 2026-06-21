@@ -5586,28 +5586,12 @@
             if (gameState.rounds >= gameState.maxRounds) {
                 // 故事结束，让 AI 生成结尾
                 gameState = null;
-                appendMessage('assistant',
-                    `好精彩的一段！让我来给这个故事画上句号...\n\n` +
-                    `（这里我会根据你的内容续写结尾，但现在 API 还没部署，所以先占位~）\n\n` +
-                    `故事讲完了！还想玩吗？点左边的游戏按钮重新开始~`
-                );
                 updateTwinoraStatus('在线', '故事讲完了，还想玩吗？');
-                return true;
+                return false; // 不拦截，让 AI 续写结尾
             }
 
-            // 继续故事（这里需要 AI 续写，但现在先降级）
-            const continueStory = [
-                "突然间，",
-                "没想到，",
-                "与此同时，",
-                "就在这时，",
-                "紧接着，"
-            ][Math.floor(Math.random() * 5)] +
-            " （这里我会根据你的内容续写，但现在 API 还没部署，所以先占位~）\n\n" +
-            "现在轮到你了！";
-
-            appendMessage('assistant', continueStory);
-            return true; // 拦截消息
+            // 继续故事，不拦截，让 AI 续写
+            return false;
         }
 
         async function sendChatMessage() {
@@ -5652,8 +5636,20 @@
                     headers['Authorization'] = `Bearer ${TWINORA_API_KEY}`;
                 }
 
+                // 构建消息数组（如果在游戏中，添加游戏指令）
+                let messagesToSend = [...conversationHistory];
+
+                if (gameState && gameState.type === 'story') {
+                    // 故事接龙：给 AI 加上续写指令
+                    const storyInstruction = {
+                        role: 'system',
+                        content: '你正在和用户玩故事接龙游戏。用户刚才接了一句，现在轮到你了。请根据用户的内容续写 2-3 句话，保持故事的连贯性和趣味性。续写后说"现在轮到你了！"'
+                    };
+                    messagesToSend = [storyInstruction, ...conversationHistory];
+                }
+
                 const requestBody = {
-                    messages: conversationHistory
+                    messages: messagesToSend
                 };
 
                 if (TWINORA_MODEL) {
