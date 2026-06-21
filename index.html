@@ -2628,6 +2628,59 @@
             font-size: 14px;
         }
 
+        /* 正在输入指示器 */
+        .typing-indicator .chat-bubble {
+            padding: 16px 20px;
+        }
+
+        .typing-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(218, 174, 88, 0.6);
+            margin: 0 3px;
+            animation: typing-bounce 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing-bounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.6;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        /* 清空历史按钮 */
+        .chat-clear-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .chat-clear-btn:hover {
+            background: rgba(255, 80, 80, 0.1);
+            border-color: rgba(255, 80, 80, 0.3);
+            color: rgba(255, 80, 80, 0.9);
+        }
+
         /* Responsive adjustments for project cards */
         @media (max-width: 768px) {
             .projects-grid {
@@ -4296,7 +4349,7 @@
         <div class="chat-header">
             <button class="chat-back-btn" onclick="closeTwinoraChat()">← 返回主站</button>
             <div class="chat-title">✨ 与 Twinora 对话</div>
-            <div class="chat-subtitle">Aurelia Lab AI 小助手</div>
+            <button class="chat-clear-btn" onclick="if(confirm('确定清空所有对话记录吗？')) clearChatHistory()">🗑️ 清空历史</button>
         </div>
 
         <div class="chat-messages" id="chat-messages">
@@ -4454,10 +4507,95 @@
         })();
 
         // Twinora 对话界面逻辑
+
+        // 配置：你部署后替换为实际的 API 地址
+        const TWINORA_API_URL = 'https://your-domain.com/twinora-api/api/chat';
+
+        // 对话历史（保存到 LocalStorage）
+        let conversationHistory = [];
+
+        function loadChatHistory() {
+            try {
+                const saved = localStorage.getItem('twinora_chat_history');
+                if (saved) {
+                    conversationHistory = JSON.parse(saved);
+                    const messagesContainer = document.getElementById('chat-messages');
+                    const welcome = messagesContainer.querySelector('.chat-welcome');
+                    if (welcome && conversationHistory.length > 0) {
+                        welcome.remove();
+                    }
+                    conversationHistory.forEach(msg => {
+                        appendMessage(msg.role, msg.content, false);
+                    });
+                }
+            } catch (e) {
+                console.error('加载聊天历史失败:', e);
+            }
+        }
+
+        function saveChatHistory() {
+            try {
+                localStorage.setItem('twinora_chat_history', JSON.stringify(conversationHistory));
+            } catch (e) {
+                console.error('保存聊天历史失败:', e);
+            }
+        }
+
+        function clearChatHistory() {
+            conversationHistory = [];
+            localStorage.removeItem('twinora_chat_history');
+            const messagesContainer = document.getElementById('chat-messages');
+            messagesContainer.innerHTML = `
+                <div class="chat-welcome">
+                    <div class="chat-welcome-icon">🌙✨</div>
+                    <div class="chat-welcome-title">你好呀！我是 Twinora</div>
+                    <div class="chat-welcome-desc">有什么想聊的吗？双击我就能开始对话哦～</div>
+                </div>
+            `;
+        }
+
+        function appendMessage(role, content, scroll = true) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const msgEl = document.createElement('div');
+            msgEl.className = `chat-message ${role === 'user' ? 'user' : ''}`;
+            msgEl.innerHTML = `
+                <div class="chat-avatar">${role === 'user' ? '👤' : '✨'}</div>
+                <div class="chat-bubble">${escapeHtml(content)}</div>
+            `;
+            messagesContainer.appendChild(msgEl);
+            if (scroll) {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            return msgEl;
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chat-messages');
+            const indicator = document.createElement('div');
+            indicator.className = 'chat-message typing-indicator';
+            indicator.id = 'typing-indicator';
+            indicator.innerHTML = `
+                <div class="chat-avatar">✨</div>
+                <div class="chat-bubble">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+            `;
+            messagesContainer.appendChild(indicator);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+        }
+
         function openTwinoraChat() {
             const overlay = document.getElementById('twinora-chat-overlay');
             overlay.classList.add('active');
             document.getElementById('chat-input').focus();
+            loadChatHistory();
         }
 
         function closeTwinoraChat() {
@@ -4465,7 +4603,7 @@
             overlay.classList.remove('active');
         }
 
-        function sendChatMessage() {
+        async function sendChatMessage() {
             const input = document.getElementById('chat-input');
             const messagesContainer = document.getElementById('chat-messages');
             const userMessage = input.value.trim();
@@ -4477,41 +4615,60 @@
             if (welcome) welcome.remove();
 
             // 添加用户消息
-            const userMsgEl = document.createElement('div');
-            userMsgEl.className = 'chat-message user';
-            userMsgEl.innerHTML = `
-                <div class="chat-avatar">👤</div>
-                <div class="chat-bubble">${escapeHtml(userMessage)}</div>
-            `;
-            messagesContainer.appendChild(userMsgEl);
+            appendMessage('user', userMessage);
+            conversationHistory.push({ role: 'user', content: userMessage });
+            saveChatHistory();
 
             // 清空输入框
             input.value = '';
             input.style.height = 'auto';
 
-            // 滚动到底部
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            // 显示"正在输入"
+            showTypingIndicator();
 
-            // 模拟 Twinora 回复（延迟 800ms）
-            setTimeout(() => {
-                const twinoraReply = generateTwinoraReply(userMessage);
-                const botMsgEl = document.createElement('div');
-                botMsgEl.className = 'chat-message';
-                botMsgEl.innerHTML = `
-                    <div class="chat-avatar">✨</div>
-                    <div class="chat-bubble">${twinoraReply}</div>
-                `;
-                messagesContainer.appendChild(botMsgEl);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 800);
+            try {
+                // 调用真实 API
+                const response = await fetch(TWINORA_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: conversationHistory
+                    })
+                });
+
+                hideTypingIndicator();
+
+                if (!response.ok) {
+                    throw new Error(`API 返回 ${response.status}`);
+                }
+
+                const data = await response.json();
+                const reply = data.reply || '抱歉，我现在有点累了，稍后再聊好吗？😴';
+
+                appendMessage('assistant', reply);
+                conversationHistory.push({ role: 'assistant', content: reply });
+                saveChatHistory();
+
+            } catch (error) {
+                hideTypingIndicator();
+                console.error('调用 Twinora API 失败:', error);
+
+                // 降级到本地关键词回复
+                const fallbackReply = generateFallbackReply(userMessage);
+                appendMessage('assistant', fallbackReply);
+                conversationHistory.push({ role: 'assistant', content: fallbackReply });
+                saveChatHistory();
+            }
         }
 
-        function generateTwinoraReply(userMsg) {
+        // 降级回复（API 不可用时）
+        function generateFallbackReply(userMsg) {
             const lower = userMsg.toLowerCase();
 
-            // 简单的关键词匹配回复
             if (lower.includes('你好') || lower.includes('hi') || lower.includes('hello')) {
-                return '你好呀！我是 Twinora，Aurelia Lab 的 AI 小助手~ 有什么我能帮你的吗？✨';
+                return '你好呀！我是 Twinora~ 不好意思，我现在网络有点问题，但还是可以聊聊的！✨';
             }
             if (lower.includes('项目') || lower.includes('作品')) {
                 return '主人正在整理她的项目哦！有 Synesthetic（斗南花市数据可视化）、Fubao Eco-Village（生态城市实验）还有 Social Focus（城市研究）~ 你对哪个感兴趣呢？🌸';
@@ -4519,24 +4676,8 @@
             if (lower.includes('aurelia') || lower.includes('主人')) {
                 return 'Aurelia 是个很厉害的 HCI 研究者和产品设计师！她喜欢探索交互设计和技术的边界，也超爱做各种实验性项目~ 💫';
             }
-            if (lower.includes('你是谁') || lower.includes('你的名字')) {
-                return '我是 Twinora，一个星光小仙灵！我的使命是陪伴主人探索 AI 的世界，也帮助访客了解 Aurelia Lab 的故事~ 🌙✨';
-            }
-            if (lower.includes('谢谢') || lower.includes('thank')) {
-                return '不客气！能帮到你我很开心~ 还有其他想聊的吗？🥰';
-            }
-            if (lower.includes('再见') || lower.includes('bye')) {
-                return '再见啦！记得常回来看看，主人的项目会持续更新哦~ ✨👋';
-            }
 
-            // 默认回复
-            const defaultReplies = [
-                '这个问题好有趣！不过我还在学习中，可能没法给你完美的答案~ 要不换个话题聊聊？😊',
-                '嗯...让我想想...其实我更擅长聊关于主人的项目和研究呢！你想了解哪方面？💭',
-                '这个问题有点难倒我了~ 不过你可以翻翻主人的项目介绍，说不定能找到答案！✨',
-                '哇，你的问题超有深度！虽然我现在还答不上来，但我会记下来告诉主人的~ 🌙'
-            ];
-            return defaultReplies[Math.floor(Math.random() * defaultReplies.length)];
+            return '不好意思，我现在网络有点问题~ 不过你可以翻翻主人的项目介绍，或者稍后再来找我聊！✨';
         }
 
         function escapeHtml(text) {
