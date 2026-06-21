@@ -4507,20 +4507,20 @@
                     <div class="twinora-quote" id="twinora-quote">我是 Aurelia 的小助手，有什么想聊的吗？</div>
                 </div>
 
-                <!-- 快捷问题 -->
+                <!-- 和小梦玩游戏 -->
                 <div class="quick-questions">
-                    <h4>💬 快速开始</h4>
-                    <button class="quick-question-btn" onclick="askQuickQuestion('Aurelia 是谁呀？')">
-                        Aurelia 是谁呀？
+                    <h4>🎮 和小梦玩游戏</h4>
+                    <button class="quick-question-btn" onclick="startGame('guess')">
+                        🎲 猜数字
                     </button>
-                    <button class="quick-question-btn" onclick="askQuickQuestion('有什么好玩的项目？')">
-                        有什么好玩的项目？
+                    <button class="quick-question-btn" onclick="startGame('story')">
+                        ✨ 故事接龙
                     </button>
-                    <button class="quick-question-btn" onclick="askQuickQuestion('小梦你会做什么？')">
-                        小梦你会做什么？
+                    <button class="quick-question-btn" onclick="startGame('tarot')">
+                        🔮 塔罗占卜
                     </button>
-                    <button class="quick-question-btn" onclick="askQuickQuestion('给我讲个 Aurelia 的故事~')">
-                        给我讲个故事~
+                    <button class="quick-question-btn" onclick="startGame('truth')">
+                        🎯 真心话大冒险
                     </button>
                 </div>
 
@@ -4849,6 +4849,224 @@
             URL.revokeObjectURL(url);
         }
 
+        // ==================== 游戏系统 ====================
+
+        let gameState = null; // 当前游戏状态
+
+        function startGame(type) {
+            // 清空对话历史（开始新游戏）
+            const messagesContainer = document.getElementById('chat-messages');
+            const welcome = messagesContainer.querySelector('.chat-welcome');
+            if (welcome) welcome.remove();
+
+            switch(type) {
+                case 'guess':
+                    startGuessNumberGame();
+                    break;
+                case 'story':
+                    startStoryGame();
+                    break;
+                case 'tarot':
+                    startTarotGame();
+                    break;
+                case 'truth':
+                    startTruthGame();
+                    break;
+            }
+        }
+
+        // 🎲 猜数字游戏
+        function startGuessNumberGame() {
+            const targetNumber = Math.floor(Math.random() * 100) + 1;
+            gameState = {
+                type: 'guess',
+                target: targetNumber,
+                attempts: 0,
+                min: 1,
+                max: 100
+            };
+
+            updateTwinoraStatus('游戏中', '猜猜我心里想的数字~');
+
+            appendMessage('assistant',
+                `好！我们来玩猜数字游戏 🎲\n\n` +
+                `我心里想了一个 1 到 100 之间的数字，你来猜猜看！\n` +
+                `我会告诉你是"太大了"还是"太小了"~\n\n` +
+                `直接输入你猜的数字吧！`
+            );
+        }
+
+        // ✨ 故事接龙游戏
+        function startStoryGame() {
+            const storyStarts = [
+                "在一个月光如水的夜晚，Aurelia 走进了实验室，发现电脑屏幕上显示着一串奇怪的数据...",
+                "斗南花市的清晨，Aurelia 正在拍摄花商们的交易，突然一位老奶奶递给她一朵从未见过的花...",
+                "泸州江北老城的小巷里，Aurelia 听到一阵奇怪的音乐声，循着声音走去...",
+                "Aurelia 在赫尔辛基的图书馆里翻阅资料，一张泛黄的照片从书页间滑落...",
+                "深夜，Aurelia 正在调试代码，小梦突然说：「主人，我发现了一个秘密...」"
+            ];
+
+            const start = storyStarts[Math.floor(Math.random() * storyStarts.length)];
+
+            gameState = {
+                type: 'story',
+                rounds: 0,
+                maxRounds: 5
+            };
+
+            updateTwinoraStatus('游戏中', '我们一起编故事~');
+
+            appendMessage('assistant',
+                `好！我们来玩故事接龙 ✨\n\n` +
+                `我先开个头：\n\n` +
+                `"${start}"\n\n` +
+                `现在轮到你了！接下来发生了什么呢？`
+            );
+        }
+
+        // 🔮 塔罗占卜游戏
+        function startTarotGame() {
+            const cards = [
+                { name: '数据之流', theme: 'Synesthetic', message: '你最近在寻找什么模式吗？数据背后总有故事在等待被发现...' },
+                { name: '生态守护', theme: 'Fubao', message: '是时候重新思考"平衡"的意义了。有时候让步，反而能看到更广阔的世界...' },
+                { name: '时光记录', theme: 'Social Focus', message: '那些看似平凡的瞬间，其实都藏着珍贵的意义。放慢脚步，观察身边吧...' },
+                { name: '星光小仙灵', theme: 'Twinora', message: '你需要一个好奇心满满的伙伴！不要害怕提问，探索从对话开始...' },
+                { name: '实验之心', theme: 'HCI', message: '失败只是下一次成功的入口。大胆尝试，世界会给你反馈...' },
+                { name: '田野之路', theme: 'Research', message: '真相总在现场。离开屏幕，去真实的世界里寻找答案吧...' }
+            ];
+
+            const card = cards[Math.floor(Math.random() * cards.length)];
+
+            gameState = { type: 'tarot', card };
+
+            updateTwinoraStatus('游戏中', '为你占卜~');
+
+            appendMessage('assistant',
+                `好！让我为你抽一张塔罗牌 🔮\n\n` +
+                `✨ 你抽到了...【${card.name}】\n\n` +
+                `主题：${card.theme}\n\n` +
+                `牌面启示：${card.message}\n\n` +
+                `这张牌让你想到了什么？或者想聊聊最近的困惑吗？`
+            );
+        }
+
+        // 🎯 真心话大冒险游戏
+        function startTruthGame() {
+            const questions = [
+                "如果让你给 Aurelia 的某个项目起一个更酷的名字，你会起什么？",
+                "你觉得 Aurelia 的三个项目里，哪个最能打动你？为什么？",
+                "如果 Aurelia 邀请你一起做田野调查，你最想去哪里？",
+                "你觉得「数据可视化」和「影像记录」哪个更能讲好故事？",
+                "如果让你用三个词形容 Aurelia，会是什么？",
+                "你最近有什么想做但还没开始的事情吗？",
+                "如果小梦能实现一个你的愿望，你会许什么？",
+                "你觉得技术应该为人服务，还是人应该适应技术？",
+                "你最喜欢在什么时候、什么地方思考问题？",
+                "如果时光倒流，你最想对过去的自己说什么？"
+            ];
+
+            const question = questions[Math.floor(Math.random() * questions.length)];
+
+            gameState = { type: 'truth', question };
+
+            updateTwinoraStatus('游戏中', '真心话时间~');
+
+            appendMessage('assistant',
+                `好！我们来玩真心话大冒险 🎯\n\n` +
+                `这次是真心话：\n\n` +
+                `"${question}"\n\n` +
+                `来，跟我聊聊你的真实想法吧~`
+            );
+        }
+
+        // 处理游戏中的用户输入
+        function handleGameInput(userMessage) {
+            if (!gameState) return false;
+
+            switch(gameState.type) {
+                case 'guess':
+                    return handleGuessGame(userMessage);
+                case 'story':
+                    return handleStoryGame(userMessage);
+                case 'tarot':
+                case 'truth':
+                    // 这两个游戏就是普通对话，不需要特殊处理
+                    gameState = null; // 游戏结束
+                    return false;
+            }
+        }
+
+        // 猜数字游戏逻辑
+        function handleGuessGame(userMessage) {
+            const guess = parseInt(userMessage);
+
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                appendMessage('assistant', '请输入一个 1 到 100 之间的数字哦~');
+                return true; // 拦截消息，不发送到 AI
+            }
+
+            gameState.attempts++;
+            const { target, attempts } = gameState;
+
+            if (guess === target) {
+                appendMessage('assistant',
+                    `🎉 恭喜你猜对了！答案就是 ${target}！\n\n` +
+                    `你总共猜了 ${attempts} 次~\n\n` +
+                    `${attempts <= 5 ? '太厉害了！' : attempts <= 10 ? '不错不错！' : '下次可以更快哦~'}\n\n` +
+                    `还想玩吗？点左边的游戏按钮重新开始，或者直接跟我聊天~`
+                );
+                updateTwinoraStatus('在线', '游戏结束啦，还想玩吗？');
+                gameState = null;
+            } else if (guess < target) {
+                const hint = target - guess > 20 ? '太小啦！' : '有点小了~';
+                appendMessage('assistant',
+                    `${hint} 试试更大的数字吧！\n` +
+                    `（范围：${gameState.min} - ${gameState.max}，已猜 ${attempts} 次）`
+                );
+                gameState.min = Math.max(gameState.min, guess + 1);
+            } else {
+                const hint = guess - target > 20 ? '太大啦！' : '有点大了~';
+                appendMessage('assistant',
+                    `${hint} 试试更小的数字吧！\n` +
+                    `（范围：${gameState.min} - ${gameState.max}，已猜 ${attempts} 次）`
+                );
+                gameState.max = Math.min(gameState.max, guess - 1);
+            }
+
+            return true; // 拦截消息，不发送到 AI
+        }
+
+        // 故事接龙游戏逻辑
+        function handleStoryGame(userMessage) {
+            gameState.rounds++;
+
+            if (gameState.rounds >= gameState.maxRounds) {
+                // 故事结束，让 AI 生成结尾
+                gameState = null;
+                appendMessage('assistant',
+                    `好精彩的一段！让我来给这个故事画上句号...\n\n` +
+                    `（这里我会根据你的内容续写结尾，但现在 API 还没部署，所以先占位~）\n\n` +
+                    `故事讲完了！还想玩吗？点左边的游戏按钮重新开始~`
+                );
+                updateTwinoraStatus('在线', '故事讲完了，还想玩吗？');
+                return true;
+            }
+
+            // 继续故事（这里需要 AI 续写，但现在先降级）
+            const continueStory = [
+                "突然间，",
+                "没想到，",
+                "与此同时，",
+                "就在这时，",
+                "紧接着，"
+            ][Math.floor(Math.random() * 5)] +
+            " （这里我会根据你的内容续写，但现在 API 还没部署，所以先占位~）\n\n" +
+            "现在轮到你了！";
+
+            appendMessage('assistant', continueStory);
+            return true; // 拦截消息
+        }
+
         async function sendChatMessage() {
             const input = document.getElementById('chat-input');
             const messagesContainer = document.getElementById('chat-messages');
@@ -4860,17 +5078,23 @@
             const welcome = messagesContainer.querySelector('.chat-welcome');
             if (welcome) welcome.remove();
 
-            // 更新小梦状态
-            updateTwinoraStatus('正在思考...', '让我想想怎么回答~');
-
             // 添加用户消息
             appendMessage('user', userMessage);
-            conversationHistory.push({ role: 'user', content: userMessage });
-            saveChatHistory();
 
             // 清空输入框
             input.value = '';
             input.style.height = 'auto';
+
+            // 检查是否在游戏中
+            if (handleGameInput(userMessage)) {
+                return; // 游戏逻辑已处理，不需要调用 AI
+            }
+
+            // 更新小梦状态
+            updateTwinoraStatus('正在思考...', '让我想想怎么回答~');
+
+            conversationHistory.push({ role: 'user', content: userMessage });
+            saveChatHistory();
 
             // 显示"正在输入"
             showTypingIndicator();
