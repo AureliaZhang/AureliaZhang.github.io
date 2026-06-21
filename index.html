@@ -2456,6 +2456,149 @@
             opacity: 1;
         }
 
+        .chat-content-wrapper {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .chat-sidebar {
+            width: 320px;
+            padding: 30px 20px;
+            border-right: 1px solid rgba(218, 174, 88, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            overflow-y: auto;
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 小梦互动卡片 */
+        .twinora-card {
+            background: rgba(218, 174, 88, 0.08);
+            border: 1px solid rgba(218, 174, 88, 0.25);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .twinora-avatar {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(218, 174, 88, 0.4);
+            animation: avatar-pulse 3s ease-in-out infinite;
+        }
+
+        .twinora-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes avatar-pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(218, 174, 88, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(218, 174, 88, 0);
+            }
+        }
+
+        .twinora-status {
+            font-size: 13px;
+            color: rgba(218, 174, 88, 1);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .twinora-quote {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* 快捷问题 */
+        .quick-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quick-questions h4 {
+            font-size: 13px;
+            color: rgba(218, 174, 88, 0.9);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .quick-question-btn {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-question-btn:hover {
+            background: rgba(218, 174, 88, 0.15);
+            border-color: rgba(218, 174, 88, 0.4);
+            color: rgba(255, 255, 255, 1);
+            transform: translateX(4px);
+        }
+
+        /* 小工具 */
+        .chat-tools {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-tools h4 {
+            font-size: 13px;
+            color: rgba(218, 174, 88, 0.9);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .tool-btn {
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 响应式：小屏幕隐藏侧边栏 */
+        @media (max-width: 768px) {
+            .chat-sidebar {
+                display: none;
+            }
+        }
+
         .chat-header {
             padding: 20px 30px;
             border-bottom: 1px solid rgba(218, 174, 88, 0.2);
@@ -4352,23 +4495,68 @@
             <button class="chat-clear-btn" onclick="if(confirm('确定清空所有对话记录吗？')) clearChatHistory()">🗑️ 清空历史</button>
         </div>
 
-        <div class="chat-messages" id="chat-messages">
-            <div class="chat-welcome">
-                <div class="chat-welcome-icon">🌙✨</div>
-                <div class="chat-welcome-title">你好呀！我是 Twinora</div>
-                <div class="chat-welcome-desc">有什么想聊的吗？双击我就能开始对话哦～</div>
-            </div>
-        </div>
+        <div class="chat-content-wrapper">
+            <!-- 左侧栏 -->
+            <div class="chat-sidebar">
+                <!-- 小梦互动卡片 -->
+                <div class="twinora-card">
+                    <div class="twinora-avatar">
+                        <img src="images/twinora-companion.png" alt="Twinora">
+                    </div>
+                    <div class="twinora-status" id="twinora-status">✨ 在线</div>
+                    <div class="twinora-quote" id="twinora-quote">我是 Aurelia 的小助手，有什么想聊的吗？</div>
+                </div>
 
-        <div class="chat-input-area">
-            <div class="chat-input-wrapper">
-                <textarea
-                    id="chat-input"
-                    class="chat-input"
-                    placeholder="输入消息...（按 Enter 发送，Shift+Enter 换行）"
-                    rows="1"
-                ></textarea>
-                <button class="chat-send-btn" onclick="sendChatMessage()">发送</button>
+                <!-- 快捷问题 -->
+                <div class="quick-questions">
+                    <h4>💬 快速开始</h4>
+                    <button class="quick-question-btn" onclick="askQuickQuestion('Aurelia 是谁呀？')">
+                        Aurelia 是谁呀？
+                    </button>
+                    <button class="quick-question-btn" onclick="askQuickQuestion('有什么好玩的项目？')">
+                        有什么好玩的项目？
+                    </button>
+                    <button class="quick-question-btn" onclick="askQuickQuestion('小梦你会做什么？')">
+                        小梦你会做什么？
+                    </button>
+                    <button class="quick-question-btn" onclick="askQuickQuestion('给我讲个 Aurelia 的故事~')">
+                        给我讲个故事~
+                    </button>
+                </div>
+
+                <!-- 小工具 -->
+                <div class="chat-tools">
+                    <h4>🎨 小工具</h4>
+                    <button class="tool-btn" onclick="randomQuestion()">
+                        🎲 随机一个问题
+                    </button>
+                    <button class="tool-btn" onclick="downloadChat()">
+                        💾 下载聊天记录
+                    </button>
+                </div>
+            </div>
+
+            <!-- 右侧主对话区 -->
+            <div class="chat-main">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="chat-welcome">
+                        <div class="chat-welcome-icon">🌙✨</div>
+                        <div class="chat-welcome-title">你好呀！我是 Twinora</div>
+                        <div class="chat-welcome-desc">点击左边的问题快速开始，或者直接输入你的问题～</div>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <div class="chat-input-wrapper">
+                        <textarea
+                            id="chat-input"
+                            class="chat-input"
+                            placeholder="输入消息...（按 Enter 发送，Shift+Enter 换行）"
+                            rows="1"
+                        ></textarea>
+                        <button class="chat-send-btn" onclick="sendChatMessage()">发送</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -4596,11 +4784,69 @@
             overlay.classList.add('active');
             document.getElementById('chat-input').focus();
             loadChatHistory();
+            updateTwinoraStatus('在线', '我是 Aurelia 的小助手，有什么想聊的吗？');
         }
 
         function closeTwinoraChat() {
             const overlay = document.getElementById('twinora-chat-overlay');
             overlay.classList.remove('active');
+        }
+
+        // 更新小梦状态和引言
+        function updateTwinoraStatus(status, quote) {
+            const statusEl = document.getElementById('twinora-status');
+            const quoteEl = document.getElementById('twinora-quote');
+            if (statusEl) statusEl.textContent = '✨ ' + status;
+            if (quoteEl) quoteEl.textContent = quote;
+        }
+
+        // 快捷问题
+        function askQuickQuestion(question) {
+            const input = document.getElementById('chat-input');
+            input.value = question;
+            sendChatMessage();
+        }
+
+        // 随机问题
+        function randomQuestion() {
+            const questions = [
+                'Aurelia 是谁呀？',
+                '有什么好玩的项目？',
+                '小梦你会做什么？',
+                '给我讲个 Aurelia 的故事~',
+                '介绍一下 Synesthetic 项目',
+                'Fubao 生态村是什么？',
+                'Aurelia 喜欢什么？',
+                '你最喜欢 Aurelia 的哪个项目？',
+                '能分享一些田野调查的趣事吗？',
+                'Aurelia 的设计哲学是什么？'
+            ];
+            const random = questions[Math.floor(Math.random() * questions.length)];
+            askQuickQuestion(random);
+        }
+
+        // 下载聊天记录
+        function downloadChat() {
+            if (conversationHistory.length === 0) {
+                alert('还没有聊天记录哦～');
+                return;
+            }
+
+            let text = '=== Twinora 对话记录 ===\n';
+            text += `时间: ${new Date().toLocaleString()}\n\n`;
+
+            conversationHistory.forEach((msg, i) => {
+                const speaker = msg.role === 'user' ? '你' : 'Twinora';
+                text += `${speaker}: ${msg.content}\n\n`;
+            });
+
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `twinora-chat-${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
         async function sendChatMessage() {
@@ -4613,6 +4859,9 @@
             // 移除欢迎消息
             const welcome = messagesContainer.querySelector('.chat-welcome');
             if (welcome) welcome.remove();
+
+            // 更新小梦状态
+            updateTwinoraStatus('正在思考...', '让我想想怎么回答~');
 
             // 添加用户消息
             appendMessage('user', userMessage);
@@ -4651,6 +4900,9 @@
                 conversationHistory.push({ role: 'assistant', content: reply });
                 saveChatHistory();
 
+                // 更新状态
+                updateTwinoraStatus('在线', '还有什么想问的吗？');
+
             } catch (error) {
                 hideTypingIndicator();
                 console.error('调用 Twinora API 失败:', error);
@@ -4660,6 +4912,9 @@
                 appendMessage('assistant', fallbackReply);
                 conversationHistory.push({ role: 'assistant', content: fallbackReply });
                 saveChatHistory();
+
+                // 更新状态
+                updateTwinoraStatus('离线模式', '网络有点问题，但我还在~');
             }
         }
 
