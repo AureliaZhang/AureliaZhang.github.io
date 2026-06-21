@@ -4706,7 +4706,12 @@
 
                 <!-- 会话历史 -->
                 <div class="session-history">
-                    <h4>📝 对话历史</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h4 style="margin: 0;">📝 对话历史</h4>
+                        <button onclick="createNewConversation()" style="background: rgba(218, 174, 88, 0.15); border: 1px solid rgba(218, 174, 88, 0.3); border-radius: 6px; color: rgba(218, 174, 88, 1); font-size: 11px; padding: 4px 8px; cursor: pointer; font-weight: 600;">
+                            ➕ 新对话
+                        </button>
+                    </div>
                     <div id="session-list"></div>
                 </div>
 
@@ -5061,6 +5066,19 @@
 
             switchSession(sessionId);
             return sessionId;
+        }
+
+        // 创建新对话（供用户手动点击）
+        function createNewConversation() {
+            const now = new Date();
+            const timeStr = now.toLocaleString('zh-CN', {
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            const sessionName = `💬 对话 ${timeStr}`;
+            createNewSession(sessionName, 'chat');
         }
 
         function switchSession(sessionId) {
