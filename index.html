@@ -5874,11 +5874,15 @@
             }
         }
 
-        // 绑定搜索动作
-        searchBtn.addEventListener('click', performSearch);
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') performSearch();
-        });
+        // 绑定搜索动作（只在搜索按钮存在时）
+        if (searchBtn) {
+            searchBtn.addEventListener('click', performSearch);
+        }
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') performSearch();
+            });
+        }
 
         // ========== IMAGE CAROUSEL ==========
         let currentSlide = 0;
