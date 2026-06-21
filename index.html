@@ -5669,7 +5669,13 @@
                 }
 
                 const data = await response.json();
-                const reply = data.reply || '抱歉，我现在有点累了，稍后再聊好吗？😴';
+                console.log('🔍 API 返回数据:', data); // 调试日志
+
+                const reply = data.reply || data.choices?.[0]?.message?.content || '抱歉，我现在有点累了，稍后再聊好吗？😴';
+
+                if (!data.reply && !data.choices?.[0]?.message?.content) {
+                    console.warn('⚠️ API 返回格式异常:', data);
+                }
 
                 appendMessage('assistant', reply);
                 conversationHistory.push({ role: 'assistant', content: reply });
